@@ -1,0 +1,1935 @@
+{
+  "info": {
+    "_postman_id": "c0c6cf2e-bc8f-4b7a-8e42-7a3f8e6a2f11",
+    "name": "TGSCO Backend API",
+    "description": "TGSCO e-commerce and portfolio content management API.\n\nVariable conventions:\n- {{base_url}} is the API host and port.\n- {{admin_token}} and {{admin_refresh_token}} are filled by the Admin Login and Admin Refresh requests.\n- Add variables only when the corresponding backend workflow is implemented.\n\nWhen adding a workflow, create the appropriate numbered folder and subfolders, add its reusable IDs or tokens as collection variables, then save response values in that workflow's Tests script with pm.collectionVariables.set().",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com",
+      "type": "string"
+    },
+    {
+      "key": "admin_password",
+      "value": "password",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_role",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 System",
+      "description": "System and service-level checks.",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Confirms that the API is running and reports MongoDB connectivity."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('API responds successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test('Health response has the expected shape', function () {",
+                  "    pm.expect(body.success).to.eql(true);",
+                  "    pm.expect(body.data.status).to.eql('ok');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 Authentication",
+      "description": "Admin authentication lifecycle. Run Login first, then use Refresh or Logout as needed.",
+      "item": [
+        {
+          "name": "Admin",
+          "description": "Admin login, refresh, and logout workflow.",
+          "item": [
+            {
+              "name": "Admin Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                },
+                "description": "Logs in the default admin and stores access and refresh tokens in collection variables."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Admin login succeeds', function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "const body = pm.response.json();",
+                      "pm.expect(body.success).to.eql(true);",
+                      "pm.expect(body.data.accessToken).to.be.a('string').and.not.empty;",
+                      "pm.expect(body.data.refreshToken).to.be.a('string').and.not.empty;",
+                      "pm.collectionVariables.set('admin_token', body.data.accessToken);",
+                      "pm.collectionVariables.set('admin_refresh_token', body.data.refreshToken);",
+                      "pm.collectionVariables.set('admin_id', body.data.user.id);",
+                      "pm.collectionVariables.set('admin_role', body.data.user.role);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Admin Refresh Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"{{admin_refresh_token}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/refresh",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                },
+                "description": "Rotates the refresh token and updates both admin token variables."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Admin token refresh succeeds', function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "const body = pm.response.json();",
+                      "pm.expect(body.success).to.eql(true);",
+                      "pm.collectionVariables.set('admin_token', body.data.accessToken);",
+                      "pm.collectionVariables.set('admin_refresh_token', body.data.refreshToken);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Admin Logout",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"{{admin_refresh_token}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                },
+                "description": "Revokes the current admin refresh token and clears stored auth variables."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Admin logout succeeds', function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "const body = pm.response.json();",
+                      "pm.expect(body.success).to.eql(true);",
+                      "pm.collectionVariables.unset('admin_token');",
+                      "pm.collectionVariables.unset('admin_refresh_token');"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 Homepage Content",
+      "description": "Section-specific homepage content management. GET is public; POST, PATCH, and DELETE require admin_token.",
+      "item": [
+        {
+          "name": "Hero Section",
+          "description": "Manage the Hero Section homepage section at /home-content/hero.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "hero"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"slides\": [\n    {\n      \"eyebrow\": \"OFFICIAL TELANGANA GOVERNMENT COOPERATIVE\",\n      \"title\": \"Preserving Heritage,\",\n      \"highlight\": \"One Weave at a Time.\",\n      \"description\": \"Authentic, government-backed handlooms crafted by the artisans who have kept Telangana's weaving legacy alive for generations. When you choose handloom, you carry tradition forward.\",\n      \"button\": {\n        \"label\": \"Shop Now\",\n        \"url\": \"/shop\"\n      },\n      \"imageField\": \"slides[0].image\",\n      \"alt\": \"Hands weaving handloom fabric\"\n    },\n    {\n      \"eyebrow\": \"TELANGANA HANDLOOM HERITAGE\",\n      \"title\": \"Woven by Hand,\",\n      \"highlight\": \"Made to Last.\",\n      \"description\": \"Discover authentic handlooms created by skilled artisans and carried forward through generations.\",\n      \"button\": {\n        \"label\": \"Explore Handlooms\",\n        \"url\": \"/shop\"\n      },\n      \"imageField\": \"slides[1].image\",\n      \"alt\": \"Telangana handloom artisans at work\"\n    },\n    {\n      \"eyebrow\": \"CRAFTED WITH PURPOSE\",\n      \"title\": \"Every Thread\",\n      \"highlight\": \"Carries a Story.\",\n      \"description\": \"Support Telangana weaving communities and bring timeless craftsmanship into your home.\",\n      \"button\": {\n        \"label\": \"Discover Our Story\",\n        \"url\": \"/about\"\n      },\n      \"imageField\": \"slides[2].image\",\n      \"alt\": \"Traditional handloom textile\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "slides[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "slides[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "slides[2].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "hero"
+                  ]
+                },
+                "description": "Admin request. Each carousel slide contains its own text, button, alt text, and image file."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"slides\": [\n    {\n      \"eyebrow\": \"OFFICIAL TELANGANA GOVERNMENT COOPERATIVE\",\n      \"title\": \"Preserving Heritage,\",\n      \"highlight\": \"One Weave at a Time.\",\n      \"description\": \"Authentic, government-backed handlooms crafted by the artisans who have kept Telangana's weaving legacy alive for generations. When you choose handloom, you carry tradition forward.\",\n      \"button\": {\n        \"label\": \"Shop Now\",\n        \"url\": \"/shop\"\n      },\n      \"imageField\": \"slides[0].image\",\n      \"alt\": \"Hands weaving handloom fabric\"\n    },\n    {\n      \"eyebrow\": \"TELANGANA HANDLOOM HERITAGE\",\n      \"title\": \"Woven by Hand,\",\n      \"highlight\": \"Made to Last.\",\n      \"description\": \"Discover authentic handlooms created by skilled artisans and carried forward through generations.\",\n      \"button\": {\n        \"label\": \"Explore Handlooms\",\n        \"url\": \"/shop\"\n      },\n      \"imageField\": \"slides[1].image\",\n      \"alt\": \"Telangana handloom artisans at work\"\n    },\n    {\n      \"eyebrow\": \"CRAFTED WITH PURPOSE\",\n      \"title\": \"Every Thread\",\n      \"highlight\": \"Carries a Story.\",\n      \"description\": \"Support Telangana weaving communities and bring timeless craftsmanship into your home.\",\n      \"button\": {\n        \"label\": \"Discover Our Story\",\n        \"url\": \"/about\"\n      },\n      \"imageField\": \"slides[2].image\",\n      \"alt\": \"Traditional handloom textile\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "slides[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "slides[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "slides[2].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "hero"
+                  ]
+                },
+                "description": "Admin request. Each carousel slide contains its own text, button, alt text, and image file."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "hero"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Our Story",
+          "description": "Manage the Our Story homepage section at /home-content/our-story.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/our-story",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "our-story"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"A Cooperative Built on Craft and Trust\",\n  \"description\": \"For decades, TGSCO has stood as the official custodian of Telangana's handloom tradition, connecting thousands of weavers directly to the people who value their work. Formed to protect the livelihoods of weaving communities and preserve dying art forms, TGSCO exists so that no thread of this heritage is lost to time. We work hand-in-hand with cooperative societies across the state, ensuring fair wages, authentic craftsmanship, and a future for the next generation of weavers.\",\n  \"button\": {\n    \"label\": \"Learn More About TGSCO\",\n    \"url\": \"/about\"\n  },\n  \"imageAlt\": \"Handloom weaving close-up\",\n  \"stats\": [\n    {\n      \"value\": \"00,000+\",\n      \"label\": \"Active Master Artisans\"\n    },\n    {\n      \"value\": \"000+\",\n      \"label\": \"Weaver Cooperatives\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "storyImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/our-story",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "our-story"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"A Cooperative Built on Craft and Trust\",\n  \"description\": \"For decades, TGSCO has stood as the official custodian of Telangana's handloom tradition, connecting thousands of weavers directly to the people who value their work. Formed to protect the livelihoods of weaving communities and preserve dying art forms, TGSCO exists so that no thread of this heritage is lost to time. We work hand-in-hand with cooperative societies across the state, ensuring fair wages, authentic craftsmanship, and a future for the next generation of weavers.\",\n  \"button\": {\n    \"label\": \"Learn More About TGSCO\",\n    \"url\": \"/about\"\n  },\n  \"imageAlt\": \"Handloom weaving close-up\",\n  \"stats\": [\n    {\n      \"value\": \"00,000+\",\n      \"label\": \"Active Master Artisans\"\n    },\n    {\n      \"value\": \"000+\",\n      \"label\": \"Weaver Cooperatives\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "storyImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/our-story",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "our-story"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/our-story",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "our-story"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "One State, A Thousand Techniques",
+          "description": "Manage the One State, A Thousand Techniques homepage section at /home-content/techniques.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/techniques",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "techniques"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"One State, A Thousand Techniques\",\n  \"items\": [\n    {\n      \"name\": \"Pochampally Ikat\",\n      \"description\": \"Known the world over for its geometric precision.\"\n    },\n    {\n      \"name\": \"Gadwal\",\n      \"description\": \"Famous for its distinctive contrast, a cotton body with silk borders.\"\n    },\n    {\n      \"name\": \"Naraynapet\",\n      \"description\": \"Inspired by Maharashtra and South Indian traditions.\"\n    },\n    {\n      \"name\": \"Siddipet Gollabhama\",\n      \"description\": \"Named after the ?Gollabhama? shepherd girl.\"\n    }\n  ],\n  \"backgroundImageAlt\": \"Historic Telangana gateway\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "backgroundImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[0].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].borderImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/techniques",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "techniques"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"One State, A Thousand Techniques\",\n  \"items\": [\n    {\n      \"name\": \"Pochampally Ikat\",\n      \"description\": \"Known the world over for its geometric precision.\"\n    },\n    {\n      \"name\": \"Gadwal\",\n      \"description\": \"Famous for its distinctive contrast, a cotton body with silk borders.\"\n    },\n    {\n      \"name\": \"Naraynapet\",\n      \"description\": \"Inspired by Maharashtra and South Indian traditions.\"\n    },\n    {\n      \"name\": \"Siddipet Gollabhama\",\n      \"description\": \"Named after the ?Gollabhama? shepherd girl.\"\n    }\n  ],\n  \"backgroundImageAlt\": \"Historic Telangana gateway\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "backgroundImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[0].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].borderImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/techniques",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "techniques"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/techniques",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "techniques"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "The Journey of a Weave",
+          "description": "Manage the The Journey of a Weave homepage section at /home-content/journey.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/journey",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "journey"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"The Journey of a Weave\",\n  \"description\": \"Before a single thread touches the loom, a long, deliberate process unfolds. Cotton and silk yarns are carefully selected for strength and texture. Natural and modern dyes are prepared to achieve exact, enduring colour. The yarn is measured, stretched, and set in a process called warping, the invisible architecture behind every pattern. Then begins the weaving itself: hours, sometimes days, of rhythmic hand and foot movement, each pass of the shuttle building the fabric thread by thread.\",\n  \"highlight\": \"What emerges is never mass-produced, never identical, never rushed.\",\n  \"closing\": \"From Thread to Timeless.\",\n  \"steps\": [\n    {\n      \"number\": \"01\",\n      \"title\": \"Yarn Selection\",\n      \"description\": \"Sourcing premium mulberry silk and high-grade organic cotton threads.\"\n    },\n    {\n      \"number\": \"02\",\n      \"title\": \"Natural Dyeing\",\n      \"description\": \"Immersing yarn in organic vegetable dyes for rich, breathable, long-lasting colors.\"\n    },\n    {\n      \"number\": \"03\",\n      \"title\": \"Loom Warping\",\n      \"description\": \"Setting up thousands of individual warp threads on traditional wooden frames manually.\"\n    },\n    {\n      \"number\": \"04\",\n      \"title\": \"Weaving & Zari\",\n      \"description\": \"Skillfully interlacing weft threads with optional pure silver and gold zari borders.\"\n    }\n  ]\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/journey",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "journey"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"The Journey of a Weave\",\n  \"description\": \"Before a single thread touches the loom, a long, deliberate process unfolds. Cotton and silk yarns are carefully selected for strength and texture. Natural and modern dyes are prepared to achieve exact, enduring colour. The yarn is measured, stretched, and set in a process called warping, the invisible architecture behind every pattern. Then begins the weaving itself: hours, sometimes days, of rhythmic hand and foot movement, each pass of the shuttle building the fabric thread by thread.\",\n  \"highlight\": \"What emerges is never mass-produced, never identical, never rushed.\",\n  \"closing\": \"From Thread to Timeless.\",\n  \"steps\": [\n    {\n      \"number\": \"01\",\n      \"title\": \"Yarn Selection\",\n      \"description\": \"Sourcing premium mulberry silk and high-grade organic cotton threads.\"\n    },\n    {\n      \"number\": \"02\",\n      \"title\": \"Natural Dyeing\",\n      \"description\": \"Immersing yarn in organic vegetable dyes for rich, breathable, long-lasting colors.\"\n    },\n    {\n      \"number\": \"03\",\n      \"title\": \"Loom Warping\",\n      \"description\": \"Setting up thousands of individual warp threads on traditional wooden frames manually.\"\n    },\n    {\n      \"number\": \"04\",\n      \"title\": \"Weaving & Zari\",\n      \"description\": \"Skillfully interlacing weft threads with optional pure silver and gold zari borders.\"\n    }\n  ]\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/journey",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "journey"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/journey",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "journey"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Meet the Makers",
+          "description": "Manage the Meet the Makers homepage section at /home-content/makers.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/makers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "makers"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Meet the Makers\",\n  \"name\": \"Narsaiah Garu\",\n  \"role\": \"Master Weaver ? 40+ Years Experience\",\n  \"quote\": \"My mother taught me to weave before she taught me to read. This loom has fed three generations of my family, and I hope it will feed many more.\",\n  \"gallery\": [\n    {\n      \"field\": \"makerGallery[0]\"\n    },\n    {\n      \"field\": \"makerGallery[1]\"\n    },\n    {\n      \"field\": \"makerGallery[2]\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "makerImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makerGallery[0]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makerGallery[1]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makerGallery[2]",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/makers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "makers"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Meet the Makers\",\n  \"name\": \"Narsaiah Garu\",\n  \"role\": \"Master Weaver ? 40+ Years Experience\",\n  \"quote\": \"My mother taught me to weave before she taught me to read. This loom has fed three generations of my family, and I hope it will feed many more.\",\n  \"gallery\": [\n    {\n      \"field\": \"makerGallery[0]\"\n    },\n    {\n      \"field\": \"makerGallery[1]\"\n    },\n    {\n      \"field\": \"makerGallery[2]\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "makerImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makerGallery[0]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makerGallery[1]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makerGallery[2]",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/makers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "makers"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/makers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "makers"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Why Choose Us",
+          "description": "Manage the Why Choose Us homepage section at /home-content/why-choose-us.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/why-choose-us",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "why-choose-us"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"More Than a Purchase. A Promise.\",\n  \"cards\": [\n    {\n      \"title\": \"Government-Backed\",\n      \"description\": \"As an official state initiative, we guarantee genuine handlooms with authentic GI tags and direct certification.\"\n    },\n    {\n      \"title\": \"Direct Weaver Support\",\n      \"description\": \"100% of profits are distributed directly back to our weaving clusters, ensuring fair wages and healthy communities.\"\n    },\n    {\n      \"title\": \"100% Handwoven\",\n      \"description\": \"No powerlooms, no synthetic shortcuts. Every piece of fabric is crafted purely by hand with generational pride.\"\n    }\n  ]\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/why-choose-us",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "why-choose-us"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"More Than a Purchase. A Promise.\",\n  \"cards\": [\n    {\n      \"title\": \"Government-Backed\",\n      \"description\": \"As an official state initiative, we guarantee genuine handlooms with authentic GI tags and direct certification.\"\n    },\n    {\n      \"title\": \"Direct Weaver Support\",\n      \"description\": \"100% of profits are distributed directly back to our weaving clusters, ensuring fair wages and healthy communities.\"\n    },\n    {\n      \"title\": \"100% Handwoven\",\n      \"description\": \"No powerlooms, no synthetic shortcuts. Every piece of fabric is crafted purely by hand with generational pride.\"\n    }\n  ]\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/why-choose-us",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "why-choose-us"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/why-choose-us",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "why-choose-us"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Featured Collections",
+          "description": "Manage the Featured Collections homepage section at /home-content/featured-collections.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/featured-collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "featured-collections"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Shop the Heritage\",\n  \"description\": \"Every product page tells you not just what youre buying, but where it comes from, who made it, and why it matters.\",\n  \"items\": [\n    {\n      \"name\": \"Dress Materials\",\n      \"description\": \"Handloom fabrics for your next heirloom piece.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Dupattas\",\n      \"description\": \"Lightweight wraps with intricate weaves.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Fabric by the Metre\",\n      \"description\": \"Buy by length and craft your own story.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Apparel\",\n      \"description\": \"Ready-to-wear pieces rooted in heritage craft.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Home Textiles\",\n      \"description\": \"Weaves that bring warmth to your home.\",\n      \"buttonText\": \"Explore Now\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[0].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[4].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[4].borderImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/featured-collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "featured-collections"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Shop the Heritage\",\n  \"description\": \"Every product page tells you not just what youre buying, but where it comes from, who made it, and why it matters.\",\n  \"items\": [\n    {\n      \"name\": \"Dress Materials\",\n      \"description\": \"Handloom fabrics for your next heirloom piece.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Dupattas\",\n      \"description\": \"Lightweight wraps with intricate weaves.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Fabric by the Metre\",\n      \"description\": \"Buy by length and craft your own story.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Apparel\",\n      \"description\": \"Ready-to-wear pieces rooted in heritage craft.\",\n      \"buttonText\": \"Explore Now\"\n    },\n    {\n      \"name\": \"Home Textiles\",\n      \"description\": \"Weaves that bring warmth to your home.\",\n      \"buttonText\": \"Explore Now\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[0].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].borderImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[4].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[4].borderImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/featured-collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "featured-collections"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/featured-collections",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "featured-collections"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Government Initiatives",
+          "description": "Manage the Government Initiatives homepage section at /home-content/government-initiatives.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/government-initiatives",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "government-initiatives"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Backing the Backbone of Telangana's Textile Story\",\n  \"description\": \"Through close integration with State and Central Welfare schemes, TGSCO provides active healthcare coverage, thrift-fund savings assistance, yarn subsidies, and modern skill-development workshops to thousands of independent artisans, turning handloom into a sustainable lifestyle.\",\n  \"initiatives\": [\n    \"Chenetha Mithra (Yarn Subsidy Scheme)\",\n    \"Nethanna Bima (Weaver Insurance Scheme)\",\n    \"National Handloom Development Programme Partner\"\n  ],\n  \"button\": {\n    \"label\": \"Explore Schemes\",\n    \"url\": \"/initiatives\"\n  }\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "initiativeImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/government-initiatives",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "government-initiatives"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Backing the Backbone of Telangana's Textile Story\",\n  \"description\": \"Through close integration with State and Central Welfare schemes, TGSCO provides active healthcare coverage, thrift-fund savings assistance, yarn subsidies, and modern skill-development workshops to thousands of independent artisans, turning handloom into a sustainable lifestyle.\",\n  \"initiatives\": [\n    \"Chenetha Mithra (Yarn Subsidy Scheme)\",\n    \"Nethanna Bima (Weaver Insurance Scheme)\",\n    \"National Handloom Development Programme Partner\"\n  ],\n  \"button\": {\n    \"label\": \"Explore Schemes\",\n    \"url\": \"/initiatives\"\n  }\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "initiativeImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/government-initiatives",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "government-initiatives"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/government-initiatives",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "government-initiatives"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Blog / Tales Worth Weaving",
+          "description": "Manage the Blog / Tales Worth Weaving homepage section at /home-content/blog.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/blog",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "blog"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Tales Worth Weaving\",\n  \"articles\": [\n    {\n      \"date\": \"January 15, 2026\",\n      \"title\": \"The Festival Saree\",\n      \"description\": \"Understanding the royal symbolism behind traditional gold and silk borders.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/blog/the-festival-saree\"\n    },\n    {\n      \"date\": \"January 15, 2026\",\n      \"title\": \"Caring for Your Handloom\",\n      \"description\": \"Understanding the royal symbolism behind traditional gold and silk borders.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/blog/caring-for-your-handloom\"\n    },\n    {\n      \"date\": \"January 15, 2026\",\n      \"title\": \"Inside the Ikat\",\n      \"description\": \"Understanding the royal symbolism behind traditional gold and silk borders.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/blog/inside-the-ikat\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "articles[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "articles[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "articles[2].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/blog",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "blog"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Tales Worth Weaving\",\n  \"articles\": [\n    {\n      \"date\": \"January 15, 2026\",\n      \"title\": \"The Festival Saree\",\n      \"description\": \"Understanding the royal symbolism behind traditional gold and silk borders.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/blog/the-festival-saree\"\n    },\n    {\n      \"date\": \"January 15, 2026\",\n      \"title\": \"Caring for Your Handloom\",\n      \"description\": \"Understanding the royal symbolism behind traditional gold and silk borders.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/blog/caring-for-your-handloom\"\n    },\n    {\n      \"date\": \"January 15, 2026\",\n      \"title\": \"Inside the Ikat\",\n      \"description\": \"Understanding the royal symbolism behind traditional gold and silk borders.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/blog/inside-the-ikat\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "articles[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "articles[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "articles[2].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/blog",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "blog"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/blog",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "blog"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "News and Events",
+          "description": "Manage the News and Events homepage section at /home-content/news-events.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/news-events",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "news-events"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"What's Happening at TGSCO\",\n  \"cards\": [\n    {\n      \"category\": \"EXHIBITION\",\n      \"title\": \"Upcoming Spring Handloom Exhibition in Hyderabad\",\n      \"description\": \"Meet weavers and purchase certified GI-tagged textiles directly.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/upcoming-spring-handloom-exhibition-hyderabad\"\n    },\n    {\n      \"category\": \"NEW\",\n      \"title\": \"New collection launches\",\n      \"description\": \"Meet weavers and purchase certified GI-tagged textiles directly.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/new-collection-launches\"\n    },\n    {\n      \"category\": \"ANNOUNCEMENT\",\n      \"title\": \"Government scheme announcements\",\n      \"description\": \"Empowering 500 young weavers with advanced design training.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/government-scheme-announcements\"\n    },\n    {\n      \"category\": \"EVENT\",\n      \"title\": \"Awards and recognitions\",\n      \"description\": \"Empowering 500 young weavers with advanced design training.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/awards-and-recognitions\"\n    }\n  ],\n  \"button\": {\n    \"label\": \"View All News & Events\",\n    \"url\": \"/news-events\"\n  }\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "cards[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "cards[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "cards[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "cards[3].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/news-events",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "news-events"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"What's Happening at TGSCO\",\n  \"cards\": [\n    {\n      \"category\": \"EXHIBITION\",\n      \"title\": \"Upcoming Spring Handloom Exhibition in Hyderabad\",\n      \"description\": \"Meet weavers and purchase certified GI-tagged textiles directly.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/upcoming-spring-handloom-exhibition-hyderabad\"\n    },\n    {\n      \"category\": \"NEW\",\n      \"title\": \"New collection launches\",\n      \"description\": \"Meet weavers and purchase certified GI-tagged textiles directly.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/new-collection-launches\"\n    },\n    {\n      \"category\": \"ANNOUNCEMENT\",\n      \"title\": \"Government scheme announcements\",\n      \"description\": \"Empowering 500 young weavers with advanced design training.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/government-scheme-announcements\"\n    },\n    {\n      \"category\": \"EVENT\",\n      \"title\": \"Awards and recognitions\",\n      \"description\": \"Empowering 500 young weavers with advanced design training.\",\n      \"buttonText\": \"READ MORE\",\n      \"url\": \"/news-events/awards-and-recognitions\"\n    }\n  ],\n  \"button\": {\n    \"label\": \"View All News & Events\",\n    \"url\": \"/news-events\"\n  }\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "cards[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "cards[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "cards[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "cards[3].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/news-events",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "news-events"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/news-events",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "news-events"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Footer",
+          "description": "Manage the Footer homepage section at /home-content/footer.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/footer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "footer"
+                  ]
+                },
+                "description": "Public request for homepage content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"tagline\": \"Stay Woven in\",\n  \"description\": \"TGSCO connects Telangana handloom heritage with the world.\",\n  \"newsletter\": {\n    \"title\": \"Read TGSCO Cultural Tales\",\n    \"buttonText\": \"Subscribe\"\n  }\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/footer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "footer"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"tagline\": \"Stay Woven in\",\n  \"description\": \"TGSCO connects Telangana handloom heritage with the world.\",\n  \"newsletter\": {\n    \"title\": \"Read TGSCO Cultural Tales\",\n    \"buttonText\": \"Subscribe\"\n  }\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/footer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "footer"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/footer",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "footer"
+                  ]
+                },
+                "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

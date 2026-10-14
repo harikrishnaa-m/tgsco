@@ -100,11 +100,13 @@ used directly by the frontend. Existing objects uploaded before this setting
 was enabled must be re-uploaded or have their permissions changed in the
 DigitalOcean Spaces console.
 
-The `techniques` and `featured-collections` sections require two images for
-each item: one `mainImage` and one `borderImage`. Use indexed form-data file
-fields such as `items[0].mainImage` and `items[0].borderImage`. The JSON
-`content.items` array and the uploaded image pairs must have matching indexes.
-The techniques section may also include a separate `backgroundImage` file.
+The `techniques` section requires two images for each item: one `mainImage`
+and one `borderImage`. Use indexed form-data file fields such as
+`items[0].mainImage` and `items[0].borderImage`. The
+`featured-collections` section requires `mainImage`; its `borderImage` is
+optional. The JSON `content.items` array and uploaded image fields must use
+matching indexes. The techniques section may also include a separate
+`backgroundImage` file.
 
 `GET /home-content` remains available to return all stored sections for page
 bootstrap requests.

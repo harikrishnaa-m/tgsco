@@ -105,6 +105,25 @@ The techniques section may also include a separate `backgroundImage` file.
 `GET /home-content` remains available to return all stored sections for page
 bootstrap requests.
 
+## About page content
+
+About page sections use the same public-read and admin-write lifecycle under
+`/about-content`:
+
+```text
+/about-content/about-hero
+/about-content/who-we-are
+/about-content/milestones
+/about-content/vision
+/about-content/mission
+/about-content/purpose
+```
+
+Each section supports `GET`, `POST`, `PATCH`, and `DELETE`. Create and update
+requests use `multipart/form-data`, with section JSON in `content` and image
+files in their corresponding form-data fields. The complete prefilled payloads
+are available in the `03 About Content` workflow in the Postman collection.
+
 Login returns a JWT access token valid for 24 hours and a rotating refresh
 token valid for 30 days. Refresh tokens are stored as SHA-256 hashes and are
 revoked after use or logout.

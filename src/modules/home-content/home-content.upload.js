@@ -60,7 +60,7 @@ function publicUrl(key) {
   return `${env.DO_SPACES_ENDPOINT.replace(/\/$/, '')}/${env.DO_SPACES_BUCKET}/${key}`;
 }
 
-export async function uploadHomeImages(section, files = []) {
+export async function uploadHomeImages(section, files = [], folder = 'home') {
   if (!files.length) {
     return [];
   }
@@ -68,7 +68,7 @@ export async function uploadHomeImages(section, files = []) {
   const client = getSpacesClient();
   return Promise.all(
     files.map(async (file) => {
-      const key = `home/${section}/${randomUUID()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+      const key = `${folder}/${section}/${randomUUID()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
 
       await client.send(
         new PutObjectCommand({

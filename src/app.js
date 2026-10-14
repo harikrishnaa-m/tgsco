@@ -12,6 +12,9 @@ import routes from './routes/index.js';
 const app = express();
 
 app.disable('x-powered-by');
+// Render terminates the client connection at a reverse proxy and forwards
+// X-Forwarded-For to the application.
+app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({ origin: env.CORS_ORIGIN }));
 app.use(

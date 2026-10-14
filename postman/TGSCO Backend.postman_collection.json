@@ -1930,6 +1930,802 @@
           ]
         }
       ]
+    },
+    {
+      "name": "03 About Content",
+      "description": "Section-specific About page content management. GET is public; POST, PATCH, and DELETE require admin_token.",
+      "item": [
+        {
+          "name": "About Hero",
+          "description": "Manage the About Hero section at /about-content/about-hero.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/about-content/about-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "about-hero"
+                  ]
+                },
+                "description": "Public request for About page content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"ABOUT TGSCO\",\n  \"imageAlt\": \"Telangana handloom weavers working at a traditional loom\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/about-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "about-hero"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"ABOUT TGSCO\",\n  \"imageAlt\": \"Telangana handloom weavers working at a traditional loom\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/about-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "about-hero"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/about-content/about-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "about-hero"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Who We Are",
+          "description": "Manage the Who We Are section at /about-content/who-we-are.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/about-content/who-we-are",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "who-we-are"
+                  ]
+                },
+                "description": "Public request for About page content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Who We Are\",\n  \"paragraphs\": [\n    \"The Telangana State Handloom Weavers Co-operative Society Limited (TGSCO) is the official cooperative body dedicated to the welfare, empowerment, and promotion of Telangana's handloom weaving communities.\",\n    \"We exist at the intersection of heritage and livelihood, protecting centuries-old craft traditions while creating sustainable, dignified incomes for the artisans who carry them forward.\"\n  ],\n  \"quote\": \"We are not just a retailer of handloom products. We are the bridge between Telangana's weaving villages and the world.\",\n  \"supportingText\": \"Supporting over 10,000 artisan families with equitable wages and preserving indigenous textile crafts.\",\n  \"button\": {\n    \"label\": \"Learn More\",\n    \"url\": \"/about\"\n  }\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "primaryImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "supportImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/who-we-are",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "who-we-are"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Who We Are\",\n  \"paragraphs\": [\n    \"The Telangana State Handloom Weavers Co-operative Society Limited (TGSCO) is the official cooperative body dedicated to the welfare, empowerment, and promotion of Telangana's handloom weaving communities.\",\n    \"We exist at the intersection of heritage and livelihood, protecting centuries-old craft traditions while creating sustainable, dignified incomes for the artisans who carry them forward.\"\n  ],\n  \"quote\": \"We are not just a retailer of handloom products. We are the bridge between Telangana's weaving villages and the world.\",\n  \"supportingText\": \"Supporting over 10,000 artisan families with equitable wages and preserving indigenous textile crafts.\",\n  \"button\": {\n    \"label\": \"Learn More\",\n    \"url\": \"/about\"\n  }\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "primaryImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "supportImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/who-we-are",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "who-we-are"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/about-content/who-we-are",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "who-we-are"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Milestones Along the Way",
+          "description": "Manage the Milestones Along the Way section at /about-content/milestones.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/about-content/milestones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "milestones"
+                  ]
+                },
+                "description": "Public request for About page content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Milestones Along the Way\",\n  \"description\": \"For nearly five decades, TGSCO has nurtured Telangana's artisanal weaving traditions - from humble beginnings to a globally-reaching digital future.\",\n  \"milestones\": [\n    {\n      \"number\": \"01\",\n      \"title\": \"Formation\",\n      \"description\": \"The founding of TGSCO to unify and support Telangana's handloom cooperatives.\"\n    },\n    {\n      \"number\": \"02\",\n      \"title\": \"Expansion\",\n      \"description\": \"Growth of cooperative societies and weaver membership across districts.\"\n    },\n    {\n      \"number\": \"03\",\n      \"title\": \"Recognition\",\n      \"description\": \"National and state-level awards for craftsmanship and welfare initiatives.\"\n    },\n    {\n      \"number\": \"04\",\n      \"title\": \"Digital Transformation\",\n      \"description\": \"The move toward e-commerce and digital storytelling to reach new audiences.\"\n    },\n    {\n      \"number\": \"05\",\n      \"title\": \"Today\",\n      \"description\": \"A renewed commitment to heritage, sustainability, and global reach.\"\n    }\n  ],\n  \"footerText\": \"Empowering 100,000+ weavers and preserving generations of state artistry.\"\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/milestones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "milestones"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Milestones Along the Way\",\n  \"description\": \"For nearly five decades, TGSCO has nurtured Telangana's artisanal weaving traditions - from humble beginnings to a globally-reaching digital future.\",\n  \"milestones\": [\n    {\n      \"number\": \"01\",\n      \"title\": \"Formation\",\n      \"description\": \"The founding of TGSCO to unify and support Telangana's handloom cooperatives.\"\n    },\n    {\n      \"number\": \"02\",\n      \"title\": \"Expansion\",\n      \"description\": \"Growth of cooperative societies and weaver membership across districts.\"\n    },\n    {\n      \"number\": \"03\",\n      \"title\": \"Recognition\",\n      \"description\": \"National and state-level awards for craftsmanship and welfare initiatives.\"\n    },\n    {\n      \"number\": \"04\",\n      \"title\": \"Digital Transformation\",\n      \"description\": \"The move toward e-commerce and digital storytelling to reach new audiences.\"\n    },\n    {\n      \"number\": \"05\",\n      \"title\": \"Today\",\n      \"description\": \"A renewed commitment to heritage, sustainability, and global reach.\"\n    }\n  ],\n  \"footerText\": \"Empowering 100,000+ weavers and preserving generations of state artistry.\"\n}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/milestones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "milestones"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/about-content/milestones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "milestones"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Our Vision",
+          "description": "Manage the Our Vision section at /about-content/vision.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/about-content/vision",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "vision"
+                  ]
+                },
+                "description": "Public request for About page content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"label\": \"OUR VISION\",\n  \"statement\": \"To establish Telangana as a globally recognised centre of authentic, sustainable handloom craftsmanship, where every weaver thrives and every tradition endures.\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "visionImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/vision",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "vision"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"label\": \"OUR VISION\",\n  \"statement\": \"To establish Telangana as a globally recognised centre of authentic, sustainable handloom craftsmanship, where every weaver thrives and every tradition endures.\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "visionImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/vision",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "vision"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/about-content/vision",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "vision"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Our Mission",
+          "description": "Manage the Our Mission section at /about-content/mission.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/about-content/mission",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "mission"
+                  ]
+                },
+                "description": "Public request for About page content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Our Mission\",\n  \"cards\": [\n    {\n      \"icon\": \"shield\",\n      \"text\": \"To safeguard the livelihoods of Telangana's handloom weavers\"\n    },\n    {\n      \"icon\": \"megaphone\",\n      \"text\": \"To preserve and promote traditional weaving techniques.\"\n    },\n    {\n      \"icon\": \"fairness\",\n      \"text\": \"To ensure fair wages and dignified working conditions for artisans\"\n    },\n    {\n      \"icon\": \"accessibility\",\n      \"text\": \"To make authentic handloom products accessible to a wider audience.\"\n    },\n    {\n      \"icon\": \"sustainability\",\n      \"text\": \"To champion sustainable, slow-fashion practices rooted in Telangana's textile heritage.\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "missionImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "missionSecondaryImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/mission",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "mission"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"title\": \"Our Mission\",\n  \"cards\": [\n    {\n      \"icon\": \"shield\",\n      \"text\": \"To safeguard the livelihoods of Telangana's handloom weavers\"\n    },\n    {\n      \"icon\": \"megaphone\",\n      \"text\": \"To preserve and promote traditional weaving techniques.\"\n    },\n    {\n      \"icon\": \"fairness\",\n      \"text\": \"To ensure fair wages and dignified working conditions for artisans\"\n    },\n    {\n      \"icon\": \"accessibility\",\n      \"text\": \"To make authentic handloom products accessible to a wider audience.\"\n    },\n    {\n      \"icon\": \"sustainability\",\n      \"text\": \"To champion sustainable, slow-fashion practices rooted in Telangana's textile heritage.\"\n    }\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "missionImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "missionSecondaryImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/mission",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "mission"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/about-content/mission",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "mission"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Our Purpose",
+          "description": "Manage the Our Purpose section at /about-content/purpose.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/about-content/purpose",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "purpose"
+                  ]
+                },
+                "description": "Public request for About page content."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"label\": \"Our Purpose\",\n  \"title\": \"TGSCO EXISTS TO ENSURE THAT TELANGANA'S HANDLOOM HERITAGE IS NOT JUST REMEMBERED BUT LIVED. WE WORK TO:\",\n  \"points\": [\n    \"Support artisans through fair trade and direct market access.\",\n    \"Preserve endangered weaving traditions before they are lost.\",\n    \"Create sustainable livelihoods for weaving families across generations.\",\n    \"Carry Telangana handlooms beyond state and national borders, to a global audience that values authenticity.\"\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "purposeImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/purpose",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "purpose"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"label\": \"Our Purpose\",\n  \"title\": \"TGSCO EXISTS TO ENSURE THAT TELANGANA'S HANDLOOM HERITAGE IS NOT JUST REMEMBERED BUT LIVED. WE WORK TO:\",\n  \"points\": [\n    \"Support artisans through fair trade and direct market access.\",\n    \"Preserve endangered weaving traditions before they are lost.\",\n    \"Create sustainable livelihoods for weaving families across generations.\",\n    \"Carry Telangana handlooms beyond state and national borders, to a global audience that values authenticity.\"\n  ]\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "purposeImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/about-content/purpose",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "purpose"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/about-content/purpose",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "about-content",
+                    "purpose"
+                  ]
+                },
+                "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -76,6 +76,7 @@ export async function uploadHomeImages(section, files = [], folder = 'home') {
           Key: key,
           Body: file.buffer,
           ContentType: file.mimetype,
+          ACL: 'public-read',
           CacheControl: 'public, max-age=31536000, immutable',
         }),
       );

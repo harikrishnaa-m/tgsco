@@ -95,6 +95,10 @@ Images are uploaded to DigitalOcean Spaces and the response includes their
 `url`, original form-data `field`, and storage `key`. There is no per-image
 size limit in the upload middleware; requests are limited to 20 files.
 Configure the Spaces credentials in `.env` before using image uploads.
+Uploaded content objects are marked `public-read` so the returned URLs can be
+used directly by the frontend. Existing objects uploaded before this setting
+was enabled must be re-uploaded or have their permissions changed in the
+DigitalOcean Spaces console.
 
 The `techniques` and `featured-collections` sections require two images for
 each item: one `mainImage` and one `borderImage`. Use indexed form-data file

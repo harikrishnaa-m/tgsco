@@ -2726,6 +2726,2373 @@
           ]
         }
       ]
+    },
+    {
+      "name": "04 Scheme Content",
+      "description": "Section-specific scheme page content management. GET is public; POST, PATCH, and DELETE require admin_token. Chenetha Lakshmi Scheme details are nested under current-schemes.",
+      "item": [
+        {
+          "name": "Schemes",
+          "description": "Manage the Schemes section at /scheme-content/schemes-hero.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "name": "Public Get",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/scheme-content/schemes-hero",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "scheme-content",
+                      "schemes-hero"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/schemes-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "schemes-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Schemes\",\"imageField\":\"heroImage\",\"imageAlt\":\"Hands working on a traditional handloom textile\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/schemes-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "schemes-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Schemes\",\"imageField\":\"heroImage\",\"imageAlt\":\"Hands working on a traditional handloom textile\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/scheme-content/schemes-hero",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "scheme-content",
+                      "schemes-hero"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Supporting the Weavers",
+          "description": "Manage the Supporting the Weavers section at /scheme-content/supporting-weavers.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "name": "Public Get",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/scheme-content/supporting-weavers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "scheme-content",
+                      "supporting-weavers"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/supporting-weavers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "supporting-weavers"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"Schemes\",\"title\":\"Supporting the Weavers Who Sustain Our Heritage\",\"description\":\"TGSCO works in close partnership with state and central government bodies to implement welfare schemes, financial support programmes, and skill development initiatives for handloom weavers across Telangana. This page serves as a central resource for weavers, cooperative members, and stakeholders to understand available support.\",\"imageField\":\"supportingImage\",\"imageAlt\":\"Hands working with handloom threads\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "supportingImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/supporting-weavers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "supporting-weavers"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"Schemes\",\"title\":\"Supporting the Weavers Who Sustain Our Heritage\",\"description\":\"TGSCO works in close partnership with state and central government bodies to implement welfare schemes, financial support programmes, and skill development initiatives for handloom weavers across Telangana. This page serves as a central resource for weavers, cooperative members, and stakeholders to understand available support.\",\"imageField\":\"supportingImage\",\"imageAlt\":\"Hands working with handloom threads\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "supportingImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/scheme-content/supporting-weavers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "scheme-content",
+                      "supporting-weavers"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Current Government Schemes",
+          "description": "Manage the Current Government Schemes section at /scheme-content/current-schemes.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "name": "Public Get",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/scheme-content/current-schemes",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "scheme-content",
+                      "current-schemes"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/current-schemes",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "current-schemes"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Current Government Schemes\",\"schemes\":[{\"title\":\"Chenetha Lakshmi Scheme\",\"slug\":\"chenetha-lakshmi-scheme\",\"category\":\"Scheme\",\"description\":\"The Chenetha Lakshmi Scheme makes authentic Telangana handlooms more affordable while directly supporting local weaving communities through a savings-based purchase programme.\",\"whoCanApply\":{\"heading\":\"Who Can Apply\",\"items\":[\"Any customer wishing to purchase TGSCO handloom products through the scheme.\"]},\"schemeBenefits\":{\"heading\":\"Scheme Benefits\",\"intro\":\"Choose the plan that suits you:\",\"contributionPlans\":[{\"monthlyContribution\":\"?4,500\",\"purchaseValue\":\"?7,200 worth of handloom products\"},{\"monthlyContribution\":\"?9,000\",\"purchaseValue\":\"?14,400 worth of handloom products\"}],\"instalmentBenefits\":[\"Pay ?500 (or multiples of ?500) every month.\",\"Complete the instalments within the prescribed scheme period.\",\"Receive an enhanced purchase value with TGSCO?s contribution.\",\"Redeem the value on authentic Telangana handloom products at the showroom where the account is maintained.\"]},\"howToApply\":{\"heading\":\"How to Apply\",\"steps\":[\"Fill out the Chenetha Lakshmi Scheme application form.\",\"Submit a valid identity proof.\",\"Choose your preferred plan.\",\"Pay the first instalment or the full amount.\",\"Continue monthly payments before the due date and collect your receipt.\",\"Redeem your purchase value after completing the scheme.\"]},\"documentsRequired\":{\"heading\":\"Documents Required\",\"items\":[\"Aadhaar Card / Driving Licence / Ration Card (any one valid ID proof)\"]},\"detailImageField\":\"chenethaLakshmiDetailImage\",\"detailImageAlt\":\"Hands working with green handloom yarn\"},{\"title\":\"Cooperative Membership\",\"slug\":\"cooperative-membership\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "schemeImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "chenethaLakshmiDetailImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/current-schemes",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "current-schemes"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Current Government Schemes\",\"schemes\":[{\"title\":\"Chenetha Lakshmi Scheme\",\"slug\":\"chenetha-lakshmi-scheme\",\"detailImageField\":\"chenethaLakshmiDetailImage\"},{\"title\":\"Cooperative Membership\",\"slug\":\"cooperative-membership\"}],\"imageField\":\"schemeImage\",\"imageAlt\":\"Hands working with green handloom yarn\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "schemeImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "chenethaLakshmiDetailImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/scheme-content/current-schemes",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "scheme-content",
+                      "current-schemes"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 Our Heritage Content",
+      "description": "Section-specific Our Heritage page content management. GET is public; POST, PATCH, and DELETE require admin_token. The You (Customer) card is nested inside Chain of Craft. Select local image files before sending multipart requests.",
+      "item": [
+        {
+          "name": "Heritage Hero",
+          "description": "Manage the Heritage Hero section at /heritage-content/heritage-hero.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/heritage-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "heritage-hero"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/heritage-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "heritage-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"The Handloom Ecosystem\",\"imageField\":\"heroImage\",\"imageAlt\":\"Handloom weaving with a traditional shuttle\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/heritage-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "heritage-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"The Handloom Ecosystem\",\"imageField\":\"heroImage\",\"imageAlt\":\"Handloom weaving with a traditional shuttle\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/heritage-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "heritage-hero"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Chain of Craft",
+          "description": "Manage the Chain of Craft section at /heritage-content/chain-of-craft.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/chain-of-craft",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "chain-of-craft"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/chain-of-craft",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "chain-of-craft"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"A Chain of Craft\",\"title\":\"Every TGSCO product passes through many hands before it reaches yours\",\"roles\":[{\"eyebrow\":\"Growing the Foundation\",\"title\":\"Farmers\",\"description\":\"The journey of every handloom fabric begins in the fertile fields where dedicated farmers cultivate high-quality cotton with patience, care, and generations of agricultural expertise. Through months of nurturing the crop, they ensure that each cotton boll reaches its finest quality before harvest. Their commitment to sustainable farming practices and careful harvesting lays the foundation for creating soft, durable, and naturally beautiful textiles. Without their dedication, the story of handloom craftsmanship could never begin.\",\"color\":\"#C95D52\",\"imageField\":\"roles[0].image\",\"imageAlt\":\"Farmers harvesting cotton\"},{\"eyebrow\":\"Preparing the Yarn\",\"title\":\"Yarn Suppliers\",\"description\":\"Once the cotton is harvested, it reaches skilled yarn suppliers who transform raw fibres into strong, uniform yarn through a meticulous process of cleaning, carding, combing, and spinning. Every stage is carefully monitored to preserve the fibre's natural strength while achieving the ideal texture required for weaving. Their expertise ensures that every spool of yarn meets the highest quality standards, creating a reliable foundation for vibrant colours, intricate designs, and durable handwoven fabrics.\",\"color\":\"#E3A900\",\"imageField\":\"roles[1].image\",\"imageAlt\":\"Natural coloured yarn\"},{\"eyebrow\":\"Bringing Colour to Life\",\"title\":\"Dyers\",\"description\":\"Colour is what gives every handloom fabric its personality and charm. Experienced dyers use carefully selected dyes and traditional techniques to infuse the yarn with rich, vibrant shades that reflect culture, craftsmanship, and creativity. Each batch is dyed with precision to ensure consistency, colourfastness, and lasting brilliance while preserving the softness of the fibres. Their artistry transforms plain yarn into colourful threads that become the heart of every handcrafted textile.\",\"color\":\"#171717\",\"imageField\":\"roles[2].image\",\"imageAlt\":\"Dyeing fabric by hand\"},{\"eyebrow\":\"Creating Timeless Patterns\",\"title\":\"Designers\",\"description\":\"Designers bring imagination and tradition together to create patterns that tell meaningful stories. Drawing inspiration from heritage, regional art forms, nature, and contemporary fashion, they develop motifs that celebrate the identity of handloom weaving. Every design is thoughtfully planned to balance aesthetics, functionality, and cultural significance, ensuring that each fabric reflects both timeless craftsmanship and modern elegance. Their creativity gives every collection a unique character that connects tradition with today's lifestyle.\",\"color\":\"#32C957\",\"imageField\":\"roles[3].image\",\"imageAlt\":\"Designer creating a handloom pattern\"},{\"eyebrow\":\"Weaving Every Thread\",\"title\":\"Weavers\",\"description\":\"At the heart of the handloom tradition are the skilled weavers whose craftsmanship transforms coloured yarn into exquisite fabrics. Working patiently on traditional handlooms, they interlace thousands of threads with remarkable precision, ensuring every weave reflects exceptional quality and attention to detail. Years of experience, inherited knowledge, and unwavering dedication allow them to create textiles that are unique, durable, and impossible to replicate by machines. Every finished fabric carries the personal touch\",\"color\":\"#B24BDD\",\"imageField\":\"roles[4].image\",\"imageAlt\":\"Weaver working at a handloom\"},{\"eyebrow\":\"Empowering Artisan Communities\",\"title\":\"Cooperatives\",\"description\":\"Cooperatives serve as the backbone of the handloom ecosystem by connecting artisans, suppliers, and markets. They provide essential support through training, fair wages, access to quality materials, financial assistance, and opportunities to showcase handcrafted products to a wider audience. Beyond organising production, cooperatives help preserve traditional weaving techniques, strengthen local economies, and create sustainable livelihoods for artisan families.\",\"color\":\"#A88C65\",\"imageField\":\"roles[5].image\",\"imageAlt\":\"Handloom fabric rolls in a cooperative\"},{\"eyebrow\":\"Keeping the Tradition Alive\",\"title\":\"You (Customer)\",\"description\":\"The final and most meaningful step in the handloom journey belongs to you. Every time you choose a handcrafted textile, you become part of a larger story that values craftsmanship, sustainability, and cultural heritage. Your purchase directly supports cotton farmers, yarn makers, dyers, designers, weavers, and artisan cooperatives, helping preserve skills that have been passed down through generations. By embracing handloom, you are not simply buying a fabric?you are investing in ethical craftsmanship,\",\"color\":\"#35A9DE\",\"imageField\":\"roles[6].image\",\"imageAlt\":\"Customer choosing handloom textiles\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "roles[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[4].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[5].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[6].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/chain-of-craft",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "chain-of-craft"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"A Chain of Craft\",\"title\":\"Every TGSCO product passes through many hands before it reaches yours\",\"roles\":[{\"eyebrow\":\"Growing the Foundation\",\"title\":\"Farmers\",\"description\":\"The journey of every handloom fabric begins in the fertile fields where dedicated farmers cultivate high-quality cotton with patience, care, and generations of agricultural expertise. Through months of nurturing the crop, they ensure that each cotton boll reaches its finest quality before harvest. Their commitment to sustainable farming practices and careful harvesting lays the foundation for creating soft, durable, and naturally beautiful textiles. Without their dedication, the story of handloom craftsmanship could never begin.\",\"color\":\"#C95D52\",\"imageField\":\"roles[0].image\",\"imageAlt\":\"Farmers harvesting cotton\"},{\"eyebrow\":\"Preparing the Yarn\",\"title\":\"Yarn Suppliers\",\"description\":\"Once the cotton is harvested, it reaches skilled yarn suppliers who transform raw fibres into strong, uniform yarn through a meticulous process of cleaning, carding, combing, and spinning. Every stage is carefully monitored to preserve the fibre's natural strength while achieving the ideal texture required for weaving. Their expertise ensures that every spool of yarn meets the highest quality standards, creating a reliable foundation for vibrant colours, intricate designs, and durable handwoven fabrics.\",\"color\":\"#E3A900\",\"imageField\":\"roles[1].image\",\"imageAlt\":\"Natural coloured yarn\"},{\"eyebrow\":\"Bringing Colour to Life\",\"title\":\"Dyers\",\"description\":\"Colour is what gives every handloom fabric its personality and charm. Experienced dyers use carefully selected dyes and traditional techniques to infuse the yarn with rich, vibrant shades that reflect culture, craftsmanship, and creativity. Each batch is dyed with precision to ensure consistency, colourfastness, and lasting brilliance while preserving the softness of the fibres. Their artistry transforms plain yarn into colourful threads that become the heart of every handcrafted textile.\",\"color\":\"#171717\",\"imageField\":\"roles[2].image\",\"imageAlt\":\"Dyeing fabric by hand\"},{\"eyebrow\":\"Creating Timeless Patterns\",\"title\":\"Designers\",\"description\":\"Designers bring imagination and tradition together to create patterns that tell meaningful stories. Drawing inspiration from heritage, regional art forms, nature, and contemporary fashion, they develop motifs that celebrate the identity of handloom weaving. Every design is thoughtfully planned to balance aesthetics, functionality, and cultural significance, ensuring that each fabric reflects both timeless craftsmanship and modern elegance. Their creativity gives every collection a unique character that connects tradition with today's lifestyle.\",\"color\":\"#32C957\",\"imageField\":\"roles[3].image\",\"imageAlt\":\"Designer creating a handloom pattern\"},{\"eyebrow\":\"Weaving Every Thread\",\"title\":\"Weavers\",\"description\":\"At the heart of the handloom tradition are the skilled weavers whose craftsmanship transforms coloured yarn into exquisite fabrics. Working patiently on traditional handlooms, they interlace thousands of threads with remarkable precision, ensuring every weave reflects exceptional quality and attention to detail. Years of experience, inherited knowledge, and unwavering dedication allow them to create textiles that are unique, durable, and impossible to replicate by machines. Every finished fabric carries the personal touch\",\"color\":\"#B24BDD\",\"imageField\":\"roles[4].image\",\"imageAlt\":\"Weaver working at a handloom\"},{\"eyebrow\":\"Empowering Artisan Communities\",\"title\":\"Cooperatives\",\"description\":\"Cooperatives serve as the backbone of the handloom ecosystem by connecting artisans, suppliers, and markets. They provide essential support through training, fair wages, access to quality materials, financial assistance, and opportunities to showcase handcrafted products to a wider audience. Beyond organising production, cooperatives help preserve traditional weaving techniques, strengthen local economies, and create sustainable livelihoods for artisan families.\",\"color\":\"#A88C65\",\"imageField\":\"roles[5].image\",\"imageAlt\":\"Handloom fabric rolls in a cooperative\"},{\"eyebrow\":\"Keeping the Tradition Alive\",\"title\":\"You (Customer)\",\"description\":\"The final and most meaningful step in the handloom journey belongs to you. Every time you choose a handcrafted textile, you become part of a larger story that values craftsmanship, sustainability, and cultural heritage. Your purchase directly supports cotton farmers, yarn makers, dyers, designers, weavers, and artisan cooperatives, helping preserve skills that have been passed down through generations. By embracing handloom, you are not simply buying a fabric?you are investing in ethical craftsmanship,\",\"color\":\"#35A9DE\",\"imageField\":\"roles[6].image\",\"imageAlt\":\"Customer choosing handloom textiles\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "roles[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[4].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[5].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "roles[6].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/chain-of-craft",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "chain-of-craft"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Numbers That Tell a Story",
+          "description": "Manage the Numbers That Tell a Story section at /heritage-content/numbers.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/numbers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "numbers"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/numbers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "numbers"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Numbers That Tell a Story\",\"metrics\":[{\"label\":\"COOPERATIVE SOCIETIES\",\"description\":\"Cooperative societies supported across...\"},{\"label\":\"WEAVER FAMILIES\",\"description\":\"Weaver families empowered\"},{\"label\":\"DISTRICTS REACHED\",\"description\":\"Districts covered under TGSCO's network\"},{\"label\":\"YEARS OF SERVICE\",\"description\":\"Years of continuous service to the...\"},{\"label\":\"PRODUCTS SOLD\",\"description\":\"Products sold, connecting artisans...\"}],\"backgroundColor\":\"#000000\",\"iconField\":\"decorativeIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "decorativeIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/numbers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "numbers"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Numbers That Tell a Story\",\"metrics\":[{\"label\":\"COOPERATIVE SOCIETIES\",\"description\":\"Cooperative societies supported across...\"},{\"label\":\"WEAVER FAMILIES\",\"description\":\"Weaver families empowered\"},{\"label\":\"DISTRICTS REACHED\",\"description\":\"Districts covered under TGSCO's network\"},{\"label\":\"YEARS OF SERVICE\",\"description\":\"Years of continuous service to the...\"},{\"label\":\"PRODUCTS SOLD\",\"description\":\"Products sold, connecting artisans...\"}],\"backgroundColor\":\"#000000\",\"iconField\":\"decorativeIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "decorativeIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/numbers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "numbers"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sustainability",
+          "description": "Manage the Sustainability section at /heritage-content/sustainability.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/sustainability",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "sustainability"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/sustainability",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "sustainability"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Slow by Tradition, Sustainable by Design\",\"description\":\"Long before \\\"sustainable fashion\\\" became a global movement, Telangana?s handloom weavers were already practising it. Handwoven textiles require no electricity, use natural or low-impact dyes, and generate minimal waste. Every TGSCO product represents.\",\"closingTitle\":\"Slow fashion, made with intention\",\"imageField\":\"sustainabilityImage\",\"imageAlt\":\"Hands weaving fabric on a traditional loom\",\"backgroundColor\":\"#000000\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "sustainabilityImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/sustainability",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "sustainability"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Slow by Tradition, Sustainable by Design\",\"description\":\"Long before \\\"sustainable fashion\\\" became a global movement, Telangana?s handloom weavers were already practising it. Handwoven textiles require no electricity, use natural or low-impact dyes, and generate minimal waste. Every TGSCO product represents.\",\"closingTitle\":\"Slow fashion, made with intention\",\"imageField\":\"sustainabilityImage\",\"imageAlt\":\"Hands weaving fabric on a traditional loom\",\"backgroundColor\":\"#000000\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "sustainabilityImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/sustainability",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "sustainability"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "The People Guiding Our Mission",
+          "description": "Manage the The People Guiding Our Mission section at /heritage-content/mission-guides.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/mission-guides",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "mission-guides"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/mission-guides",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "mission-guides"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"The People Guiding Our Mission\",\"people\":[{\"name\":\"Vickey Kaushal\",\"role\":\"Director\",\"imageField\":\"people[0].image\",\"imageAlt\":\"Vickey Kaushal\"},{\"name\":\"Zenya Tiara\",\"role\":\"Director\",\"imageField\":\"people[1].image\",\"imageAlt\":\"Zenya Tiara\"},{\"name\":\"Kevina Zey\",\"role\":\"Director\",\"imageField\":\"people[2].image\",\"imageAlt\":\"Kevina Zey\"},{\"name\":\"Namitha Roy\",\"role\":\"Director\",\"imageField\":\"people[3].image\",\"imageAlt\":\"Namitha Roy\"}],\"iconField\":\"decorativeIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "people[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "people[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "people[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "people[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "decorativeIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/mission-guides",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "mission-guides"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"The People Guiding Our Mission\",\"people\":[{\"name\":\"Vickey Kaushal\",\"role\":\"Director\",\"imageField\":\"people[0].image\",\"imageAlt\":\"Vickey Kaushal\"},{\"name\":\"Zenya Tiara\",\"role\":\"Director\",\"imageField\":\"people[1].image\",\"imageAlt\":\"Zenya Tiara\"},{\"name\":\"Kevina Zey\",\"role\":\"Director\",\"imageField\":\"people[2].image\",\"imageAlt\":\"Kevina Zey\"},{\"name\":\"Namitha Roy\",\"role\":\"Director\",\"imageField\":\"people[3].image\",\"imageAlt\":\"Namitha Roy\"}],\"iconField\":\"decorativeIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "people[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "people[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "people[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "people[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "decorativeIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/mission-guides",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "mission-guides"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Honoured for Heritage",
+          "description": "Manage the Honoured for Heritage section at /heritage-content/awards.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/awards",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "awards"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/awards",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "awards"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Honoured for Heritage\",\"description\":\"A showcase of national and international awards, recognitions, and certifications received by TGSCO and its affiliated weavers, testimony to decades of craftsmanship and commitment.\",\"awards\":[{\"title\":\"HANDLOOM AWARD\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"awards[0].image\",\"imageAlt\":\"Handloom award trophy\"},{\"title\":\"HANDLOOM AWARD\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"awards[1].image\",\"imageAlt\":\"Handloom award trophy\"}],\"iconField\":\"decorativeIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "awards[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "awards[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "decorativeIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/awards",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "awards"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Honoured for Heritage\",\"description\":\"A showcase of national and international awards, recognitions, and certifications received by TGSCO and its affiliated weavers, testimony to decades of craftsmanship and commitment.\",\"awards\":[{\"title\":\"HANDLOOM AWARD\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"awards[0].image\",\"imageAlt\":\"Handloom award trophy\"},{\"title\":\"HANDLOOM AWARD\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"awards[1].image\",\"imageAlt\":\"Handloom award trophy\"}],\"iconField\":\"decorativeIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "awards[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "awards[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "decorativeIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/heritage-content/awards",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "heritage-content",
+                    "awards"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 News and Events Content",
+      "description": "Section-specific News and Events content. GET is public; POST, PATCH, and DELETE require admin_token. Item GET routes load the selected media gallery or Threads of Triumph item. Select local image files before sending multipart requests.",
+      "item": [
+        {
+          "name": "News & Events Hero",
+          "description": "Manage the News & Events Hero section at /news-content/news-hero.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/news-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "news-hero"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/news-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "news-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"NEWS & EVENTS\",\"imageField\":\"heroImage\",\"imageAlt\":\"TGSCO handloom exhibition and textiles\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/news-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "news-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"NEWS & EVENTS\",\"imageField\":\"heroImage\",\"imageAlt\":\"TGSCO handloom exhibition and textiles\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/news-hero",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "news-hero"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Latest News",
+          "description": "Manage the Latest News section at /news-content/latest-news.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/latest-news",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "latest-news"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/latest-news",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "latest-news"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Latest News\",\"items\":[{\"id\":\"latest-news-1\",\"slug\":\"latest-news-1\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[0].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-2\",\"slug\":\"latest-news-2\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[1].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-3\",\"slug\":\"latest-news-3\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[2].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-4\",\"slug\":\"latest-news-4\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[3].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-5\",\"slug\":\"latest-news-5\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[4].image\",\"imageAlt\":\"TGSCO news event\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[4].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/latest-news",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "latest-news"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Latest News\",\"items\":[{\"id\":\"latest-news-1\",\"slug\":\"latest-news-1\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[0].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-2\",\"slug\":\"latest-news-2\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[1].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-3\",\"slug\":\"latest-news-3\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[2].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-4\",\"slug\":\"latest-news-4\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[3].image\",\"imageAlt\":\"TGSCO news event\"},{\"id\":\"latest-news-5\",\"slug\":\"latest-news-5\",\"title\":\"News about TGSCO announcements, achievements, and updates.\",\"description\":\"News about TGSCO announcements, achievements, and updates.\",\"date\":\"JULY 15, 2026\",\"imageField\":\"items[4].image\",\"imageAlt\":\"TGSCO news event\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[4].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/latest-news",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "latest-news"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Exhibitions",
+          "description": "Manage the Exhibitions section at /news-content/exhibitions.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/exhibitions",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "exhibitions"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/exhibitions",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "exhibitions"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Exhibitions\",\"items\":[{\"id\":\"national-exhibitions\",\"slug\":\"national-exhibitions\",\"label\":\"NATIONAL EXHIBITIONS\",\"imageField\":\"items[0].image\",\"imageAlt\":\"National Telangana handloom exhibition\"},{\"id\":\"international-textile-fairs\",\"slug\":\"international-textile-fairs\",\"label\":\"INTERNATIONAL TEXTILE FAIRS\",\"imageField\":\"items[1].image\",\"imageAlt\":\"International textile fair\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/exhibitions",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "exhibitions"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Exhibitions\",\"items\":[{\"id\":\"national-exhibitions\",\"slug\":\"national-exhibitions\",\"label\":\"NATIONAL EXHIBITIONS\",\"imageField\":\"items[0].image\",\"imageAlt\":\"National Telangana handloom exhibition\"},{\"id\":\"international-textile-fairs\",\"slug\":\"international-textile-fairs\",\"label\":\"INTERNATIONAL TEXTILE FAIRS\",\"imageField\":\"items[1].image\",\"imageAlt\":\"International textile fair\"}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/exhibitions",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "exhibitions"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Events Calendar",
+          "description": "Manage the Events Calendar section at /news-content/events-calendar.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/events-calendar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "events-calendar"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/events-calendar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "events-calendar"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Events Calendar\",\"items\":[{\"id\":\"jun-23\",\"slug\":\"jun-23\",\"day\":\"JUN\",\"date\":\"23\",\"title\":\"EVENT\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[0].image\",\"imageAlt\":\"Handloom event and exhibition\"},{\"id\":\"jul-04\",\"slug\":\"jul-04\",\"day\":\"JUL\",\"date\":\"04\",\"title\":\"EVENT\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[1].image\",\"imageAlt\":\"Telangana handloom event\"},{\"id\":\"jul-26\",\"slug\":\"jul-26\",\"day\":\"JUL\",\"date\":\"26\",\"title\":\"EVENT\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[2].image\",\"imageAlt\":\"Telangana handloom event\"}],\"calendarIconField\":\"calendarIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "calendarIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/events-calendar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "events-calendar"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Events Calendar\",\"items\":[{\"id\":\"jun-23\",\"slug\":\"jun-23\",\"day\":\"JUN\",\"date\":\"23\",\"title\":\"EVENT\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[0].image\",\"imageAlt\":\"Handloom event and exhibition\"},{\"id\":\"jul-04\",\"slug\":\"jul-04\",\"day\":\"JUL\",\"date\":\"04\",\"title\":\"EVENT\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[1].image\",\"imageAlt\":\"Telangana handloom event\"},{\"id\":\"jul-26\",\"slug\":\"jul-26\",\"day\":\"JUL\",\"date\":\"26\",\"title\":\"EVENT\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[2].image\",\"imageAlt\":\"Telangana handloom event\"}],\"calendarIconField\":\"calendarIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "calendarIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/events-calendar",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "events-calendar"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Press Releases",
+          "description": "Manage the Press Releases section at /news-content/press-releases.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/press-releases",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "press-releases"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/press-releases",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "press-releases"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Press Releases\",\"items\":[{\"id\":\"press-release-1\",\"slug\":\"press-release-1\",\"title\":\"OFFICIAL STATEMENTS AND ANNOUNCEMENTS FROM TGSCO.\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[0].image\",\"imageAlt\":\"Official TGSCO press release\"},{\"id\":\"press-release-2\",\"slug\":\"press-release-2\",\"title\":\"OFFICIAL STATEMENTS AND ANNOUNCEMENTS FROM TGSCO.\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[1].image\",\"imageAlt\":\"Official TGSCO press release\"},{\"id\":\"press-release-3\",\"slug\":\"press-release-3\",\"title\":\"OFFICIAL STATEMENTS AND ANNOUNCEMENTS FROM TGSCO.\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[2].image\",\"imageAlt\":\"Official TGSCO press release\"}],\"sliderIconField\":\"sliderIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "sliderIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/press-releases",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "press-releases"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Press Releases\",\"items\":[{\"id\":\"press-release-1\",\"slug\":\"press-release-1\",\"title\":\"OFFICIAL STATEMENTS AND ANNOUNCEMENTS FROM TGSCO.\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[0].image\",\"imageAlt\":\"Official TGSCO press release\"},{\"id\":\"press-release-2\",\"slug\":\"press-release-2\",\"title\":\"OFFICIAL STATEMENTS AND ANNOUNCEMENTS FROM TGSCO.\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[1].image\",\"imageAlt\":\"Official TGSCO press release\"},{\"id\":\"press-release-3\",\"slug\":\"press-release-3\",\"title\":\"OFFICIAL STATEMENTS AND ANNOUNCEMENTS FROM TGSCO.\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"imageField\":\"items[2].image\",\"imageAlt\":\"Official TGSCO press release\"}],\"sliderIconField\":\"sliderIcon\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "sliderIcon",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/press-releases",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "press-releases"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Threads of Triumph",
+          "description": "Manage the Threads of Triumph section at /news-content/threads-of-triumph.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/threads-of-triumph",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "threads-of-triumph"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Public Get Selected Item",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/threads-of-triumph/items/featured-weaver-1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "threads-of-triumph",
+                    "items",
+                    "featured-weaver-1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/threads-of-triumph",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "threads-of-triumph"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Threads of Triumph\",\"items\":[{\"id\":\"featured-weaver-1\",\"slug\":\"featured-weaver-1\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[0].mainImage\",\"mainImageAlt\":\"TGSCO handloom weaver at work\"},{\"id\":\"featured-weaver-2\",\"slug\":\"featured-weaver-2\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[1].mainImage\",\"mainImageAlt\":\"TGSCO handloom weavers at work\"},{\"id\":\"featured-weaver-3\",\"slug\":\"featured-weaver-3\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom artisans at an exhibition\"},{\"id\":\"featured-weaver-4\",\"slug\":\"featured-weaver-4\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[3].mainImage\",\"mainImageAlt\":\"TGSCO handloom weaver working at a loom\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\"}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/threads-of-triumph",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "threads-of-triumph"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Threads of Triumph\",\"items\":[{\"id\":\"featured-weaver-1\",\"slug\":\"featured-weaver-1\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[0].mainImage\",\"mainImageAlt\":\"TGSCO handloom weaver at work\"},{\"id\":\"featured-weaver-2\",\"slug\":\"featured-weaver-2\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[1].mainImage\",\"mainImageAlt\":\"TGSCO handloom weavers at work\"},{\"id\":\"featured-weaver-3\",\"slug\":\"featured-weaver-3\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom artisans at an exhibition\"},{\"id\":\"featured-weaver-4\",\"slug\":\"featured-weaver-4\",\"subheading\":\"FEATURES ON INDIVIDUAL WEAVERS\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"items[3].mainImage\",\"mainImageAlt\":\"TGSCO handloom weaver working at a loom\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\"}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "items[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "items[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/threads-of-triumph",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "threads-of-triumph"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Media Gallery",
+          "description": "Manage the Media Gallery section at /news-content/media-gallery.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/media-gallery",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "media-gallery"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Public Get Selected Item",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/news-content/media-gallery/items/exhibitions",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "media-gallery",
+                    "items",
+                    "exhibitions"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/media-gallery",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "media-gallery"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Media Gallery\",\"categories\":[{\"id\":\"exhibitions\",\"slug\":\"exhibitions\",\"title\":\"Exhibitions\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[0].mainImage\",\"mainImageAlt\":\"Handloom exhibition textiles\",\"associatedImages\":[{\"field\":\"categories[0].associatedImages[0]\",\"alt\":\"Handloom threads on a loom\"},{\"field\":\"categories[0].associatedImages[1]\",\"alt\":\"Women examining handloom fabric\"}]},{\"id\":\"weaving-villages\",\"slug\":\"weaving-villages\",\"title\":\"Weaving villages\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[1].mainImage\",\"mainImageAlt\":\"Weaving village\",\"associatedImages\":[]},{\"id\":\"campaigns\",\"slug\":\"campaigns\",\"title\":\"Campaigns\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom campaign\",\"associatedImages\":[]},{\"id\":\"cooperative-events\",\"slug\":\"cooperative-events\",\"title\":\"Cooperative events\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[3].mainImage\",\"mainImageAlt\":\"Cooperative event\",\"associatedImages\":[]}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "categories[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[0].associatedImages[0]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[0].associatedImages[1]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/news-content/media-gallery",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "news-content",
+                    "media-gallery"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Media Gallery\",\"categories\":[{\"id\":\"exhibitions\",\"slug\":\"exhibitions\",\"title\":\"Exhibitions\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[0].mainImage\",\"mainImageAlt\":\"Handloom exhibition textiles\",\"associatedImages\":[{\"field\":\"categories[0].associatedImages[0]\",\"alt\":\"Handloom threads on a loom\"},{\"field\":\"categories[0].associatedImages[1]\",\"alt\":\"Women examining handloom fabric\"}]},{\"id\":\"weaving-villages\",\"slug\":\"weaving-villages\",\"title\":\"Weaving villages\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[1].mainImage\",\"mainImageAlt\":\"Weaving village\",\"associatedImages\":[]},{\"id\":\"campaigns\",\"slug\":\"campaigns\",\"title\":\"Campaigns\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom campaign\",\"associatedImages\":[]},{\"id\":\"cooperative-events\",\"slug\":\"cooperative-events\",\"title\":\"Cooperative events\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[3].mainImage\",\"mainImageAlt\":\"Cooperative event\",\"associatedImages\":[]}]}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "categories[0].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[0].associatedImages[0]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[0].associatedImages[1]",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[1].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[2].mainImage",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "categories[3].mainImage",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/news-content/media-gallery",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "news-content",
+                      "media-gallery"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -105,6 +105,75 @@ The techniques section may also include a separate `backgroundImage` file.
 `GET /home-content` remains available to return all stored sections for page
 bootstrap requests.
 
+## Scheme page content
+
+Scheme page sections use the same public-read and admin-write lifecycle under
+`/scheme-content`:
+
+```text
+/scheme-content/schemes-hero
+/scheme-content/supporting-weavers
+/scheme-content/current-schemes
+```
+
+For every section, `GET` is public and `POST`, `PATCH`, and `DELETE` require
+the admin bearer token. Create and update requests use `multipart/form-data`
+with the section JSON in `content` and the section image in its corresponding
+file field. The Postman collection's `04 Scheme Content` folder contains the
+screen-derived content for the Schemes banner, supporting-weavers section,
+current scheme navigation, and the complete Chenetha Lakshmi Scheme detail
+data nested inside `current-schemes`.
+
+## Our Heritage page content
+
+Our Heritage sections use the same public-read and admin-write lifecycle under
+`/heritage-content`:
+
+```text
+/heritage-content/heritage-hero
+/heritage-content/chain-of-craft
+/heritage-content/numbers
+/heritage-content/sustainability
+/heritage-content/mission-guides
+/heritage-content/awards
+```
+
+The Postman collection's `05 Our Heritage Content` folder contains the
+screen-derived text, metrics, people, awards, role cards, colors, and image
+fields for each section. The `You (Customer)` card is nested as the final
+role in `chain-of-craft`.
+
+## News and Events page content
+
+News and Events sections use the same public-read and admin-write lifecycle
+under `/news-content`:
+
+```text
+/news-content/news-hero
+/news-content/latest-news
+/news-content/exhibitions
+/news-content/events-calendar
+/news-content/press-releases
+/news-content/threads-of-triumph
+/news-content/media-gallery
+```
+
+Each section supports public `GET` and admin `POST`, `PATCH`, and `DELETE`.
+Media Gallery and Threads of Triumph also expose:
+
+```text
+GET /news-content/media-gallery/items/<slug>
+GET /news-content/threads-of-triumph/items/<slug>
+```
+
+Gallery items contain a stable `slug`, one main image, and an
+`associatedImages` array. Threads of Triumph contains four carousel items;
+each item has its own `slug`, `subheading`, `description`, and `mainImage`.
+The selected-item GET lets the frontend load the next or previous carousel
+item when a card is clicked. The Postman collection's `06 News and Events
+Content` folder contains the screen-derived content and multipart image
+fields.
+
 ## About page content
 
 About page sections use the same public-read and admin-write lifecycle under

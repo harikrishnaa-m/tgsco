@@ -6,6 +6,7 @@ import {
 import {
   createHomeSection,
   deleteHomeSection,
+  getHomeItem,
   getHomeSection,
   listHomeSections,
   updateHomeSection,
@@ -38,6 +39,11 @@ export function sectionController(section) {
   return {
     async get(req, res) {
       const data = await getHomeSection(section);
+      res.status(200).json({ success: true, data });
+    },
+
+    async getItem(req, res) {
+      const data = await getHomeItem(section, req.params.slug);
       res.status(200).json({ success: true, data });
     },
 

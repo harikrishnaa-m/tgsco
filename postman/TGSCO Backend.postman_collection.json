@@ -893,6 +893,25 @@
               "response": []
             },
             {
+              "name": "Public Get Selected Maker",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/makers/items/narsaiah-garu",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "home-content",
+                    "makers",
+                    "items",
+                    "narsaiah-garu"
+                  ]
+                }
+              }
+            },
+            {
               "name": "Create Section",
               "request": {
                 "method": "POST",
@@ -908,26 +927,31 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\n  \"title\": \"Meet the Makers\",\n  \"name\": \"Narsaiah Garu\",\n  \"role\": \"Master Weaver ? 40+ Years Experience\",\n  \"quote\": \"My mother taught me to weave before she taught me to read. This loom has fed three generations of my family, and I hope it will feed many more.\",\n  \"gallery\": [\n    {\n      \"field\": \"makerGallery[0]\"\n    },\n    {\n      \"field\": \"makerGallery[1]\"\n    },\n    {\n      \"field\": \"makerGallery[2]\"\n    }\n  ]\n}",
+                      "value": "{\"title\":\"Meet the Makers\",\"items\":[{\"id\":\"narsaiah-garu\",\"slug\":\"narsaiah-garu\",\"name\":\"Narsaiah Garu\",\"role\":\"Master Weaver ? 40+ Years Experience\",\"quote\":\"My mother taught me to weave before she taught me to read. This loom has fed three generations of my family, and I hope it will feed many more.\",\"imageField\":\"makers[0].image\",\"imageAlt\":\"Narsaiah Garu weaving at a handloom\"},{\"id\":\"lakshmi-bai\",\"slug\":\"lakshmi-bai\",\"name\":\"Lakshmi Bai\",\"role\":\"Master Weaver ? 35+ Years Experience\",\"quote\":\"Every colour I weave carries a memory of our village and the hands that taught me this craft.\",\"imageField\":\"makers[1].image\",\"imageAlt\":\"Lakshmi Bai weaving a handloom textile\"},{\"id\":\"ravi-kumar\",\"slug\":\"ravi-kumar\",\"name\":\"Ravi Kumar\",\"role\":\"Handloom Artisan ? 25+ Years Experience\",\"quote\":\"A handloom takes patience, but every finished thread reminds us why this tradition is worth protecting.\",\"imageField\":\"makers[2].image\",\"imageAlt\":\"Ravi Kumar working at a handloom\"},{\"id\":\"savitri-devi\",\"slug\":\"savitri-devi\",\"name\":\"Savitri Devi\",\"role\":\"Weaver and Artisan ? 30+ Years Experience\",\"quote\":\"Our craft connects our family to the next generation. We weave so that the story continues.\",\"imageField\":\"makers[3].image\",\"imageAlt\":\"Savitri Devi creating handloom fabric\"},{\"id\":\"mallesham\",\"slug\":\"mallesham\",\"name\":\"Mallesham\",\"role\":\"Master Weaver ? 40+ Years Experience\",\"quote\":\"The loom is more than a livelihood. It is a part of who we are and what we leave behind.\",\"imageField\":\"makers[4].image\",\"imageAlt\":\"Mallesham weaving traditional handloom fabric\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\",\"counterFormat\":\"01 / 05\"}}",
                       "type": "text"
                     },
                     {
-                      "key": "makerImage",
+                      "key": "makers[0].image",
                       "type": "file",
                       "src": ""
                     },
                     {
-                      "key": "makerGallery[0]",
+                      "key": "makers[1].image",
                       "type": "file",
                       "src": ""
                     },
                     {
-                      "key": "makerGallery[1]",
+                      "key": "makers[2].image",
                       "type": "file",
                       "src": ""
                     },
                     {
-                      "key": "makerGallery[2]",
+                      "key": "makers[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makers[4].image",
                       "type": "file",
                       "src": ""
                     }
@@ -963,26 +987,31 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\n  \"title\": \"Meet the Makers\",\n  \"name\": \"Narsaiah Garu\",\n  \"role\": \"Master Weaver ? 40+ Years Experience\",\n  \"quote\": \"My mother taught me to weave before she taught me to read. This loom has fed three generations of my family, and I hope it will feed many more.\",\n  \"gallery\": [\n    {\n      \"field\": \"makerGallery[0]\"\n    },\n    {\n      \"field\": \"makerGallery[1]\"\n    },\n    {\n      \"field\": \"makerGallery[2]\"\n    }\n  ]\n}",
+                      "value": "{\"title\":\"Meet the Makers\",\"items\":[{\"id\":\"narsaiah-garu\",\"slug\":\"narsaiah-garu\",\"name\":\"Narsaiah Garu\",\"role\":\"Master Weaver ? 40+ Years Experience\",\"quote\":\"My mother taught me to weave before she taught me to read. This loom has fed three generations of my family, and I hope it will feed many more.\",\"imageField\":\"makers[0].image\",\"imageAlt\":\"Narsaiah Garu weaving at a handloom\"},{\"id\":\"lakshmi-bai\",\"slug\":\"lakshmi-bai\",\"name\":\"Lakshmi Bai\",\"role\":\"Master Weaver ? 35+ Years Experience\",\"quote\":\"Every colour I weave carries a memory of our village and the hands that taught me this craft.\",\"imageField\":\"makers[1].image\",\"imageAlt\":\"Lakshmi Bai weaving a handloom textile\"},{\"id\":\"ravi-kumar\",\"slug\":\"ravi-kumar\",\"name\":\"Ravi Kumar\",\"role\":\"Handloom Artisan ? 25+ Years Experience\",\"quote\":\"A handloom takes patience, but every finished thread reminds us why this tradition is worth protecting.\",\"imageField\":\"makers[2].image\",\"imageAlt\":\"Ravi Kumar working at a handloom\"},{\"id\":\"savitri-devi\",\"slug\":\"savitri-devi\",\"name\":\"Savitri Devi\",\"role\":\"Weaver and Artisan ? 30+ Years Experience\",\"quote\":\"Our craft connects our family to the next generation. We weave so that the story continues.\",\"imageField\":\"makers[3].image\",\"imageAlt\":\"Savitri Devi creating handloom fabric\"},{\"id\":\"mallesham\",\"slug\":\"mallesham\",\"name\":\"Mallesham\",\"role\":\"Master Weaver ? 40+ Years Experience\",\"quote\":\"The loom is more than a livelihood. It is a part of who we are and what we leave behind.\",\"imageField\":\"makers[4].image\",\"imageAlt\":\"Mallesham weaving traditional handloom fabric\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\",\"counterFormat\":\"01 / 05\"}}",
                       "type": "text"
                     },
                     {
-                      "key": "makerImage",
+                      "key": "makers[0].image",
                       "type": "file",
                       "src": ""
                     },
                     {
-                      "key": "makerGallery[0]",
+                      "key": "makers[1].image",
                       "type": "file",
                       "src": ""
                     },
                     {
-                      "key": "makerGallery[1]",
+                      "key": "makers[2].image",
                       "type": "file",
                       "src": ""
                     },
                     {
-                      "key": "makerGallery[2]",
+                      "key": "makers[3].image",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "makers[4].image",
                       "type": "file",
                       "src": ""
                     }

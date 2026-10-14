@@ -109,6 +109,14 @@ The techniques section may also include a separate `backgroundImage` file.
 `GET /home-content` remains available to return all stored sections for page
 bootstrap requests.
 
+The `makers` section is a carousel of complete maker profiles. Each item has
+its own `slug`, `image`, `name`, `role`, and `quote`. The selected maker can
+also be loaded with:
+
+```text
+GET /home-content/makers/items/<slug>
+```
+
 ## Scheme page content
 
 Scheme page sections use the same public-read and admin-write lifecycle under

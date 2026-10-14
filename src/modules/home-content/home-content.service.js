@@ -31,6 +31,21 @@ export async function getHomeSection(sectionName) {
   return serializeSection(section);
 }
 
+export async function getHomeItem(sectionName, slug) {
+  const section = await getHomeSection(sectionName);
+  const items = section.content.items || section.content.makers || [];
+  const item = items.find((entry) => entry.slug === slug || entry.id === slug);
+
+  if (!item) {
+    throw new AppError(`The item "${slug}" was not found in "${sectionName}".`, {
+      statusCode: 404,
+      code: 'HOME_ITEM_NOT_FOUND',
+    });
+  }
+
+  return { section: sectionName, item };
+}
+
 export async function saveHomeSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files);
   const section = isCreate

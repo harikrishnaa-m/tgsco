@@ -304,17 +304,17 @@
                     {
                       "key": "slides[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "slides[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "slides[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -354,17 +354,17 @@
                     {
                       "key": "slides[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "slides[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "slides[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -454,7 +454,7 @@
                     {
                       "key": "storyImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -494,7 +494,7 @@
                     {
                       "key": "storyImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -584,47 +584,47 @@
                     {
                       "key": "backgroundImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[0].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -664,47 +664,47 @@
                     {
                       "key": "backgroundImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[0].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -933,27 +933,27 @@
                     {
                       "key": "makers[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[4].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -993,27 +993,27 @@
                     {
                       "key": "makers[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "makers[4].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1223,52 +1223,52 @@
                     {
                       "key": "items[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[0].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[4].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[4].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1308,52 +1308,52 @@
                     {
                       "key": "items[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[0].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[4].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[4].borderImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1443,7 +1443,7 @@
                     {
                       "key": "initiativeImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1483,7 +1483,7 @@
                     {
                       "key": "initiativeImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1573,17 +1573,17 @@
                     {
                       "key": "articles[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "articles[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "articles[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1623,17 +1623,17 @@
                     {
                       "key": "articles[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "articles[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "articles[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1723,22 +1723,22 @@
                     {
                       "key": "cards[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "cards[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "cards[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "cards[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -1778,22 +1778,22 @@
                     {
                       "key": "cards[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "cards[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "cards[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "cards[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2009,7 +2009,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2049,7 +2049,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2139,12 +2139,12 @@
                     {
                       "key": "primaryImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "supportImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2184,12 +2184,12 @@
                     {
                       "key": "primaryImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "supportImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2399,7 +2399,7 @@
                     {
                       "key": "visionImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2439,7 +2439,7 @@
                     {
                       "key": "visionImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2529,12 +2529,12 @@
                     {
                       "key": "missionImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "missionSecondaryImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2574,12 +2574,12 @@
                     {
                       "key": "missionImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "missionSecondaryImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2669,7 +2669,7 @@
                     {
                       "key": "purposeImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2709,7 +2709,7 @@
                     {
                       "key": "purposeImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 },
@@ -2816,7 +2816,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -2854,7 +2854,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -2944,7 +2944,7 @@
                     {
                       "key": "supportingImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -2982,7 +2982,7 @@
                     {
                       "key": "supportingImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3072,12 +3072,12 @@
                     {
                       "key": "schemeImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "chenethaLakshmiDetailImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3115,12 +3115,12 @@
                     {
                       "key": "schemeImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "chenethaLakshmiDetailImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3213,7 +3213,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3251,7 +3251,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3335,37 +3335,37 @@
                     {
                       "key": "roles[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[4].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[5].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[6].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3403,37 +3403,37 @@
                     {
                       "key": "roles[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[4].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[5].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "roles[6].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3517,7 +3517,7 @@
                     {
                       "key": "decorativeIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3555,7 +3555,7 @@
                     {
                       "key": "decorativeIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3639,7 +3639,7 @@
                     {
                       "key": "sustainabilityImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3677,7 +3677,7 @@
                     {
                       "key": "sustainabilityImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3761,27 +3761,27 @@
                     {
                       "key": "people[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "people[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "people[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "people[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "decorativeIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3819,27 +3819,27 @@
                     {
                       "key": "people[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "people[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "people[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "people[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "decorativeIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3923,17 +3923,17 @@
                     {
                       "key": "awards[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "awards[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "decorativeIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -3971,17 +3971,17 @@
                     {
                       "key": "awards[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "awards[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "decorativeIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4071,7 +4071,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4109,7 +4109,7 @@
                     {
                       "key": "heroImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4196,27 +4196,27 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[4].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4254,27 +4254,27 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[4].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4361,12 +4361,12 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4404,12 +4404,12 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4496,22 +4496,22 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "calendarIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4549,22 +4549,22 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "calendarIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4651,22 +4651,22 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "sliderIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4704,22 +4704,22 @@
                     {
                       "key": "items[0].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].image",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "sliderIcon",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4825,22 +4825,22 @@
                     {
                       "key": "items[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4878,22 +4878,22 @@
                     {
                       "key": "items[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "items[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -4999,32 +4999,32 @@
                     {
                       "key": "categories[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[0].associatedImages[0]",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[0].associatedImages[1]",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }
@@ -5062,32 +5062,32 @@
                     {
                       "key": "categories[0].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[0].associatedImages[0]",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[0].associatedImages[1]",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[1].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[2].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     },
                     {
                       "key": "categories[3].mainImage",
                       "type": "file",
-                      "src": ""
+                      "src": null
                     }
                   ]
                 }

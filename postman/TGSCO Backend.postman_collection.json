@@ -5122,6 +5122,611 @@
           ]
         }
       ]
+    },
+    {
+      "name": "07 Contact Content",
+      "description": "Section-specific Contact page content management. GET is public; POST, PATCH, and DELETE require admin_token. Regional map locations are complete carousel items. Select local image files before sending multipart requests.",
+      "item": [
+        {
+          "name": "Contact Hero and Details",
+          "description": "Manage the Contact Hero and Details section at /contact-content/contact-hero.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/contact-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "contact-hero"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/contact-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "contact-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"CONTACT\",\"breadcrumb\":\"Home / Contact us\",\"intro\":\"For any enquiries, or just to say hello, get in touch and contact us.\",\"contactDetails\":{\"phone\":{\"label\":\"PHONE\",\"value\":\"+91 40 2323 XXXX\",\"icon\":\"phone\"},\"email\":{\"label\":\"EMAIL\",\"value\":\"info@tgsco.telangana.gov.in\",\"icon\":\"email\"},\"officeAddress\":{\"label\":\"OFFICE ADDRESS\",\"value\":\"Regional Office, Warangal, Telangana 506002\",\"icon\":\"location\"}},\"imageField\":\"heroImage\",\"imageAlt\":\"Handloom loom with woven textile\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": null
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/contact-hero",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "contact-hero"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"CONTACT\",\"breadcrumb\":\"Home / Contact us\",\"intro\":\"For any enquiries, or just to say hello, get in touch and contact us.\",\"contactDetails\":{\"phone\":{\"label\":\"PHONE\",\"value\":\"+91 40 2323 XXXX\",\"icon\":\"phone\"},\"email\":{\"label\":\"EMAIL\",\"value\":\"info@tgsco.telangana.gov.in\",\"icon\":\"email\"},\"officeAddress\":{\"label\":\"OFFICE ADDRESS\",\"value\":\"Regional Office, Warangal, Telangana 506002\",\"icon\":\"location\"}},\"imageField\":\"heroImage\",\"imageAlt\":\"Handloom loom with woven textile\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "heroImage",
+                      "type": "file",
+                      "src": null
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/contact-content/contact-hero",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "contact-content",
+                      "contact-hero"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Regional Map and Offices",
+          "description": "Manage the Regional Map and Offices section at /contact-content/regional-map.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/regional-map",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "regional-map"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Public Get Selected Office",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/regional-map/items/hyderabad-head-office",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "regional-map",
+                    "items",
+                    "hyderabad-head-office"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/regional-map",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "regional-map"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"regional Map\",\"title\":\"Regional Map\",\"items\":[{\"id\":\"hyderabad-head-office\",\"slug\":\"hyderabad-head-office\",\"mapLabel\":\"Bhadradri Kothagudem\",\"officeName\":\"TGSCO Head Office, Hyderabad\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=TGSCO+Head+Office+Hyderabad\",\"mapImageField\":\"items[0].mapImage\",\"mapImageAlt\":\"TGSCO Head Office, Hyderabad\"},{\"id\":\"warangal-regional-office\",\"slug\":\"warangal-regional-office\",\"mapLabel\":\"Warangal\",\"officeName\":\"TGSCO Regional Office, Warangal\",\"address\":\"Warangal, Telangana 506002\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Warangal+Telangana\",\"mapImageField\":\"items[1].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Warangal\"},{\"id\":\"pochampally-office\",\"slug\":\"pochampally-office\",\"mapLabel\":\"Yadadri Bhuvanagiri\",\"officeName\":\"TGSCO Regional Office, Pochampally\",\"address\":\"Pochampally, Telangana 508284\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Pochampally+Telangana\",\"mapImageField\":\"items[2].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Pochampally\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\",\"counterFormat\":\"01 / 03\"},\"mapImageField\":\"mapImage\",\"mapImageAlt\":\"Telangana regional district map\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "mapImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "items[0].mapImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "items[1].mapImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "items[2].mapImage",
+                      "type": "file",
+                      "src": null
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/regional-map",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "regional-map"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"regional Map\",\"title\":\"Regional Map\",\"items\":[{\"id\":\"hyderabad-head-office\",\"slug\":\"hyderabad-head-office\",\"mapLabel\":\"Bhadradri Kothagudem\",\"officeName\":\"TGSCO Head Office, Hyderabad\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=TGSCO+Head+Office+Hyderabad\",\"mapImageField\":\"items[0].mapImage\",\"mapImageAlt\":\"TGSCO Head Office, Hyderabad\"},{\"id\":\"warangal-regional-office\",\"slug\":\"warangal-regional-office\",\"mapLabel\":\"Warangal\",\"officeName\":\"TGSCO Regional Office, Warangal\",\"address\":\"Warangal, Telangana 506002\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Warangal+Telangana\",\"mapImageField\":\"items[1].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Warangal\"},{\"id\":\"pochampally-office\",\"slug\":\"pochampally-office\",\"mapLabel\":\"Yadadri Bhuvanagiri\",\"officeName\":\"TGSCO Regional Office, Pochampally\",\"address\":\"Pochampally, Telangana 508284\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Pochampally+Telangana\",\"mapImageField\":\"items[2].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Pochampally\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\",\"counterFormat\":\"01 / 03\"},\"mapImageField\":\"mapImage\",\"mapImageAlt\":\"Telangana regional district map\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "mapImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "items[0].mapImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "items[1].mapImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "items[2].mapImage",
+                      "type": "file",
+                      "src": null
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/contact-content/regional-map",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "contact-content",
+                      "regional-map"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Send a Message",
+          "description": "Manage the Send a Message section at /contact-content/contact-form.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/contact-form",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "contact-form"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/contact-form",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "contact-form"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"Contact form\",\"title\":\"SEND A MESSAGE\",\"fields\":[{\"name\":\"name\",\"label\":\"Name\",\"type\":\"text\",\"placeholder\":\"Enter your full name\",\"required\":true},{\"name\":\"email\",\"label\":\"Email\",\"type\":\"email\",\"placeholder\":\"name@example.com\",\"required\":true},{\"name\":\"phone\",\"label\":\"Phone\",\"type\":\"tel\",\"placeholder\":\"+91 00000 00000\",\"required\":true},{\"name\":\"message\",\"label\":\"Message\",\"type\":\"textarea\",\"placeholder\":\"How can we help you?\",\"required\":true}],\"submitLabel\":\"Send Message\",\"submitAction\":\"/contact-inquiries\",\"imageField\":\"formImage\",\"imageAlt\":\"Woman weaving on a traditional handloom\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "formImage",
+                      "type": "file",
+                      "src": null
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/contact-form",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "contact-form"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"eyebrow\":\"Contact form\",\"title\":\"SEND A MESSAGE\",\"fields\":[{\"name\":\"name\",\"label\":\"Name\",\"type\":\"text\",\"placeholder\":\"Enter your full name\",\"required\":true},{\"name\":\"email\",\"label\":\"Email\",\"type\":\"email\",\"placeholder\":\"name@example.com\",\"required\":true},{\"name\":\"phone\",\"label\":\"Phone\",\"type\":\"tel\",\"placeholder\":\"+91 00000 00000\",\"required\":true},{\"name\":\"message\",\"label\":\"Message\",\"type\":\"textarea\",\"placeholder\":\"How can we help you?\",\"required\":true}],\"submitLabel\":\"Send Message\",\"submitAction\":\"/contact-inquiries\",\"imageField\":\"formImage\",\"imageAlt\":\"Woman weaving on a traditional handloom\"}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "formImage",
+                      "type": "file",
+                      "src": null
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/contact-content/contact-form",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "contact-content",
+                      "contact-form"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Frequently Asked Questions",
+          "description": "Manage the Frequently Asked Questions section at /contact-content/faq.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/faq",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "faq"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/faq",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "faq"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Frequently Asked Questions\",\"items\":[{\"id\":\"place-order\",\"slug\":\"place-order\",\"question\":\"How do I place an order?\",\"answer\":\"Browse our Products section, add items to your cart, and check out securely online. You can also contact our customer support team for assistance.\"},{\"id\":\"become-member\",\"slug\":\"become-member\",\"question\":\"How do I become a member?\",\"answer\":\"\"},{\"id\":\"find-stores\",\"slug\":\"find-stores\",\"question\":\"Where can I find TGSCO stores?\",\"answer\":\"\"},{\"id\":\"identify-authentic\",\"slug\":\"identify-authentic\",\"question\":\"How do I identify authentic handloom products?\",\"answer\":\"\"},{\"id\":\"international-shipping\",\"slug\":\"international-shipping\",\"question\":\"Do you ship internationally?\",\"answer\":\"\"}]}",
+                      "type": "text"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-content/faq",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-content",
+                    "faq"
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\"title\":\"Frequently Asked Questions\",\"items\":[{\"id\":\"place-order\",\"slug\":\"place-order\",\"question\":\"How do I place an order?\",\"answer\":\"Browse our Products section, add items to your cart, and check out securely online. You can also contact our customer support team for assistance.\"},{\"id\":\"become-member\",\"slug\":\"become-member\",\"question\":\"How do I become a member?\",\"answer\":\"\"},{\"id\":\"find-stores\",\"slug\":\"find-stores\",\"question\":\"Where can I find TGSCO stores?\",\"answer\":\"\"},{\"id\":\"identify-authentic\",\"slug\":\"identify-authentic\",\"question\":\"How do I identify authentic handloom products?\",\"answer\":\"\"},{\"id\":\"international-shipping\",\"slug\":\"international-shipping\",\"question\":\"Do you ship internationally?\",\"answer\":\"\"}]}",
+                      "type": "text"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "name": "Delete Section",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer {{admin_token}}",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/contact-content/faq",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "contact-content",
+                      "faq"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Contact Inquiries",
+          "description": "Public message submission and admin-only message listing.",
+          "item": [
+            {
+              "name": "Public Submit Message",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Anitha Rao\",\n  \"email\": \"anitha@example.com\",\n  \"phone\": \"+91 90000 00000\",\n  \"message\": \"I would like more information about TGSCO handloom products.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/contact-inquiries",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-inquiries"
+                  ]
+                }
+              },
+              "description": "Public contact form submission. No admin token is required."
+            },
+            {
+              "name": "Admin List Messages",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/contact-inquiries",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "contact-inquiries"
+                  ]
+                }
+              },
+              "description": "Admin-only list of submitted contact messages. Optional filter: ?status=new,read,or resolved."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

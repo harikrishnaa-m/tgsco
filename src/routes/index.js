@@ -7,6 +7,8 @@ import aboutContentRoutes from '../modules/about-content/about-content.routes.js
 import schemeContentRoutes from '../modules/scheme-content/scheme-content.routes.js';
 import heritageContentRoutes from '../modules/heritage-content/heritage-content.routes.js';
 import newsContentRoutes from '../modules/news-content/news-content.routes.js';
+import contactContentRoutes from '../modules/contact-content/contact-content.routes.js';
+import contactInquiryRoutes from '../modules/contact-inquiry/contact-inquiry.routes.js';
 
 const router = Router();
 
@@ -17,5 +19,7 @@ router.use('/about-content', aboutContentRoutes);
 router.use('/scheme-content', schemeContentRoutes);
 router.use('/heritage-content', heritageContentRoutes);
 router.use('/news-content', newsContentRoutes);
+router.use('/contact-content', contactContentRoutes);
+router.use('/contact-inquiries', contactInquiryRoutes);
 
 export default router;

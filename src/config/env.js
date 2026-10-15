@@ -30,3 +30,7 @@ if (!parsedEnv.success) {
 }
 
 export const env = parsedEnv.data;
+
+export const corsOrigins = env.CORS_ORIGIN.split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);

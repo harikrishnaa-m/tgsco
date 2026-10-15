@@ -411,7 +411,7 @@
         },
         {
           "name": "Our Story",
-          "description": "Manage the Our Story homepage section at /home-content/our-story.",
+          "description": "Manage the Our Story section. Add the public video URL in content.videoUrl; no story image upload is required.",
           "item": [
             {
               "name": "Public Get",
@@ -448,13 +448,8 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\n  \"title\": \"A Cooperative Built on Craft and Trust\",\n  \"description\": \"For decades, TGSCO has stood as the official custodian of Telangana's handloom tradition, connecting thousands of weavers directly to the people who value their work. Formed to protect the livelihoods of weaving communities and preserve dying art forms, TGSCO exists so that no thread of this heritage is lost to time. We work hand-in-hand with cooperative societies across the state, ensuring fair wages, authentic craftsmanship, and a future for the next generation of weavers.\",\n  \"button\": {\n    \"label\": \"Learn More About TGSCO\",\n    \"url\": \"/about\"\n  },\n  \"imageAlt\": \"Handloom weaving close-up\",\n  \"stats\": [\n    {\n      \"value\": \"00,000+\",\n      \"label\": \"Active Master Artisans\"\n    },\n    {\n      \"value\": \"000+\",\n      \"label\": \"Weaver Cooperatives\"\n    }\n  ]\n}",
+                      "value": "{\"title\":\"A Cooperative Built on Craft and Trust\",\"description\":\"For decades, TGSCO has stood as the official custodian of Telangana's handloom tradition, connecting thousands of weavers directly to the people who value their work. Formed to protect the livelihoods of weaving communities and preserve dying art forms, TGSCO exists so that no thread of this heritage is lost to time. We work hand-in-hand with cooperative societies across the state, ensuring fair wages, authentic craftsmanship, and a future for the next generation of weavers.\",\"button\":{\"label\":\"Learn More About TGSCO\",\"url\":\"/about\"},\"imageAlt\":\"Handloom weaving close-up\",\"stats\":[{\"value\":\"00,000+\",\"label\":\"Active Master Artisans\"},{\"value\":\"000+\",\"label\":\"Weaver Cooperatives\"}],\"videoUrl\":\"https://example.com/videos/our-story.mp4\",\"videoAlt\":\"TGSCO handloom artisans and weaving heritage\"}",
                       "type": "text"
-                    },
-                    {
-                      "key": "storyImage",
-                      "type": "file",
-                      "src": null
                     }
                   ]
                 },
@@ -470,7 +465,8 @@
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
-              "response": []
+              "response": [],
+              "description": " Paste the public video URL returned by 08 Video Media into content.videoUrl."
             },
             {
               "name": "Update Section",
@@ -488,13 +484,8 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\n  \"title\": \"A Cooperative Built on Craft and Trust\",\n  \"description\": \"For decades, TGSCO has stood as the official custodian of Telangana's handloom tradition, connecting thousands of weavers directly to the people who value their work. Formed to protect the livelihoods of weaving communities and preserve dying art forms, TGSCO exists so that no thread of this heritage is lost to time. We work hand-in-hand with cooperative societies across the state, ensuring fair wages, authentic craftsmanship, and a future for the next generation of weavers.\",\n  \"button\": {\n    \"label\": \"Learn More About TGSCO\",\n    \"url\": \"/about\"\n  },\n  \"imageAlt\": \"Handloom weaving close-up\",\n  \"stats\": [\n    {\n      \"value\": \"00,000+\",\n      \"label\": \"Active Master Artisans\"\n    },\n    {\n      \"value\": \"000+\",\n      \"label\": \"Weaver Cooperatives\"\n    }\n  ]\n}",
+                      "value": "{\"title\":\"A Cooperative Built on Craft and Trust\",\"description\":\"For decades, TGSCO has stood as the official custodian of Telangana's handloom tradition, connecting thousands of weavers directly to the people who value their work. Formed to protect the livelihoods of weaving communities and preserve dying art forms, TGSCO exists so that no thread of this heritage is lost to time. We work hand-in-hand with cooperative societies across the state, ensuring fair wages, authentic craftsmanship, and a future for the next generation of weavers.\",\"button\":{\"label\":\"Learn More About TGSCO\",\"url\":\"/about\"},\"imageAlt\":\"Handloom weaving close-up\",\"stats\":[{\"value\":\"00,000+\",\"label\":\"Active Master Artisans\"},{\"value\":\"000+\",\"label\":\"Weaver Cooperatives\"}],\"videoUrl\":\"https://example.com/videos/our-story.mp4\",\"videoAlt\":\"TGSCO handloom artisans and weaving heritage\"}",
                       "type": "text"
-                    },
-                    {
-                      "key": "storyImage",
-                      "type": "file",
-                      "src": null
                     }
                   ]
                 },
@@ -510,7 +501,8 @@
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
-              "response": []
+              "response": [],
+              "description": " Paste the public video URL returned by 08 Video Media into content.videoUrl."
             },
             {
               "name": "Delete Section",
@@ -2096,7 +2088,7 @@
         },
         {
           "name": "Who We Are",
-          "description": "Manage the Who We Are section at /about-content/who-we-are.",
+          "description": "Manage Who We Are. Upload primaryImage and provide the public video URL in content.videoUrl; supportImage is not required.",
           "item": [
             {
               "name": "Public Get",
@@ -2133,16 +2125,11 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\n  \"title\": \"Who We Are\",\n  \"paragraphs\": [\n    \"The Telangana State Handloom Weavers Co-operative Society Limited (TGSCO) is the official cooperative body dedicated to the welfare, empowerment, and promotion of Telangana's handloom weaving communities.\",\n    \"We exist at the intersection of heritage and livelihood, protecting centuries-old craft traditions while creating sustainable, dignified incomes for the artisans who carry them forward.\"\n  ],\n  \"quote\": \"We are not just a retailer of handloom products. We are the bridge between Telangana's weaving villages and the world.\",\n  \"supportingText\": \"Supporting over 10,000 artisan families with equitable wages and preserving indigenous textile crafts.\",\n  \"button\": {\n    \"label\": \"Learn More\",\n    \"url\": \"/about\"\n  }\n}",
+                      "value": "{\"title\":\"Who We Are\",\"paragraphs\":[\"The Telangana State Handloom Weavers Co-operative Society Limited (TGSCO) is the official cooperative body dedicated to the welfare, empowerment, and promotion of Telangana's handloom weaving communities.\",\"We exist at the intersection of heritage and livelihood, protecting centuries-old craft traditions while creating sustainable, dignified incomes for the artisans who carry them forward.\"],\"quote\":\"We are not just a retailer of handloom products. We are the bridge between Telangana's weaving villages and the world.\",\"supportingText\":\"Supporting over 10,000 artisan families with equitable wages and preserving indigenous textile crafts.\",\"button\":{\"label\":\"Learn More\",\"url\":\"/about\"},\"videoUrl\":\"https://example.com/videos/who-we-are.mp4\",\"videoAlt\":\"TGSCO artisans and handloom heritage\"}",
                       "type": "text"
                     },
                     {
                       "key": "primaryImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "supportImage",
                       "type": "file",
                       "src": null
                     }
@@ -2160,7 +2147,8 @@
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
-              "response": []
+              "response": [],
+              "description": " Paste the public video URL returned by 08 Video Media into content.videoUrl."
             },
             {
               "name": "Update Section",
@@ -2178,16 +2166,11 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\n  \"title\": \"Who We Are\",\n  \"paragraphs\": [\n    \"The Telangana State Handloom Weavers Co-operative Society Limited (TGSCO) is the official cooperative body dedicated to the welfare, empowerment, and promotion of Telangana's handloom weaving communities.\",\n    \"We exist at the intersection of heritage and livelihood, protecting centuries-old craft traditions while creating sustainable, dignified incomes for the artisans who carry them forward.\"\n  ],\n  \"quote\": \"We are not just a retailer of handloom products. We are the bridge between Telangana's weaving villages and the world.\",\n  \"supportingText\": \"Supporting over 10,000 artisan families with equitable wages and preserving indigenous textile crafts.\",\n  \"button\": {\n    \"label\": \"Learn More\",\n    \"url\": \"/about\"\n  }\n}",
+                      "value": "{\"title\":\"Who We Are\",\"paragraphs\":[\"The Telangana State Handloom Weavers Co-operative Society Limited (TGSCO) is the official cooperative body dedicated to the welfare, empowerment, and promotion of Telangana's handloom weaving communities.\",\"We exist at the intersection of heritage and livelihood, protecting centuries-old craft traditions while creating sustainable, dignified incomes for the artisans who carry them forward.\"],\"quote\":\"We are not just a retailer of handloom products. We are the bridge between Telangana's weaving villages and the world.\",\"supportingText\":\"Supporting over 10,000 artisan families with equitable wages and preserving indigenous textile crafts.\",\"button\":{\"label\":\"Learn More\",\"url\":\"/about\"},\"videoUrl\":\"https://example.com/videos/who-we-are.mp4\",\"videoAlt\":\"TGSCO artisans and handloom heritage\"}",
                       "type": "text"
                     },
                     {
                       "key": "primaryImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "supportImage",
                       "type": "file",
                       "src": null
                     }
@@ -2205,7 +2188,8 @@
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
-              "response": []
+              "response": [],
+              "description": " Paste the public video URL returned by 08 Video Media into content.videoUrl."
             },
             {
               "name": "Delete Section",
@@ -5725,6 +5709,83 @@
               "description": "Admin-only list of submitted contact messages. Optional filter: ?status=new,read,or resolved."
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "08 Video Media",
+      "description": "Admin-only DigitalOcean Spaces video upload and delete endpoints. Maximum upload size is 100 MB. Upload returns a public URL and storage key; use the key when deleting.",
+      "item": [
+        {
+          "name": "Upload Video",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "video",
+                  "type": "file",
+                  "src": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/media/videos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "media",
+                "videos"
+              ]
+            }
+          },
+          "description": "Upload one MP4, WebM, MOV, AVI, or MPEG video using the video field."
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"videos/replace-with-uploaded-key.mp4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/media/videos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "media",
+                "videos"
+              ]
+            }
+          },
+          "description": "Delete a previously uploaded video using the key returned by Upload Video."
         }
       ]
     }

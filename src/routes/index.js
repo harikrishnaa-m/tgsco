@@ -9,6 +9,7 @@ import heritageContentRoutes from '../modules/heritage-content/heritage-content.
 import newsContentRoutes from '../modules/news-content/news-content.routes.js';
 import contactContentRoutes from '../modules/contact-content/contact-content.routes.js';
 import contactInquiryRoutes from '../modules/contact-inquiry/contact-inquiry.routes.js';
+import videoMediaRoutes from '../modules/video-media/video-media.routes.js';
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use('/heritage-content', heritageContentRoutes);
 router.use('/news-content', newsContentRoutes);
 router.use('/contact-content', contactContentRoutes);
 router.use('/contact-inquiries', contactInquiryRoutes);
+router.use('/media/videos', videoMediaRoutes);
 
 export default router;

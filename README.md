@@ -23,6 +23,12 @@ npm run dev
 The API is available at `http://localhost:5000`. The initial health endpoint is
 `GET /api/v1/health`.
 
+For multiple frontend origins, separate `CORS_ORIGIN` values with commas:
+
+```text
+CORS_ORIGIN=http://localhost:4200,http://localhost:5173,https://tgsco-personal.vercel.app
+```
+
 On startup, the API creates the default admin if the configured email does
 not already exist. If it already exists, creation is skipped. Configure these
 values in `.env` before using the application outside local development:
@@ -118,6 +124,12 @@ also be loaded with:
 ```text
 GET /home-content/makers/items/<slug>
 ```
+
+The `our-story` section uses a `videoUrl` in its JSON content instead of an
+uploaded `storyImage`. The `who-we-are` About section uses one uploaded
+`primaryImage` plus a `videoUrl`; its previous `supportImage` upload is not
+required. Use `POST /media/videos` first, then copy the returned public URL
+into the section's `videoUrl`.
 
 ## Scheme page content
 
@@ -223,6 +235,39 @@ The `POST` endpoint is public and accepts `name`, `email`, `phone`, and
 `message`. The `GET` endpoints require the admin bearer token and return
 newest submissions first. Supported status filters are `new`, `read`, and
 `resolved`.
+
+## Video media
+
+Videos can be uploaded to DigitalOcean Spaces through the admin-only endpoint:
+
+```text
+POST /media/videos
+DELETE /media/videos
+```
+
+Upload one file in the `video` multipart field. Supported formats are MP4,
+WebM, MOV, AVI, and MPEG, with a maximum size of 100 MB. The upload response
+contains the public `url` and storage `key`:
+
+```json
+{
+  "key": "videos/uuid-example-video.mp4",
+  "url": "https://blr1.digitaloceanspaces.com/mbm/videos/uuid-example-video.mp4",
+  "contentType": "video/mp4",
+  "originalName": "example-video.mp4"
+}
+```
+
+Delete using the returned key:
+
+```json
+{
+  "key": "videos/uuid-example-video.mp4"
+}
+```
+
+The `08 Video Media` Postman folder contains ready-to-use upload and delete
+requests. New videos are uploaded with public-read access.
 
 ## About page content
 

@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import pinoHttp from 'pino-http';
 
-import { env } from './config/env.js';
+import { corsOrigins } from './config/env.js';
 import { logger } from './config/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import routes from './routes/index.js';
@@ -16,7 +16,11 @@ app.disable('x-powered-by');
 // X-Forwarded-For to the application.
 app.set('trust proxy', 1);
 app.use(helmet());
-app.use(cors({ origin: env.CORS_ORIGIN }));
+app.use(
+  cors({
+    origin: corsOrigins,
+  }),
+);
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,

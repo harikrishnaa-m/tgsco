@@ -3617,17 +3617,43 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Slow by Tradition, Sustainable by Design\",\"description\":\"Long before \\\"sustainable fashion\\\" became a global movement, Telangana?s handloom weavers were already practising it. Handwoven textiles require no electricity, use natural or low-impact dyes, and generate minimal waste. Every TGSCO product represents.\",\"closingTitle\":\"Slow fashion, made with intention\",\"imageField\":\"sustainabilityImage\",\"imageAlt\":\"Hands weaving fabric on a traditional loom\",\"backgroundColor\":\"#000000\"}",
+                      "value": "{\"title\":\"Slow by Tradition, Sustainable by Design\",\"description\":\"Long before \\\"sustainable fashion\\\" became a global movement, Telangana's handloom weavers were already practising it. Handwoven textiles require no electricity, use natural or low-impact dyes, and generate minimal waste. Every TGSCO product represents.\",\"images\":[{\"title\":\"Slow fashion, made with intention\",\"field\":\"images[0].image\",\"alt\":\"Hands weaving fabric on a traditional loom\"},{\"title\":\"Crafted with care\",\"field\":\"images[1].image\",\"alt\":\"Close-up of handloom weaving\"},{\"title\":\"Natural fibres, lasting beauty\",\"field\":\"images[2].image\",\"alt\":\"Natural fibres prepared for handloom weaving\"},{\"title\":\"Heritage in every thread\",\"field\":\"images[3].image\",\"alt\":\"Traditional handloom textile\"},{\"title\":\"Made by hand, made to last\",\"field\":\"images[4].image\",\"alt\":\"Artisan working at a handloom\"},{\"title\":\"A sustainable tradition\",\"field\":\"images[5].image\",\"alt\":\"Telangana handloom artisan weaving\"}],\"closingTitle\":\"Slow fashion, made with intention\",\"backgroundColor\":\"#000000\"}",
                       "type": "text"
                     },
                     {
-                      "key": "sustainabilityImage",
+                      "key": "images[0].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[1].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[2].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[3].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[4].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[5].image",
                       "type": "file",
                       "src": null
                     }
                   ]
                 }
-              }
+              },
+              "description": "Admin request. Upload six images; each image is associated with the matching title in content.images."
             },
             {
               "name": "Update Section",
@@ -3655,17 +3681,43 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Slow by Tradition, Sustainable by Design\",\"description\":\"Long before \\\"sustainable fashion\\\" became a global movement, Telangana?s handloom weavers were already practising it. Handwoven textiles require no electricity, use natural or low-impact dyes, and generate minimal waste. Every TGSCO product represents.\",\"closingTitle\":\"Slow fashion, made with intention\",\"imageField\":\"sustainabilityImage\",\"imageAlt\":\"Hands weaving fabric on a traditional loom\",\"backgroundColor\":\"#000000\"}",
+                      "value": "{\"title\":\"Slow by Tradition, Sustainable by Design\",\"description\":\"Long before \\\"sustainable fashion\\\" became a global movement, Telangana's handloom weavers were already practising it. Handwoven textiles require no electricity, use natural or low-impact dyes, and generate minimal waste. Every TGSCO product represents.\",\"images\":[{\"title\":\"Slow fashion, made with intention\",\"field\":\"images[0].image\",\"alt\":\"Hands weaving fabric on a traditional loom\"},{\"title\":\"Crafted with care\",\"field\":\"images[1].image\",\"alt\":\"Close-up of handloom weaving\"},{\"title\":\"Natural fibres, lasting beauty\",\"field\":\"images[2].image\",\"alt\":\"Natural fibres prepared for handloom weaving\"},{\"title\":\"Heritage in every thread\",\"field\":\"images[3].image\",\"alt\":\"Traditional handloom textile\"},{\"title\":\"Made by hand, made to last\",\"field\":\"images[4].image\",\"alt\":\"Artisan working at a handloom\"},{\"title\":\"A sustainable tradition\",\"field\":\"images[5].image\",\"alt\":\"Telangana handloom artisan weaving\"}],\"closingTitle\":\"Slow fashion, made with intention\",\"backgroundColor\":\"#000000\"}",
                       "type": "text"
                     },
                     {
-                      "key": "sustainabilityImage",
+                      "key": "images[0].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[1].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[2].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[3].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[4].image",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "images[5].image",
                       "type": "file",
                       "src": null
                     }
                   ]
                 }
-              }
+              },
+              "description": "Admin request. Upload six images; each image is associated with the matching title in content.images."
             },
             {
               "name": "Delete Section",
@@ -4977,7 +5029,7 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Media Gallery\",\"categories\":[{\"id\":\"exhibitions\",\"slug\":\"exhibitions\",\"title\":\"Exhibitions\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[0].mainImage\",\"mainImageAlt\":\"Handloom exhibition textiles\",\"associatedImages\":[{\"field\":\"categories[0].associatedImages[0]\",\"alt\":\"Handloom threads on a loom\"},{\"field\":\"categories[0].associatedImages[1]\",\"alt\":\"Women examining handloom fabric\"}]},{\"id\":\"weaving-villages\",\"slug\":\"weaving-villages\",\"title\":\"Weaving villages\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[1].mainImage\",\"mainImageAlt\":\"Weaving village\",\"associatedImages\":[]},{\"id\":\"campaigns\",\"slug\":\"campaigns\",\"title\":\"Campaigns\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom campaign\",\"associatedImages\":[]},{\"id\":\"cooperative-events\",\"slug\":\"cooperative-events\",\"title\":\"Cooperative events\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[3].mainImage\",\"mainImageAlt\":\"Cooperative event\",\"associatedImages\":[]}]}",
+                      "value": "{\"title\":\"Media Gallery\",\"categories\":[{\"id\":\"exhibitions\",\"slug\":\"exhibitions\",\"title\":\"Exhibitions\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur.\",\"mainImageField\":\"categories[0].mainImage\",\"mainImageAlt\":\"Handloom textiles and weaving materials at an exhibition\",\"associatedImages\":[{\"field\":\"categories[0].associatedImages[0]\",\"alt\":\"Handloom weaving on a traditional loom\"},{\"field\":\"categories[0].associatedImages[1]\",\"alt\":\"Women examining handloom textiles\"}],\"videoLink\":\"https://example.com/videos/media-gallery-exhibitions.mp4\"},{\"id\":\"weaving-villages\",\"slug\":\"weaving-villages\",\"title\":\"Weaving villages\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[1].mainImage\",\"mainImageAlt\":\"Weaving village and handloom artisan\",\"associatedImages\":[{\"field\":\"categories[1].associatedImages[0]\",\"alt\":\"Weaver working in a village workshop\"},{\"field\":\"categories[1].associatedImages[1]\",\"alt\":\"Traditional village handloom\"}],\"videoLink\":\"https://example.com/videos/media-gallery-weaving-villages.mp4\"},{\"id\":\"campaigns\",\"slug\":\"campaigns\",\"title\":\"Campaigns\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom support campaign\",\"associatedImages\":[{\"field\":\"categories[2].associatedImages[0]\",\"alt\":\"TGSCO handloom campaign event\"},{\"field\":\"categories[2].associatedImages[1]\",\"alt\":\"Handloom support programme\"}],\"videoLink\":\"https://example.com/videos/media-gallery-campaigns.mp4\"},{\"id\":\"cooperative-events\",\"slug\":\"cooperative-events\",\"title\":\"Cooperative events\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[3].mainImage\",\"mainImageAlt\":\"TGSCO cooperative event\",\"associatedImages\":[{\"field\":\"categories[3].associatedImages[0]\",\"alt\":\"Cooperative members at an event\"},{\"field\":\"categories[3].associatedImages[1]\",\"alt\":\"Artisans and cooperative members meeting\"}],\"videoLink\":\"https://example.com/videos/media-gallery-cooperative-events.mp4\"}]}",
                       "type": "text"
                     },
                     {
@@ -5001,7 +5053,27 @@
                       "src": null
                     },
                     {
+                      "key": "categories[1].associatedImages[0]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[1].associatedImages[1]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
                       "key": "categories[2].mainImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[2].associatedImages[0]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[2].associatedImages[1]",
                       "type": "file",
                       "src": null
                     },
@@ -5009,10 +5081,21 @@
                       "key": "categories[3].mainImage",
                       "type": "file",
                       "src": null
+                    },
+                    {
+                      "key": "categories[3].associatedImages[0]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[3].associatedImages[1]",
+                      "type": "file",
+                      "src": null
                     }
                   ]
                 }
-              }
+              },
+              "description": "Admin request. Upload one main image and two associated images for each gallery category. Each category also includes its own videoLink."
             },
             {
               "name": "Update Section",
@@ -5040,7 +5123,7 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Media Gallery\",\"categories\":[{\"id\":\"exhibitions\",\"slug\":\"exhibitions\",\"title\":\"Exhibitions\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[0].mainImage\",\"mainImageAlt\":\"Handloom exhibition textiles\",\"associatedImages\":[{\"field\":\"categories[0].associatedImages[0]\",\"alt\":\"Handloom threads on a loom\"},{\"field\":\"categories[0].associatedImages[1]\",\"alt\":\"Women examining handloom fabric\"}]},{\"id\":\"weaving-villages\",\"slug\":\"weaving-villages\",\"title\":\"Weaving villages\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[1].mainImage\",\"mainImageAlt\":\"Weaving village\",\"associatedImages\":[]},{\"id\":\"campaigns\",\"slug\":\"campaigns\",\"title\":\"Campaigns\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom campaign\",\"associatedImages\":[]},{\"id\":\"cooperative-events\",\"slug\":\"cooperative-events\",\"title\":\"Cooperative events\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[3].mainImage\",\"mainImageAlt\":\"Cooperative event\",\"associatedImages\":[]}]}",
+                      "value": "{\"title\":\"Media Gallery\",\"categories\":[{\"id\":\"exhibitions\",\"slug\":\"exhibitions\",\"title\":\"Exhibitions\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur.\",\"mainImageField\":\"categories[0].mainImage\",\"mainImageAlt\":\"Handloom textiles and weaving materials at an exhibition\",\"associatedImages\":[{\"field\":\"categories[0].associatedImages[0]\",\"alt\":\"Handloom weaving on a traditional loom\"},{\"field\":\"categories[0].associatedImages[1]\",\"alt\":\"Women examining handloom textiles\"}],\"videoLink\":\"https://example.com/videos/media-gallery-exhibitions.mp4\"},{\"id\":\"weaving-villages\",\"slug\":\"weaving-villages\",\"title\":\"Weaving villages\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[1].mainImage\",\"mainImageAlt\":\"Weaving village and handloom artisan\",\"associatedImages\":[{\"field\":\"categories[1].associatedImages[0]\",\"alt\":\"Weaver working in a village workshop\"},{\"field\":\"categories[1].associatedImages[1]\",\"alt\":\"Traditional village handloom\"}],\"videoLink\":\"https://example.com/videos/media-gallery-weaving-villages.mp4\"},{\"id\":\"campaigns\",\"slug\":\"campaigns\",\"title\":\"Campaigns\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[2].mainImage\",\"mainImageAlt\":\"TGSCO handloom support campaign\",\"associatedImages\":[{\"field\":\"categories[2].associatedImages[0]\",\"alt\":\"TGSCO handloom campaign event\"},{\"field\":\"categories[2].associatedImages[1]\",\"alt\":\"Handloom support programme\"}],\"videoLink\":\"https://example.com/videos/media-gallery-campaigns.mp4\"},{\"id\":\"cooperative-events\",\"slug\":\"cooperative-events\",\"title\":\"Cooperative events\",\"subtitle\":\"Lorem ipsum dolor sit amet\",\"description\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"mainImageField\":\"categories[3].mainImage\",\"mainImageAlt\":\"TGSCO cooperative event\",\"associatedImages\":[{\"field\":\"categories[3].associatedImages[0]\",\"alt\":\"Cooperative members at an event\"},{\"field\":\"categories[3].associatedImages[1]\",\"alt\":\"Artisans and cooperative members meeting\"}],\"videoLink\":\"https://example.com/videos/media-gallery-cooperative-events.mp4\"}]}",
                       "type": "text"
                     },
                     {
@@ -5064,7 +5147,27 @@
                       "src": null
                     },
                     {
+                      "key": "categories[1].associatedImages[0]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[1].associatedImages[1]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
                       "key": "categories[2].mainImage",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[2].associatedImages[0]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[2].associatedImages[1]",
                       "type": "file",
                       "src": null
                     },
@@ -5072,10 +5175,21 @@
                       "key": "categories[3].mainImage",
                       "type": "file",
                       "src": null
+                    },
+                    {
+                      "key": "categories[3].associatedImages[0]",
+                      "type": "file",
+                      "src": null
+                    },
+                    {
+                      "key": "categories[3].associatedImages[1]",
+                      "type": "file",
+                      "src": null
                     }
                   ]
                 }
-              }
+              },
+              "description": "Admin request. Upload one main image and two associated images for each gallery category. Each category also includes its own videoLink."
             },
             {
               "name": "Delete Section",

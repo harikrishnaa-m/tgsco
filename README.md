@@ -169,6 +169,24 @@ screen-derived text, metrics, people, awards, role cards, colors, and image
 fields for each section. The `You (Customer)` card is nested as the final
 role in `chain-of-craft`.
 
+The `sustainability` section supports multiple titled images through its
+content JSON:
+
+```json
+{
+  "images": [
+    {
+      "title": "Slow fashion, made with intention",
+      "field": "images[0].image"
+    }
+  ]
+}
+```
+
+Attach files using the matching indexed fields, such as
+`images[0].image` and `images[1].image`. The `05 Our Heritage Content`
+Postman folder includes six image-title pairs.
+
 ## News and Events page content
 
 News and Events sections use the same public-read and admin-write lifecycle
@@ -199,6 +217,11 @@ The selected-item GET lets the frontend load the next or previous carousel
 item when a card is clicked. The Postman collection's `06 News and Events
 Content` folder contains the screen-derived content and multipart image
 fields.
+
+Media Gallery contains four categories: Exhibitions, Weaving villages,
+Campaigns, and Cooperative events. Each category has a title, hover subtitle,
+one main image, two associated images, and a `videoLink`. The selected gallery
+item endpoint returns all of these fields for the clicked category.
 
 ## Contact page content
 

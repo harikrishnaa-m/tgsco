@@ -5437,28 +5437,8 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"eyebrow\":\"regional Map\",\"title\":\"Regional Map\",\"items\":[{\"id\":\"hyderabad-head-office\",\"slug\":\"hyderabad-head-office\",\"mapLabel\":\"Bhadradri Kothagudem\",\"officeName\":\"TGSCO Head Office, Hyderabad\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=TGSCO+Head+Office+Hyderabad\",\"mapImageField\":\"items[0].mapImage\",\"mapImageAlt\":\"TGSCO Head Office, Hyderabad\"},{\"id\":\"warangal-regional-office\",\"slug\":\"warangal-regional-office\",\"mapLabel\":\"Warangal\",\"officeName\":\"TGSCO Regional Office, Warangal\",\"address\":\"Warangal, Telangana 506002\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Warangal+Telangana\",\"mapImageField\":\"items[1].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Warangal\"},{\"id\":\"pochampally-office\",\"slug\":\"pochampally-office\",\"mapLabel\":\"Yadadri Bhuvanagiri\",\"officeName\":\"TGSCO Regional Office, Pochampally\",\"address\":\"Pochampally, Telangana 508284\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Pochampally+Telangana\",\"mapImageField\":\"items[2].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Pochampally\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\",\"counterFormat\":\"01 / 03\"},\"mapImageField\":\"mapImage\",\"mapImageAlt\":\"Telangana regional district map\"}",
+                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
                       "type": "text"
-                    },
-                    {
-                      "key": "mapImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "items[0].mapImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "items[1].mapImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "items[2].mapImage",
-                      "type": "file",
-                      "src": null
                     }
                   ]
                 }
@@ -5490,28 +5470,8 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"eyebrow\":\"regional Map\",\"title\":\"Regional Map\",\"items\":[{\"id\":\"hyderabad-head-office\",\"slug\":\"hyderabad-head-office\",\"mapLabel\":\"Bhadradri Kothagudem\",\"officeName\":\"TGSCO Head Office, Hyderabad\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=TGSCO+Head+Office+Hyderabad\",\"mapImageField\":\"items[0].mapImage\",\"mapImageAlt\":\"TGSCO Head Office, Hyderabad\"},{\"id\":\"warangal-regional-office\",\"slug\":\"warangal-regional-office\",\"mapLabel\":\"Warangal\",\"officeName\":\"TGSCO Regional Office, Warangal\",\"address\":\"Warangal, Telangana 506002\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Warangal+Telangana\",\"mapImageField\":\"items[1].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Warangal\"},{\"id\":\"pochampally-office\",\"slug\":\"pochampally-office\",\"mapLabel\":\"Yadadri Bhuvanagiri\",\"officeName\":\"TGSCO Regional Office, Pochampally\",\"address\":\"Pochampally, Telangana 508284\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"hours\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionsLabel\":\"Get Direction\",\"directionsUrl\":\"https://maps.google.com/?q=Pochampally+Telangana\",\"mapImageField\":\"items[2].mapImage\",\"mapImageAlt\":\"TGSCO Regional Office, Pochampally\"}],\"navigation\":{\"previousLabel\":\"Previous\",\"nextLabel\":\"Next\",\"counterFormat\":\"01 / 03\"},\"mapImageField\":\"mapImage\",\"mapImageAlt\":\"Telangana regional district map\"}",
+                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
                       "type": "text"
-                    },
-                    {
-                      "key": "mapImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "items[0].mapImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "items[1].mapImage",
-                      "type": "file",
-                      "src": null
-                    },
-                    {
-                      "key": "items[2].mapImage",
-                      "type": "file",
-                      "src": null
                     }
                   ]
                 }

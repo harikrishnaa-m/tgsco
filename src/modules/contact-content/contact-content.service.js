@@ -47,8 +47,20 @@ export async function getContactItem(sectionName, slug) {
 
 export async function saveContactSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files, 'contact');
-  const section = isCreate
+  const section = isCreate && sectionName !== 'regional-map'
     ? await ContactSection.create({ section: sectionName, content, images })
+    : sectionName === 'regional-map'
+      ? await ContactSection.findOneAndUpdate(
+          { section: sectionName },
+          images.length
+            ? {
+                $set: { content },
+                $push: { images: { $each: images } },
+                $setOnInsert: { section: sectionName },
+              }
+            : { $set: { content }, $setOnInsert: { section: sectionName } },
+          { new: true, upsert: true, runValidators: true },
+        )
     : await ContactSection.findOneAndUpdate(
         { section: sectionName },
         images.length

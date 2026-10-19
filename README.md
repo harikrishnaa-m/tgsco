@@ -250,9 +250,25 @@ Contact page sections use the same public-read and admin-write lifecycle under
 /contact-content/faq
 ```
 
-The regional map section stores each office as a complete carousel item with
-its own location label, office name, image, address, phone, email, hours, and
-directions URL. A selected office can be loaded with:
+The regional map section stores districts in `content.regions`. Every district
+has a `regionId` made from its lowercase district name with spaces replaced by
+hyphens (for example, `bhadradri-kothagudem`), plus one or more locations. Each
+location contains its title, image URL, address, phone, email, timing, and
+directions URL. The public frontend request is:
+
+```text
+GET /contact-content/regional-map
+```
+
+The admin CMS saves this section with:
+
+```text
+POST /contact-content/regional-map
+```
+
+This POST is an upsert for the regional map, so it creates the section when it
+does not exist and replaces its content when it already exists. A selected
+office can still be loaded with:
 
 ```text
 GET /contact-content/regional-map/items/<slug>

@@ -1,5 +1,5 @@
 import { AppError } from '../../errors/app-error.js';
-import { sectionContentSchema } from '../home-content/home-content.validation.js';
+import { parseContactSectionContent } from './contact-content.validation.js';
 import {
   deleteContactSection,
   getContactItem,
@@ -27,7 +27,7 @@ function parseContent(req) {
     }
   }
 
-  return sectionContentSchema.parse(content);
+  return content;
 }
 
 export function sectionController(section) {
@@ -43,14 +43,24 @@ export function sectionController(section) {
     async create(req, res) {
       res.status(201).json({
         success: true,
-        data: await saveContactSection(section, parseContent(req), req.files, true),
+        data: await saveContactSection(
+          section,
+          parseContactSectionContent(section, parseContent(req)),
+          req.files,
+          true,
+        ),
       });
     },
 
     async update(req, res) {
       res.status(200).json({
         success: true,
-        data: await saveContactSection(section, parseContent(req), req.files, false),
+        data: await saveContactSection(
+          section,
+          parseContactSectionContent(section, parseContent(req)),
+          req.files,
+          false,
+        ),
       });
     },
 

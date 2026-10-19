@@ -5437,8 +5437,26 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
+                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"regions[0].locations[0].image\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"regions[1].locations[0].image\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"regions[2].locations[0].image\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
                       "type": "text"
+                    },
+                    {
+                      "key": "regions[0].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the Hyderabad office image."
+                    },
+                    {
+                      "key": "regions[1].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the Khammam office image."
+                    },
+                    {
+                      "key": "regions[2].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the Medak office image."
                     }
                   ]
                 }
@@ -5470,8 +5488,26 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"https://url-to-hosted-image.jpg\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
+                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"regions[0].locations[0].image\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"regions[1].locations[0].image\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"regions[2].locations[0].image\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
                       "type": "text"
+                    },
+                    {
+                      "key": "regions[0].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the Hyderabad office image."
+                    },
+                    {
+                      "key": "regions[1].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the Khammam office image."
+                    },
+                    {
+                      "key": "regions[2].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the Medak office image."
                     }
                   ]
                 }

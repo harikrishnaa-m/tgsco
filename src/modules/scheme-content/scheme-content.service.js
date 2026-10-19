@@ -31,6 +31,22 @@ export async function getSchemeSection(sectionName) {
   return serializeSection(section);
 }
 
+export async function getSchemeItem(sectionName, slug) {
+  const section = await getSchemeSection(sectionName);
+  const item = (section.content.schemes || []).find(
+    (entry) => entry.slug === slug || entry.id === slug,
+  );
+
+  if (!item) {
+    throw new AppError(`The scheme "${slug}" was not found.`, {
+      statusCode: 404,
+      code: 'SCHEME_ITEM_NOT_FOUND',
+    });
+  }
+
+  return { section: sectionName, item };
+}
+
 export async function saveSchemeSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files, 'schemes');
   const section = isCreate

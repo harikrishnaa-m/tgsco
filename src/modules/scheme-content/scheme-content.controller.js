@@ -2,6 +2,7 @@ import { AppError } from '../../errors/app-error.js';
 import { sectionContentSchema } from '../home-content/home-content.validation.js';
 import {
   deleteSchemeSection,
+  getSchemeItem,
   getSchemeSection,
   listSchemeSections,
   saveSchemeSection,
@@ -34,6 +35,11 @@ export function sectionController(section) {
   return {
     async get(req, res) {
       const data = await getSchemeSection(section);
+      res.status(200).json({ success: true, data });
+    },
+
+    async getItem(req, res) {
+      const data = await getSchemeItem(section, req.params.slug);
       res.status(200).json({ success: true, data });
     },
 

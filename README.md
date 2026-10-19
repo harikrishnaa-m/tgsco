@@ -150,6 +150,17 @@ screen-derived content for the Schemes banner, supporting-weavers section,
 current scheme navigation, and the complete Chenetha Lakshmi Scheme detail
 data nested inside `current-schemes`.
 
+Each entry in `current-schemes.schemes` owns its heading, content, and image.
+The selected scheme can be loaded with:
+
+```text
+GET /scheme-content/current-schemes/items/<slug>
+```
+
+For example, selecting `chenetha-lakshmi-scheme` returns its matching image
+and detail content; selecting `cooperative-membership` returns that scheme's
+matching image and content.
+
 ## Our Heritage page content
 
 Our Heritage sections use the same public-read and admin-write lifecycle under
@@ -222,6 +233,10 @@ Media Gallery contains four categories: Exhibitions, Weaving villages,
 Campaigns, and Cooperative events. Each category has a title, hover subtitle,
 one main image, two associated images, and a `videoLink`. The selected gallery
 item endpoint returns all of these fields for the clicked category.
+
+Exhibition image items also expose `hoverText`. The two screenshot headings are
+stored as `NATIONAL EXHIBITIONS` and `INTERNATIONAL TEXTILE FAIRS`, so the
+frontend can display the matching text when the image is hovered.
 
 ## Contact page content
 

@@ -13,6 +13,9 @@ for (const section of SCHEME_SECTIONS) {
   const handlers = sectionController(section);
 
   router.get(`/${section}`, handlers.get);
+  if (section === 'current-schemes') {
+    router.get(`/${section}/items/:slug`, handlers.getItem);
+  }
   router.post(`/${section}`, requireAdmin, homeImageUpload.any(), handlers.create);
   router.patch(`/${section}`, requireAdmin, homeImageUpload.any(), handlers.update);
   router.delete(`/${section}`, requireAdmin, handlers.remove);

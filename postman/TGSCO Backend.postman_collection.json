@@ -3025,6 +3025,25 @@
               }
             },
             {
+              "name": "Public Get Selected Scheme",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/scheme-content/current-schemes/items/chenetha-lakshmi-scheme",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "scheme-content",
+                    "current-schemes",
+                    "items",
+                    "chenetha-lakshmi-scheme"
+                  ]
+                }
+              }
+            },
+            {
               "name": "Create Section",
               "request": {
                 "method": "POST",
@@ -3050,22 +3069,23 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Current Government Schemes\",\"schemes\":[{\"title\":\"Chenetha Lakshmi Scheme\",\"slug\":\"chenetha-lakshmi-scheme\",\"category\":\"Scheme\",\"description\":\"The Chenetha Lakshmi Scheme makes authentic Telangana handlooms more affordable while directly supporting local weaving communities through a savings-based purchase programme.\",\"whoCanApply\":{\"heading\":\"Who Can Apply\",\"items\":[\"Any customer wishing to purchase TGSCO handloom products through the scheme.\"]},\"schemeBenefits\":{\"heading\":\"Scheme Benefits\",\"intro\":\"Choose the plan that suits you:\",\"contributionPlans\":[{\"monthlyContribution\":\"?4,500\",\"purchaseValue\":\"?7,200 worth of handloom products\"},{\"monthlyContribution\":\"?9,000\",\"purchaseValue\":\"?14,400 worth of handloom products\"}],\"instalmentBenefits\":[\"Pay ?500 (or multiples of ?500) every month.\",\"Complete the instalments within the prescribed scheme period.\",\"Receive an enhanced purchase value with TGSCO?s contribution.\",\"Redeem the value on authentic Telangana handloom products at the showroom where the account is maintained.\"]},\"howToApply\":{\"heading\":\"How to Apply\",\"steps\":[\"Fill out the Chenetha Lakshmi Scheme application form.\",\"Submit a valid identity proof.\",\"Choose your preferred plan.\",\"Pay the first instalment or the full amount.\",\"Continue monthly payments before the due date and collect your receipt.\",\"Redeem your purchase value after completing the scheme.\"]},\"documentsRequired\":{\"heading\":\"Documents Required\",\"items\":[\"Aadhaar Card / Driving Licence / Ration Card (any one valid ID proof)\"]},\"detailImageField\":\"chenethaLakshmiDetailImage\",\"detailImageAlt\":\"Hands working with green handloom yarn\"},{\"title\":\"Cooperative Membership\",\"slug\":\"cooperative-membership\"}]}",
+                      "value": "{\"title\":\"Current Government Schemes\",\"schemes\":[{\"title\":\"Chenetha Lakshmi Scheme\",\"slug\":\"chenetha-lakshmi-scheme\",\"category\":\"Scheme\",\"description\":\"The Chenetha Lakshmi Scheme makes authentic Telangana handlooms more affordable while directly supporting local weaving communities through a savings-based purchase programme.\",\"imageField\":\"schemes[0].image\",\"imageAlt\":\"Hands working with green handloom yarn\",\"whoCanApply\":{\"heading\":\"Who Can Apply\",\"items\":[\"Any customer wishing to purchase TGSCO handloom products through the scheme.\"]},\"schemeBenefits\":{\"heading\":\"Scheme Benefits\",\"intro\":\"Choose the plan that suits you:\",\"contributionPlans\":[{\"monthlyContribution\":\"?4,500\",\"purchaseValue\":\"?7,200 worth of handloom products\"},{\"monthlyContribution\":\"?9,000\",\"purchaseValue\":\"?14,400 worth of handloom products\"}],\"instalmentBenefits\":[\"Pay ?500 (or multiples of ?500) every month.\",\"Complete the instalments within the prescribed scheme period.\",\"Receive an enhanced purchase value with TGSCO?s contribution.\",\"Redeem the value on authentic Telangana handloom products at the showroom where the account is maintained.\"]},\"howToApply\":{\"heading\":\"How to Apply\",\"steps\":[\"Fill out the Chenetha Lakshmi Scheme application form.\",\"Submit a valid identity proof.\",\"Choose your preferred plan.\",\"Pay the first instalment or the full amount.\",\"Continue monthly payments before the due date and collect your receipt.\",\"Redeem your purchase value after completing the scheme.\"]},\"documentsRequired\":{\"heading\":\"Documents Required\",\"items\":[\"Aadhaar Card / Driving Licence / Ration Card (any one valid ID proof)\"]}},{\"title\":\"Cooperative Membership\",\"slug\":\"cooperative-membership\",\"category\":\"Scheme\",\"description\":\"Become a member of a TGSCO cooperative and support Telangana?s handloom heritage while accessing cooperative services and opportunities.\",\"imageField\":\"schemes[1].image\",\"imageAlt\":\"Handloom cooperative members and textiles\",\"membershipBenefits\":{\"heading\":\"Cooperative Membership\",\"items\":[\"Support local weavers and artisan communities.\",\"Access cooperative services and handloom resources.\",\"Participate in the cooperative handloom ecosystem.\"]}}]}",
                       "type": "text"
                     },
                     {
-                      "key": "schemeImage",
+                      "key": "schemes[0].image",
                       "type": "file",
                       "src": null
                     },
                     {
-                      "key": "chenethaLakshmiDetailImage",
+                      "key": "schemes[1].image",
                       "type": "file",
                       "src": null
                     }
                   ]
                 }
-              }
+              },
+              "description": "Admin request. Each scheme item owns its heading, content, and matching image. Select one image for each scheme."
             },
             {
               "name": "Update Section",
@@ -3093,22 +3113,23 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Current Government Schemes\",\"schemes\":[{\"title\":\"Chenetha Lakshmi Scheme\",\"slug\":\"chenetha-lakshmi-scheme\",\"detailImageField\":\"chenethaLakshmiDetailImage\"},{\"title\":\"Cooperative Membership\",\"slug\":\"cooperative-membership\"}],\"imageField\":\"schemeImage\",\"imageAlt\":\"Hands working with green handloom yarn\"}",
+                      "value": "{\"title\":\"Current Government Schemes\",\"schemes\":[{\"title\":\"Chenetha Lakshmi Scheme\",\"slug\":\"chenetha-lakshmi-scheme\",\"category\":\"Scheme\",\"description\":\"The Chenetha Lakshmi Scheme makes authentic Telangana handlooms more affordable while directly supporting local weaving communities through a savings-based purchase programme.\",\"imageField\":\"schemes[0].image\",\"imageAlt\":\"Hands working with green handloom yarn\",\"whoCanApply\":{\"heading\":\"Who Can Apply\",\"items\":[\"Any customer wishing to purchase TGSCO handloom products through the scheme.\"]},\"schemeBenefits\":{\"heading\":\"Scheme Benefits\",\"intro\":\"Choose the plan that suits you:\",\"contributionPlans\":[{\"monthlyContribution\":\"?4,500\",\"purchaseValue\":\"?7,200 worth of handloom products\"},{\"monthlyContribution\":\"?9,000\",\"purchaseValue\":\"?14,400 worth of handloom products\"}],\"instalmentBenefits\":[\"Pay ?500 (or multiples of ?500) every month.\",\"Complete the instalments within the prescribed scheme period.\",\"Receive an enhanced purchase value with TGSCO?s contribution.\",\"Redeem the value on authentic Telangana handloom products at the showroom where the account is maintained.\"]},\"howToApply\":{\"heading\":\"How to Apply\",\"steps\":[\"Fill out the Chenetha Lakshmi Scheme application form.\",\"Submit a valid identity proof.\",\"Choose your preferred plan.\",\"Pay the first instalment or the full amount.\",\"Continue monthly payments before the due date and collect your receipt.\",\"Redeem your purchase value after completing the scheme.\"]},\"documentsRequired\":{\"heading\":\"Documents Required\",\"items\":[\"Aadhaar Card / Driving Licence / Ration Card (any one valid ID proof)\"]}},{\"title\":\"Cooperative Membership\",\"slug\":\"cooperative-membership\",\"category\":\"Scheme\",\"description\":\"Become a member of a TGSCO cooperative and support Telangana?s handloom heritage while accessing cooperative services and opportunities.\",\"imageField\":\"schemes[1].image\",\"imageAlt\":\"Handloom cooperative members and textiles\",\"membershipBenefits\":{\"heading\":\"Cooperative Membership\",\"items\":[\"Support local weavers and artisan communities.\",\"Access cooperative services and handloom resources.\",\"Participate in the cooperative handloom ecosystem.\"]}}]}",
                       "type": "text"
                     },
                     {
-                      "key": "schemeImage",
+                      "key": "schemes[0].image",
                       "type": "file",
                       "src": null
                     },
                     {
-                      "key": "chenethaLakshmiDetailImage",
+                      "key": "schemes[1].image",
                       "type": "file",
                       "src": null
                     }
                   ]
                 }
-              }
+              },
+              "description": "Admin request. Each scheme item owns its heading, content, and matching image. Select one image for each scheme."
             },
             {
               "name": "Delete Section",
@@ -4391,7 +4412,7 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Exhibitions\",\"items\":[{\"id\":\"national-exhibitions\",\"slug\":\"national-exhibitions\",\"label\":\"NATIONAL EXHIBITIONS\",\"imageField\":\"items[0].image\",\"imageAlt\":\"National Telangana handloom exhibition\"},{\"id\":\"international-textile-fairs\",\"slug\":\"international-textile-fairs\",\"label\":\"INTERNATIONAL TEXTILE FAIRS\",\"imageField\":\"items[1].image\",\"imageAlt\":\"International textile fair\"}]}",
+                      "value": "{\"title\":\"Exhibitions\",\"items\":[{\"id\":\"national-exhibitions\",\"slug\":\"national-exhibitions\",\"label\":\"NATIONAL EXHIBITIONS\",\"imageField\":\"items[0].image\",\"imageAlt\":\"National Telangana handloom exhibition\",\"hoverText\":\"NATIONAL EXHIBITIONS\"},{\"id\":\"international-textile-fairs\",\"slug\":\"international-textile-fairs\",\"label\":\"INTERNATIONAL TEXTILE FAIRS\",\"imageField\":\"items[1].image\",\"imageAlt\":\"International textile fair\",\"hoverText\":\"INTERNATIONAL TEXTILE FAIRS\"}]}",
                       "type": "text"
                     },
                     {
@@ -4434,7 +4455,7 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"title\":\"Exhibitions\",\"items\":[{\"id\":\"national-exhibitions\",\"slug\":\"national-exhibitions\",\"label\":\"NATIONAL EXHIBITIONS\",\"imageField\":\"items[0].image\",\"imageAlt\":\"National Telangana handloom exhibition\"},{\"id\":\"international-textile-fairs\",\"slug\":\"international-textile-fairs\",\"label\":\"INTERNATIONAL TEXTILE FAIRS\",\"imageField\":\"items[1].image\",\"imageAlt\":\"International textile fair\"}]}",
+                      "value": "{\"title\":\"Exhibitions\",\"items\":[{\"id\":\"national-exhibitions\",\"slug\":\"national-exhibitions\",\"label\":\"NATIONAL EXHIBITIONS\",\"imageField\":\"items[0].image\",\"imageAlt\":\"National Telangana handloom exhibition\",\"hoverText\":\"NATIONAL EXHIBITIONS\"},{\"id\":\"international-textile-fairs\",\"slug\":\"international-textile-fairs\",\"label\":\"INTERNATIONAL TEXTILE FAIRS\",\"imageField\":\"items[1].image\",\"imageAlt\":\"International textile fair\",\"hoverText\":\"INTERNATIONAL TEXTILE FAIRS\"}]}",
                       "type": "text"
                     },
                     {

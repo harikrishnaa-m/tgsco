@@ -92,6 +92,11 @@ Catalogue endpoints are available under `/api/v1/catalog`:
 | `GET` | `/catalog/categories` | Public |
 | `GET` | `/catalog/products` | Public PLP with filters and pagination |
 | `GET` | `/catalog/products/<slug>` | Public PDP |
+
+The public category response includes each category ID. Product browsing
+accepts `categoryId=<id>` or comma-separated `categoryIds=<id-1>,<id-2>` for
+ID-based filtering. Slug and type filters remain supported for SEO-friendly
+links and top-level navigation.
 | `GET` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
 | `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
 | `GET` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |

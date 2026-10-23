@@ -67,9 +67,18 @@ const multiValueQuerySchema = z.preprocess(
       : undefined,
   z.array(z.string().trim().min(1)).optional(),
 );
+const multiObjectIdQuerySchema = z.preprocess(
+  (value) =>
+    value
+      ? (Array.isArray(value) ? value : [value]).flatMap((entry) => entry.split(','))
+      : undefined,
+  z.array(objectIdSchema).optional(),
+);
 
 export const productQuerySchema = z.object({
   category: z.string().trim().optional(),
+  categoryId: objectIdSchema.optional(),
+  categoryIds: multiObjectIdQuerySchema,
   type: z.enum(['weaves', 'occasions', 'fabric']).optional(),
   search: z.string().trim().optional(),
   handloomType: multiValueQuerySchema,

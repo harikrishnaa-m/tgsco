@@ -137,6 +137,15 @@ export async function listProducts(query) {
       $or: [{ categorySlug: query.category }, { categorySlugs: query.category }],
     });
   }
+  if (query.categoryId || query.categoryIds?.length) {
+    const categoryIds = query.categoryIds?.length ? query.categoryIds : [query.categoryId];
+    taxonomyFilters.push({
+      $or: [
+        { category: { $in: categoryIds } },
+        { categories: { $in: categoryIds } },
+      ],
+    });
+  }
   if (query.type) {
     taxonomyFilters.push({
       $or: [{ type: query.type }, { types: query.type }],

@@ -876,6 +876,14 @@
               }
             },
             {
+              "name": "Browse Products by Category ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products?categoryId={{weddings_category_id}}&sort=newest&page=1&limit=12"
+              }
+            },
+            {
               "name": "View Product Details",
               "request": {
                 "method": "GET",
@@ -1078,6 +1086,14 @@
                 "method": "GET",
                 "header": [],
                 "url": "{{base_url}}/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+              }
+            },
+            {
+              "name": "Browse Products by Category ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products?categoryIds={{weddings_category_id}},{{cotton_category_id}}&sort=newest&page=1&limit=12"
               }
             },
             {

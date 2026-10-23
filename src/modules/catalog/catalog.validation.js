@@ -15,7 +15,8 @@ const bulkPriceSchema = z.object({
 export const categorySchema = z.object({
   name: z.string().trim().min(1),
   slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  type: z.enum(['weaves', 'occasions', 'fabric']),
+  type: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
+  groupId: objectIdSchema.optional(),
   description: z.string().trim().optional(),
   subtitle: z.string().trim().optional(),
   image: z.string().trim().optional(),
@@ -23,7 +24,17 @@ export const categorySchema = z.object({
 });
 
 export const categoryQuerySchema = z.object({
-  type: z.enum(['weaves', 'occasions', 'fabric']).optional(),
+  type: z.string().trim().min(1).optional(),
+  groupId: objectIdSchema.optional(),
+});
+
+export const groupSchema = z.object({
+  name: z.string().trim().min(1),
+  slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  description: z.string().trim().optional(),
+  image: z.string().trim().optional(),
+  active: z.boolean().optional(),
+  sortOrder: z.number().int().nonnegative().optional(),
 });
 
 export const productSchema = z.object({
@@ -33,8 +44,8 @@ export const productSchema = z.object({
   categoryIds: z.array(objectIdSchema).min(1).optional(),
   categorySlug: z.string().trim().min(1).optional(),
   categorySlugs: z.array(z.string().trim().min(1)).min(1).optional(),
-  type: z.enum(['weaves', 'occasions', 'fabric']).optional(),
-  types: z.array(z.enum(['weaves', 'occasions', 'fabric'])).min(1).optional(),
+  type: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
+  types: z.array(z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).min(1).optional(),
   shortDescription: z.string().trim().optional(),
   description: z.string().trim().optional(),
   price: z.number().nonnegative(),
@@ -56,8 +67,8 @@ export const productSchema = z.object({
   (value) => value.categoryIds?.length || value.categorySlug || value.categorySlugs?.length,
   'Provide at least one category ID or category slug.',
 ).refine(
-  (value) => value.type || value.types?.length,
-  'Provide at least one catalogue type.',
+  (value) => value.type || value.types?.length || value.categoryIds?.length,
+  'Provide at least one catalogue group or category.',
 );
 
 const multiValueQuerySchema = z.preprocess(
@@ -79,7 +90,7 @@ export const productQuerySchema = z.object({
   category: z.string().trim().optional(),
   categoryId: objectIdSchema.optional(),
   categoryIds: multiObjectIdQuerySchema,
-  type: z.enum(['weaves', 'occasions', 'fabric']).optional(),
+  type: z.string().trim().min(1).optional(),
   search: z.string().trim().optional(),
   handloomType: multiValueQuerySchema,
   weaveCraft: multiValueQuerySchema,

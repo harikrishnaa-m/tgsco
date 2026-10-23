@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const otpChallengeSchema = new mongoose.Schema(
   {
     mobile: { type: String, required: true, index: true },
+    email: { type: String, lowercase: true, trim: true },
     role: { type: String, enum: ['customer', 'merchant'] },
     name: { type: String, trim: true },
     passwordHash: { type: String },

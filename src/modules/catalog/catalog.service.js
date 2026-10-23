@@ -1,5 +1,6 @@
 import { AppError } from '../../errors/app-error.js';
 import { CatalogCategory } from '../../models/catalog-category.model.js';
+import { CatalogGroup } from '../../models/catalog-group.model.js';
 import { CatalogProduct } from '../../models/catalog-product.model.js';
 import { uploadHomeImages } from '../home-content/home-content.upload.js';
 
@@ -18,7 +19,7 @@ function parseContent(req) {
         code: 'INVALID_CATALOG_FORM_DATA',
       });
     }
-    for (const field of ['price', 'originalPrice', 'discountPercent', 'stockQuantity']) {
+    for (const field of ['price', 'originalPrice', 'discountPercent', 'stockQuantity', 'sortOrder']) {
       if (content[field] !== undefined) content[field] = Number(content[field]);
     }
     if (content.active !== undefined) content.active = content.active === 'true';
@@ -73,9 +74,23 @@ export function parseCatalogContent(req) {
   return parseContent(req);
 }
 
-export async function listCategories(type) {
+export async function listGroups() {
+  return CatalogGroup.find({ active: true }).sort({ sortOrder: 1, name: 1 }).lean();
+}
+
+export async function getGroup(id, includeInactive = false) {
+  const group = await CatalogGroup.findOne({
+    _id: id,
+    ...(includeInactive ? {} : { active: true }),
+  }).lean();
+  if (!group) throw new AppError('The catalogue group was not found.', { statusCode: 404, code: 'CATALOG_GROUP_NOT_FOUND' });
+  return group;
+}
+
+export async function listCategories(type, groupId) {
   const match = { active: true };
   if (type) match.type = type;
+  if (groupId) match.group = groupId;
 
   return CatalogCategory.aggregate([
     { $match: match },
@@ -107,7 +122,22 @@ export async function listCategories(type) {
 export async function saveCategory(content, files = [], id) {
   const images = await uploadHomeImages('categories', files, 'catalog');
   const image = images.find((item) => item.field === 'image');
-  const savedContent = image ? { ...content, image: image.url } : content;
+  const { groupId, ...categoryContent } = content;
+  if (groupId) {
+    const group = await CatalogGroup.findOne({ _id: groupId, active: true }).lean();
+    if (!group) {
+      throw new AppError('The catalogue group was not found.', {
+        statusCode: 400,
+        code: 'CATALOG_GROUP_NOT_FOUND',
+      });
+    }
+    categoryContent.group = group._id;
+    categoryContent.type ||= group.slug;
+  }
+  const savedContent = {
+    ...categoryContent,
+    ...(image ? { image: image.url } : {}),
+  };
   return id
     ? CatalogCategory.findByIdAndUpdate(id, savedContent, { new: true, runValidators: true }).lean()
     : CatalogCategory.create(savedContent);
@@ -119,9 +149,39 @@ export async function getCategory(id) {
   return category;
 }
 
-export async function listAdminCategories(type) {
-  const filter = type ? { type } : {};
+export async function listAdminCategories(type, groupId) {
+  const filter = { ...(type ? { type } : {}), ...(groupId ? { group: groupId } : {}) };
   return CatalogCategory.find(filter).sort({ type: 1, name: 1 }).lean();
+}
+
+export async function listAdminGroups() {
+  return CatalogGroup.find().sort({ sortOrder: 1, name: 1 }).lean();
+}
+
+export async function saveGroup(content, files = [], id) {
+  const images = await uploadHomeImages('catalog-groups', files, 'catalog');
+  const image = images.find((item) => item.field === 'image');
+  const savedContent = image ? { ...content, image: image.url } : content;
+  return id
+    ? CatalogGroup.findByIdAndUpdate(id, savedContent, { new: true, runValidators: true }).lean()
+    : CatalogGroup.create(savedContent);
+}
+
+export async function removeGroup(id) {
+  const categoryCount = await CatalogCategory.countDocuments({ group: id });
+  if (categoryCount) {
+    throw new AppError('The catalogue group still contains categories.', {
+      statusCode: 409,
+      code: 'CATALOG_GROUP_NOT_EMPTY',
+    });
+  }
+  const deleted = await CatalogGroup.findByIdAndDelete(id);
+  if (!deleted) {
+    throw new AppError('The catalogue group was not found.', {
+      statusCode: 404,
+      code: 'CATALOG_GROUP_NOT_FOUND',
+    });
+  }
 }
 
 export async function removeCategory(id) {

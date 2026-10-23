@@ -4,7 +4,8 @@ const catalogCategorySchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    type: { type: String, enum: ['weaves', 'occasions', 'fabric'], required: true },
+    type: { type: String, lowercase: true, trim: true },
+    group: { type: mongoose.Schema.Types.ObjectId, ref: 'CatalogGroup' },
     description: { type: String, trim: true },
     subtitle: { type: String, trim: true },
     image: { type: String, trim: true },

@@ -1,7 +1,7 @@
-{
+﻿{
   "info": {
     "name": "TGSCO E-commerce API",
-    "description": "Customer, merchant, and admin authentication and catalogue workflows. Import this separately from the CMS collection.",
+    "description": "Customer, merchant, and admin authentication and catalogue workflows, including scalable group and category ID browsing. Import this separately from the CMS collection.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -27,6 +27,10 @@
     },
     {
       "key": "category_id",
+      "value": ""
+    },
+    {
+      "key": "group_id",
       "value": ""
     },
     {
@@ -119,9 +123,34 @@
                   "mode": "formdata",
                   "formdata": [
                     {
-                      "key": "content",
+                      "key": "name",
                       "type": "text",
-                      "value": "{\"name\":\"Weaves\",\"slug\":\"weaves\",\"type\":\"weaves\",\"description\":\"Handloom weaves\",\"subtitle\":\"Traditional handloom collections\",\"active\":true}"
+                      "value": "Pochampally"
+                    },
+                    {
+                      "key": "slug",
+                      "type": "text",
+                      "value": "pochampally"
+                    },
+                    {
+                      "key": "groupId",
+                      "type": "text",
+                      "value": "{{weaves_group_id}}"
+                    },
+                    {
+                      "key": "description",
+                      "type": "text",
+                      "value": "Pochampally handloom collections"
+                    },
+                    {
+                      "key": "subtitle",
+                      "type": "text",
+                      "value": "Traditional handloom collections"
+                    },
+                    {
+                      "key": "active",
+                      "type": "text",
+                      "value": "true"
                     },
                     {
                       "key": "image",
@@ -183,6 +212,11 @@
                       "key": "type",
                       "type": "text",
                       "value": "occasions"
+                    },
+                    {
+                      "key": "groupId",
+                      "type": "text",
+                      "value": "{{occasions_group_id}}"
                     },
                     {
                       "key": "shortDescription",
@@ -308,6 +342,139 @@
                   }
                 }
               ]
+            },
+            {
+              "name": "List All Catalogue Groups",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/groups"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Catalogue groups loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const items=pm.response.json().data;if(items[0])pm.collectionVariables.set('group_id',items[0]._id);for(const item of items){if(item.slug)pm.collectionVariables.set(item.slug+'_group_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create Catalogue Group",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "type": "text",
+                      "value": "Weaves"
+                    },
+                    {
+                      "key": "slug",
+                      "type": "text",
+                      "value": "weaves"
+                    },
+                    {
+                      "key": "description",
+                      "type": "text",
+                      "value": "Traditional handloom weaves"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "type": "text",
+                      "value": "1"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Optional group image."
+                    }
+                  ]
+                },
+                "url": "{{base_url}}/catalog/admin/groups"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Catalogue group created',()=>pm.response.to.have.status(201));",
+                      "if(pm.response.code===201)pm.collectionVariables.set('group_id',pm.response.json().data._id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update Catalogue Group",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "type": "text",
+                      "value": "Updated Group"
+                    },
+                    {
+                      "key": "slug",
+                      "type": "text",
+                      "value": "updated-group"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "type": "text",
+                      "value": "1"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Optional replacement group image."
+                    }
+                  ]
+                },
+                "url": "{{base_url}}/catalog/admin/groups/{{group_id}}"
+              }
+            },
+            {
+              "name": "Delete Catalogue Group",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/groups/{{group_id}}"
+              }
             },
             {
               "name": "List All Categories",
@@ -701,7 +868,7 @@
                 "url": "{{base_url}}/auth/ecommerce/select-role",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"role\": \"customer\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
+                  "raw": "{\n  \"role\": \"customer\",\n  \"email\": \"customer@example.com\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -779,7 +946,7 @@
                 "url": "{{base_url}}/auth/ecommerce/request-otp",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"name\": \"Customer Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"email\": \"customer@example.com\",\n  \"name\": \"Customer Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -844,11 +1011,39 @@
           "name": "Catalogue",
           "item": [
             {
+              "name": "List Catalogue Groups",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/groups"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Catalogue groups loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){for(const item of pm.response.json().data){if(item.slug)pm.collectionVariables.set(item.slug+'_group_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
               "name": "List Weaves Categories",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": "{{base_url}}/catalog/categories?type=weaves"
+              }
+            },
+            {
+              "name": "List Categories by Group ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?groupId={{weaves_group_id}}"
               }
             },
             {
@@ -914,7 +1109,7 @@
                 "url": "{{base_url}}/auth/ecommerce/select-role",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"role\": \"merchant\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
+                  "raw": "{\n  \"role\": \"merchant\",\n  \"email\": \"merchant@example.com\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -992,7 +1187,7 @@
                 "url": "{{base_url}}/auth/ecommerce/request-otp",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"name\": \"Merchant Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"email\": \"merchant@example.com\",\n  \"name\": \"Merchant Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1057,11 +1252,39 @@
           "name": "Catalogue",
           "item": [
             {
+              "name": "List Catalogue Groups",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/groups"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Catalogue groups loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){for(const item of pm.response.json().data){if(item.slug)pm.collectionVariables.set(item.slug+'_group_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
               "name": "List Weaves Categories",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": "{{base_url}}/catalog/categories?type=weaves"
+              }
+            },
+            {
+              "name": "List Categories by Group ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?groupId={{weaves_group_id}}"
               }
             },
             {

@@ -96,12 +96,13 @@ async function sendOtp(mobile, code) {
   }
 }
 
-export async function requestUserOtp({ mobile, name, password, rememberMe }) {
+export async function requestUserOtp({ mobile, email, name, password, rememberMe }) {
   const code = randomInt(100000, 1000000).toString();
   await sendOtp(mobile, code);
   await OtpChallenge.deleteMany({ mobile, consumedAt: null });
   await OtpChallenge.create({
     mobile,
+    email: email?.toLowerCase(),
     name,
     passwordHash: password ? await bcrypt.hash(password, 12) : undefined,
     rememberMe,
@@ -155,11 +156,12 @@ export async function verifyUserOtp({ mobile, otp, rememberMe }) {
     registrationRequired: true,
     registrationToken,
     mobile,
+    email: challenge.email,
     name: challenge.name,
   };
 }
 
-export async function completeUserRegistration({ registrationToken, role }) {
+export async function completeUserRegistration({ registrationToken, role, email }) {
   let payload;
   try {
     payload = jwt.verify(registrationToken, env.ACCESS_TOKEN_SECRET);
@@ -214,8 +216,24 @@ export async function completeUserRegistration({ registrationToken, role }) {
     });
   }
 
+  const registrationEmail = challenge.email || email?.toLowerCase();
+  if (!registrationEmail) {
+    throw new AppError('Email is required to complete registration.', {
+      statusCode: 400,
+      code: 'REGISTRATION_EMAIL_REQUIRED',
+    });
+  }
+  const existingEmailUser = await User.findOne({ email: registrationEmail }).lean();
+  if (existingEmailUser) {
+    throw new AppError('An account already exists with this email address.', {
+      statusCode: 409,
+      code: 'EMAIL_ALREADY_REGISTERED',
+    });
+  }
+
   const user = await User.create({
     mobile: challenge.mobile,
+    email: registrationEmail,
     role,
     name: challenge.name,
     passwordHash: challenge.passwordHash,

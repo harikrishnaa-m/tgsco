@@ -90,17 +90,21 @@ Catalogue endpoints are available under `/api/v1/catalog`:
 | Method | Endpoint | Access |
 | ------ | -------- | ------ |
 | `GET` | `/catalog/categories` | Public |
+| `GET` | `/catalog/groups` | Public catalogue groups |
 | `GET` | `/catalog/products` | Public PLP with filters and pagination |
 | `GET` | `/catalog/products/<slug>` | Public PDP |
-
-The public category response includes each category ID. Product browsing
-accepts `categoryId=<id>` or comma-separated `categoryIds=<id-1>,<id-2>` for
-ID-based filtering. Slug and type filters remain supported for SEO-friendly
-links and top-level navigation.
+| `GET` | `/catalog/admin/groups` | Admin group management |
 | `GET` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
 | `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
 | `GET` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |
 | `POST/PATCH/DELETE` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |
+
+The public groups response contains database-managed top-level groups. Each
+category can reference a group through `groupId`, and the public category
+response includes each category ID. Product browsing accepts
+`categoryId=<id>` or comma-separated `categoryIds=<id-1>,<id-2>` for ID-based
+filtering. Slug and type filters remain supported as compatibility aliases.
+New groups can be added without changing the API code.
 
 Product catalogue content supports the Figma PDP/PLP fields, product images,
 inventory, product attributes, and merchant bulk-price tiers. Product image

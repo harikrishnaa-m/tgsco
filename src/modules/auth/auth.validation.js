@@ -13,6 +13,7 @@ const mobileSchema = z.string().trim().regex(/^\+?[1-9]\d{9,14}$/, 'Please provi
 
 export const requestOtpSchema = z.object({
   mobile: mobileSchema,
+  email: z.string().trim().email('Please provide a valid email address.').optional(),
   name: z.string().trim().min(2).max(100).optional(),
   password: z.string().min(8).optional(),
   rememberMe: z.boolean().default(false),
@@ -33,6 +34,7 @@ export const passwordLoginSchema = z.object({
 export const roleSelectionSchema = z.object({
   role: z.enum(['customer', 'merchant']),
   registrationToken: z.string().min(1),
+  email: z.string().trim().email('Please provide a valid email address.').optional(),
 });
 
 export const socialLoginSchema = z.object({

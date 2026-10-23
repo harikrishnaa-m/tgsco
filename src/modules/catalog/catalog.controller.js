@@ -1,32 +1,54 @@
 import {
   categoryQuerySchema,
   categorySchema,
+  groupSchema,
   productQuerySchema,
   productSchema,
 } from './catalog.validation.js';
 import {
   getProduct,
   getAdminProduct,
+  getGroup,
+  listAdminGroups,
   listAdminCategories,
+  listGroups,
   listAdminProducts,
   getCategory,
   listCategories,
   listProducts,
   parseCatalogContent,
   removeCategory,
+  removeGroup,
   removeProduct,
   saveCategory,
+  saveGroup,
   saveProduct,
 } from './catalog.service.js';
 
 export async function getCategories(req, res) {
-  const { type } = categoryQuerySchema.parse(req.query);
-  res.json({ success: true, data: await listCategories(type) });
+  const { type, groupId } = categoryQuerySchema.parse(req.query);
+  res.json({ success: true, data: await listCategories(type, groupId) });
+}
+
+export async function getGroups(req, res) {
+  res.json({ success: true, data: await listGroups() });
+}
+
+export async function getGroupById(req, res) {
+  res.json({ success: true, data: await getGroup(req.params.id) });
+}
+
+export async function getAdminGroups(req, res) {
+  res.json({ success: true, data: await listAdminGroups() });
+}
+
+export async function getAdminGroupById(req, res) {
+  res.json({ success: true, data: await getGroup(req.params.id, true) });
 }
 
 export async function getAdminCategories(req, res) {
-  const { type } = categoryQuerySchema.parse(req.query);
-  res.json({ success: true, data: await listAdminCategories(type) });
+  const { type, groupId } = categoryQuerySchema.parse(req.query);
+  res.json({ success: true, data: await listAdminCategories(type, groupId) });
 }
 
 export async function getAdminCategory(req, res) {
@@ -54,6 +76,29 @@ export async function createCategory(req, res) {
     success: true,
     data: await saveCategory(categorySchema.parse(parseCatalogContent(req)), req.files),
   });
+}
+
+export async function createGroup(req, res) {
+  res.status(201).json({
+    success: true,
+    data: await saveGroup(groupSchema.parse(parseCatalogContent(req)), req.files),
+  });
+}
+
+export async function updateGroup(req, res) {
+  res.json({
+    success: true,
+    data: await saveGroup(
+      groupSchema.parse(parseCatalogContent(req)),
+      req.files,
+      req.params.id,
+    ),
+  });
+}
+
+export async function deleteGroup(req, res) {
+  await removeGroup(req.params.id);
+  res.json({ success: true, data: { message: 'The catalogue group was deleted successfully.' } });
 }
 
 export async function updateCategory(req, res) {

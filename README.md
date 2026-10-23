@@ -79,11 +79,16 @@ Customer and merchant sign-in uses mobile OTP verification through 2Factor:
 | Method | Endpoint | Purpose |
 | ------ | -------- | ------- |
 | `POST` | `/auth/ecommerce/request-otp` | Send a customer or merchant OTP |
+| `POST` | `/auth/ecommerce/resend-otp` | Replace an active OTP and send a new one |
 | `POST` | `/auth/ecommerce/verify-otp` | Verify the OTP and issue JWT sessions |
 
 Set `TWO_FACTOR_API_KEY` and, when required by the 2Factor account,
 `TWO_FACTOR_TEMPLATE_NAME`. OTP challenges expire after
 `OTP_EXPIRES_MINUTES` and are limited to five verification attempts.
+
+The resend endpoint accepts the same payload as `request-otp`. Existing users
+can send only `mobile`; new registrations can resend with `mobile`, `email`,
+`name`, and `password`.
 
 Catalogue endpoints are available under `/api/v1/catalog`:
 

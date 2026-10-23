@@ -50,6 +50,11 @@ export async function requestOtp(req, res) {
   res.status(200).json({ success: true, data });
 }
 
+export async function resendOtp(req, res) {
+  const data = await requestUserOtp(requestOtpSchema.parse(req.body));
+  res.status(200).json({ success: true, data });
+}
+
 export async function verifyOtp(req, res) {
   const data = await verifyUserOtp(verifyOtpSchema.parse(req.body));
   res.status(200).json({ success: true, data });

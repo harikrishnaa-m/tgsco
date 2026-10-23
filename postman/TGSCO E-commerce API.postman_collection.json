@@ -990,6 +990,28 @@
               ]
             },
             {
+              "name": "Resend Customer OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/resend-otp",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"email\": \"customer@example.com\",\n  \"name\": \"Customer Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
               "name": "Google Sign In",
               "request": {
                 "method": "GET",
@@ -1229,6 +1251,28 @@
                   }
                 }
               ]
+            },
+            {
+              "name": "Resend Merchant OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/resend-otp",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"email\": \"merchant@example.com\",\n  \"name\": \"Merchant Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
             },
             {
               "name": "Google Sign In",

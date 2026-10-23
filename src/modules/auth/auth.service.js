@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes, randomInt, randomUUID } from 'node:crypto';
+import { createHash, createHmac, randomBytes, randomUUID } from 'node:crypto';
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -73,7 +73,7 @@ export async function createUserSession(user, rememberMe = false) {
   return tokenResponse(user, accessToken, refreshToken);
 }
 
-async function sendOtp(mobile, code) {
+async function sendOtp(mobile) {
   if (!env.TWO_FACTOR_API_KEY) {
     throw new AppError('OTP delivery is not configured.', {
       statusCode: 503,
@@ -81,24 +81,22 @@ async function sendOtp(mobile, code) {
     });
   }
 
-  const template = env.TWO_FACTOR_TEMPLATE_NAME
-    ? `/${encodeURIComponent(env.TWO_FACTOR_TEMPLATE_NAME)}`
-    : '';
+  const template = encodeURIComponent(env.TWO_FACTOR_TEMPLATE_NAME || 'OTP2');
   const response = await fetch(
-    `https://2factor.in/API/V1/${env.TWO_FACTOR_API_KEY}/SMS/${encodeURIComponent(mobile)}/${code}${template}`,
+    `https://2factor.in/API/V1/${env.TWO_FACTOR_API_KEY}/SMS/${encodeURIComponent(mobile)}/AUTOGEN/${template}`,
   );
-
-  if (!response.ok) {
+  const result = await response.json();
+  if (!response.ok || result.Status !== 'Success' || !result.Details) {
     throw new AppError('The OTP provider could not send the verification code.', {
       statusCode: 502,
       code: 'OTP_PROVIDER_ERROR',
     });
   }
+  return result.Details;
 }
 
 export async function requestUserOtp({ mobile, email, name, password, rememberMe }) {
-  const code = randomInt(100000, 1000000).toString();
-  await sendOtp(mobile, code);
+  const providerSessionId = await sendOtp(mobile);
   await OtpChallenge.deleteMany({ mobile, consumedAt: null });
   await OtpChallenge.create({
     mobile,
@@ -106,7 +104,7 @@ export async function requestUserOtp({ mobile, email, name, password, rememberMe
     name,
     passwordHash: password ? await bcrypt.hash(password, 12) : undefined,
     rememberMe,
-    codeHash: hashOtp(code),
+    providerSessionId,
     expiresAt: new Date(Date.now() + env.OTP_EXPIRES_MINUTES * 60 * 1000),
   });
 
@@ -124,7 +122,18 @@ export async function verifyUserOtp({ mobile, otp, rememberMe }) {
     expiresAt: { $gt: new Date() },
   }).sort({ createdAt: -1 });
 
-  if (!challenge || challenge.attempts >= 5 || challenge.codeHash !== hashOtp(otp)) {
+  let otpValid = false;
+  if (challenge?.providerSessionId) {
+    const verifyUrl =
+      `https://2factor.in/API/V1/${env.TWO_FACTOR_API_KEY}/SMS/VERIFY/` +
+      `${encodeURIComponent(challenge.providerSessionId)}/${encodeURIComponent(otp)}`;
+    const response = await fetch(verifyUrl);
+    const result = await response.json();
+    otpValid = response.ok && result.Status === 'Success';
+  } else {
+    otpValid = Boolean(challenge?.codeHash && challenge.codeHash === hashOtp(otp));
+  }
+  if (!challenge || challenge.attempts >= 5 || !otpValid) {
     if (challenge) {
       challenge.attempts += 1;
       await challenge.save();

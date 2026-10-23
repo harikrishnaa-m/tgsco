@@ -10,6 +10,7 @@ import newsContentRoutes from '../modules/news-content/news-content.routes.js';
 import contactContentRoutes from '../modules/contact-content/contact-content.routes.js';
 import contactInquiryRoutes from '../modules/contact-inquiry/contact-inquiry.routes.js';
 import videoMediaRoutes from '../modules/video-media/video-media.routes.js';
+import catalogRoutes from '../modules/catalog/catalog.routes.js';
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.use('/news-content', newsContentRoutes);
 router.use('/contact-content', contactContentRoutes);
 router.use('/contact-inquiries', contactInquiryRoutes);
 router.use('/media/videos', videoMediaRoutes);
+router.use('/catalog', catalogRoutes);
 
 export default router;

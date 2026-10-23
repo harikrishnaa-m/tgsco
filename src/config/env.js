@@ -18,6 +18,16 @@ const envSchema = z.object({
   DO_SPACES_KEY: z.string().optional(),
   DO_SPACES_SECRET: z.string().optional(),
   DO_SPACES_CDN_URL: z.string().url().optional(),
+  TWO_FACTOR_API_KEY: z.string().optional(),
+  TWO_FACTOR_TEMPLATE_NAME: z.string().optional(),
+  OTP_EXPIRES_MINUTES: z.coerce.number().int().positive().default(5),
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  GOOGLE_REDIRECT_URI: z.string().url().optional(),
+  FACEBOOK_APP_ID: z.string().optional(),
+  FACEBOOK_APP_SECRET: z.string().optional(),
+  FACEBOOK_CONFIG_ID: z.string().optional(),
+  FACEBOOK_REDIRECT_URI: z.string().url().optional(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

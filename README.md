@@ -43,8 +43,9 @@ The password is stored as a bcrypt hash and is never logged.
 ## Postman collection
 
 Import [postman/TGSCO Backend.postman_collection.json](./postman/TGSCO%20Backend.postman_collection.json)
-into Postman. The collection currently includes only the implemented system
-health and admin-auth workflows.
+into Postman for CMS, health, and admin-auth workflows. E-commerce has a
+separate [postman/TGSCO E-commerce API.postman_collection.json](./postman/TGSCO%20E-commerce%20API.postman_collection.json)
+collection organized by Admin, Customer, and Merchant.
 
 Run **Admin Login** before protected requests. Its test script automatically
 stores `admin_token`, `admin_refresh_token`, `admin_id`, and `admin_role` as
@@ -70,6 +71,39 @@ Authentication endpoints are available under `/api/v1/auth`:
 | `POST` | `/login`   | Sign in with admin credentials              |
 | `POST` | `/refresh` | Rotate a refresh token and issue new tokens |
 | `POST` | `/logout`  | Revoke a refresh token                      |
+
+## E-commerce authentication and catalogue
+
+Customer and merchant sign-in uses mobile OTP verification through 2Factor:
+
+| Method | Endpoint | Purpose |
+| ------ | -------- | ------- |
+| `POST` | `/auth/ecommerce/request-otp` | Send a customer or merchant OTP |
+| `POST` | `/auth/ecommerce/verify-otp` | Verify the OTP and issue JWT sessions |
+
+Set `TWO_FACTOR_API_KEY` and, when required by the 2Factor account,
+`TWO_FACTOR_TEMPLATE_NAME`. OTP challenges expire after
+`OTP_EXPIRES_MINUTES` and are limited to five verification attempts.
+
+Catalogue endpoints are available under `/api/v1/catalog`:
+
+| Method | Endpoint | Access |
+| ------ | -------- | ------ |
+| `GET` | `/catalog/categories` | Public |
+| `GET` | `/catalog/products` | Public PLP with filters and pagination |
+| `GET` | `/catalog/products/<slug>` | Public PDP |
+| `GET` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
+| `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
+| `GET` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |
+| `POST/PATCH/DELETE` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |
+
+Product catalogue content supports the Figma PDP/PLP fields, product images,
+inventory, product attributes, and merchant bulk-price tiers. Product image
+uploads use multipart fields such as `images[0].url`; the uploaded DigitalOcean
+URL is saved in the product document. Products relate to categories through
+the `categoryIds` array, while `categorySlugs` and `types` are derived/indexing
+fields used for public catalogue filtering. This allows one product to appear
+under multiple categories such as Weddings, Cotton, and Pochampally.
 
 ## Homepage content
 

@@ -4,22 +4,27 @@ const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
+      sparse: true,
       lowercase: true,
       trim: true,
     },
     passwordHash: {
       type: String,
-      required: true,
+      required: false,
       select: false,
     },
     role: {
       type: String,
-      enum: ['admin', 'editor'],
+      enum: ['admin', 'editor', 'customer', 'merchant'],
       default: 'editor',
       required: true,
     },
+    name: { type: String, trim: true },
+    mobile: { type: String, unique: true, sparse: true, trim: true },
+    facebookId: { type: String, unique: true, sparse: true, trim: true },
+    isVerified: { type: Boolean, default: false },
   },
   {
     timestamps: true,

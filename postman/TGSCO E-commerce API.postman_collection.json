@@ -1,0 +1,1096 @@
+{
+  "info": {
+    "name": "TGSCO E-commerce API",
+    "description": "Customer, merchant, and admin authentication and catalogue workflows. Import this separately from the CMS collection.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api/v1"
+    },
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "customer_token",
+      "value": ""
+    },
+    {
+      "key": "merchant_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "category_id",
+      "value": ""
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    },
+    {
+      "key": "product_slug",
+      "value": "pochampally-ikat-silk-saree"
+    },
+    {
+      "key": "weddings_category_id",
+      "value": ""
+    },
+    {
+      "key": "cotton_category_id",
+      "value": ""
+    },
+    {
+      "key": "pochampally_category_id",
+      "value": ""
+    },
+    {
+      "key": "narayanpet_category_id",
+      "value": ""
+    },
+    {
+      "key": "registration_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Admin Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/login",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Login succeeded\",()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){pm.collectionVariables.set(\"admin_token\",pm.response.json().data.accessToken);pm.collectionVariables.set(\"refresh_token\",pm.response.json().data.refreshToken);}"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Catalogue",
+          "item": [
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "type": "text",
+                      "value": "{\"name\":\"Weaves\",\"slug\":\"weaves\",\"type\":\"weaves\",\"description\":\"Handloom weaves\",\"subtitle\":\"Traditional handloom collections\",\"active\":true}"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the category image."
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Category created\",()=>pm.response.to.have.status(201));",
+                      "if(pm.response.code===201)pm.collectionVariables.set(\"category_id\",pm.response.json().data._id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create Product",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/products",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "type": "text",
+                      "value": "Pochampally Ikat Silk Saree"
+                    },
+                    {
+                      "key": "slug",
+                      "type": "text",
+                      "value": "pochampally-ikat-silk-saree"
+                    },
+                    {
+                      "key": "sku",
+                      "type": "text",
+                      "value": "TGSCO-PW-2024"
+                    },
+                    {
+                      "key": "categorySlug",
+                      "type": "text",
+                      "value": "weddings"
+                    },
+                    {
+                      "key": "type",
+                      "type": "text",
+                      "value": "occasions"
+                    },
+                    {
+                      "key": "shortDescription",
+                      "type": "text",
+                      "value": "Pochampally Ikat silk saree"
+                    },
+                    {
+                      "key": "description",
+                      "type": "text",
+                      "value": "Handloom saree from Telangana."
+                    },
+                    {
+                      "key": "price",
+                      "type": "text",
+                      "value": "12499"
+                    },
+                    {
+                      "key": "originalPrice",
+                      "type": "text",
+                      "value": "14999"
+                    },
+                    {
+                      "key": "discountPercent",
+                      "type": "text",
+                      "value": "17"
+                    },
+                    {
+                      "key": "currency",
+                      "type": "text",
+                      "value": "INR"
+                    },
+                    {
+                      "key": "stockQuantity",
+                      "type": "text",
+                      "value": "100"
+                    },
+                    {
+                      "key": "active",
+                      "type": "text",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overview",
+                      "type": "text",
+                      "value": "Pochampally Ikat Legacy"
+                    },
+                    {
+                      "key": "craftStory",
+                      "type": "text",
+                      "value": "Woven by Telangana master weavers."
+                    },
+                    {
+                      "key": "materialCare",
+                      "type": "text",
+                      "value": "Dry clean only."
+                    },
+                    {
+                      "key": "shippingReturns",
+                      "type": "text",
+                      "value": "Shipping across India."
+                    },
+                    {
+                      "key": "categorySlugs",
+                      "type": "text",
+                      "value": "[\"weddings\",\"cotton\",\"pochampally\"]"
+                    },
+                    {
+                      "key": "categoryIds",
+                      "type": "text",
+                      "value": "[\"{{weddings_category_id}}\",\"{{cotton_category_id}}\",\"{{pochampally_category_id}}\"]"
+                    },
+                    {
+                      "key": "types",
+                      "type": "text",
+                      "value": "[\"occasions\",\"fabric\",\"weaves\"]"
+                    },
+                    {
+                      "key": "attributes",
+                      "type": "text",
+                      "value": "{\"handloomType\":\"Pochampally Ikat\",\"colour\":\"Vibrant Red & Deep Royal Blue\",\"fabric\":\"Pure Mulberry Silk\",\"weave\":\"Double Ikat Traditional Handloom\",\"dimensions\":\"6.3 metres\"}"
+                    },
+                    {
+                      "key": "bulkPricing",
+                      "type": "text",
+                      "value": "[{\"minimumQuantity\":10,\"maximumQuantity\":49,\"price\":11500},{\"minimumQuantity\":50,\"price\":10500}]"
+                    },
+                    {
+                      "key": "mainImage",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the primary product image."
+                    },
+                    {
+                      "key": "galleryImages",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select gallery image 1."
+                    },
+                    {
+                      "key": "galleryImages",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select gallery image 2."
+                    },
+                    {
+                      "key": "galleryImages",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select gallery image 3."
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Product created\",()=>pm.response.to.have.status(201));",
+                      "if(pm.response.code===201){pm.collectionVariables.set(\"product_id\",pm.response.json().data._id);pm.collectionVariables.set(\"product_slug\",pm.response.json().data.slug);}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List All Categories",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Categories loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const items=pm.response.json().data; for(const item of items){if(item.slug)pm.collectionVariables.set(item.slug+'_category_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get Category by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories/{{category_id}}"
+              }
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories/{{category_id}}",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "type": "text",
+                      "value": "Updated Category"
+                    },
+                    {
+                      "key": "slug",
+                      "type": "text",
+                      "value": "updated-category"
+                    },
+                    {
+                      "key": "type",
+                      "type": "text",
+                      "value": "occasions"
+                    },
+                    {
+                      "key": "active",
+                      "type": "text",
+                      "value": "true"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Optional replacement category image."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories/{{category_id}}"
+              }
+            },
+            {
+              "name": "List All Products",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/products"
+              }
+            },
+            {
+              "name": "Get Product by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/products/{{product_id}}"
+              }
+            },
+            {
+              "name": "Update Product",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/products/{{product_id}}",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "type": "text",
+                      "value": "Updated Pochampally Ikat Silk Saree"
+                    },
+                    {
+                      "key": "slug",
+                      "type": "text",
+                      "value": "updated-pochampally-ikat-silk-saree"
+                    },
+                    {
+                      "key": "sku",
+                      "type": "text",
+                      "value": "TGSCO-PW-2024"
+                    },
+                    {
+                      "key": "categorySlug",
+                      "type": "text",
+                      "value": "weddings"
+                    },
+                    {
+                      "key": "type",
+                      "type": "text",
+                      "value": "occasions"
+                    },
+                    {
+                      "key": "shortDescription",
+                      "type": "text",
+                      "value": "Pochampally Ikat silk saree"
+                    },
+                    {
+                      "key": "description",
+                      "type": "text",
+                      "value": "Handloom saree from Telangana."
+                    },
+                    {
+                      "key": "price",
+                      "type": "text",
+                      "value": "12499"
+                    },
+                    {
+                      "key": "originalPrice",
+                      "type": "text",
+                      "value": "14999"
+                    },
+                    {
+                      "key": "discountPercent",
+                      "type": "text",
+                      "value": "17"
+                    },
+                    {
+                      "key": "currency",
+                      "type": "text",
+                      "value": "INR"
+                    },
+                    {
+                      "key": "stockQuantity",
+                      "type": "text",
+                      "value": "100"
+                    },
+                    {
+                      "key": "active",
+                      "type": "text",
+                      "value": "true"
+                    },
+                    {
+                      "key": "overview",
+                      "type": "text",
+                      "value": "Pochampally Ikat Legacy"
+                    },
+                    {
+                      "key": "craftStory",
+                      "type": "text",
+                      "value": "Woven by Telangana master weavers."
+                    },
+                    {
+                      "key": "materialCare",
+                      "type": "text",
+                      "value": "Dry clean only."
+                    },
+                    {
+                      "key": "shippingReturns",
+                      "type": "text",
+                      "value": "Shipping across India."
+                    },
+                    {
+                      "key": "categorySlugs",
+                      "type": "text",
+                      "value": "[\"weddings\",\"cotton\",\"pochampally\"]"
+                    },
+                    {
+                      "key": "categoryIds",
+                      "type": "text",
+                      "value": "[\"{{weddings_category_id}}\",\"{{cotton_category_id}}\",\"{{pochampally_category_id}}\"]"
+                    },
+                    {
+                      "key": "types",
+                      "type": "text",
+                      "value": "[\"occasions\",\"fabric\",\"weaves\"]"
+                    },
+                    {
+                      "key": "attributes",
+                      "type": "text",
+                      "value": "{\"handloomType\":\"Pochampally Ikat\",\"colour\":\"Vibrant Red & Deep Royal Blue\",\"fabric\":\"Pure Mulberry Silk\",\"weave\":\"Double Ikat Traditional Handloom\",\"dimensions\":\"6.3 metres\"}"
+                    },
+                    {
+                      "key": "bulkPricing",
+                      "type": "text",
+                      "value": "[{\"minimumQuantity\":10,\"maximumQuantity\":49,\"price\":11500},{\"minimumQuantity\":50,\"price\":10500}]"
+                    },
+                    {
+                      "key": "mainImage",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select the primary product image."
+                    },
+                    {
+                      "key": "galleryImages",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select gallery image 1."
+                    },
+                    {
+                      "key": "galleryImages",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select gallery image 2."
+                    },
+                    {
+                      "key": "galleryImages",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select gallery image 3."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Product",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/products/{{product_id}}"
+              }
+            },
+            {
+              "name": "List Weaves Categories",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories?type=weaves"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Category list loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const items=pm.response.json().data; for(const item of items){if(item.slug)pm.collectionVariables.set(item.slug+'_category_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List Occasions Categories",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories?type=occasions"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Category list loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const items=pm.response.json().data; for(const item of items){if(item.slug)pm.collectionVariables.set(item.slug+'_category_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List Fabric Categories",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/catalog/admin/categories?type=fabric"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Category list loaded',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const items=pm.response.json().data; for(const item of items){if(item.slug)pm.collectionVariables.set(item.slug+'_category_id',item._id);}}"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Select Role",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/select-role",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"role\": \"customer\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Registration completed',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){pm.collectionVariables.set('customer_token',pm.response.json().data.accessToken);pm.collectionVariables.set('refresh_token',pm.response.json().data.refreshToken);pm.collectionVariables.unset('registration_token');}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Password Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/password-login",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifier\": \"+919876543210\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Continue as Guest",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/guest",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Request Customer OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/request-otp",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"name\": \"Customer Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Verify Customer OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/verify-otp",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"otp\": \"000000\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('OTP response received',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const data=pm.response.json().data;if(data.registrationRequired){pm.collectionVariables.set('registration_token',data.registrationToken);}else{pm.collectionVariables.set('customer_token',data.accessToken);pm.collectionVariables.set('refresh_token',data.refreshToken);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Google Sign In",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/auth/ecommerce/google"
+              }
+            },
+            {
+              "name": "Facebook Sign In",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/auth/ecommerce/facebook"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Catalogue",
+          "item": [
+            {
+              "name": "List Weaves Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?type=weaves"
+              }
+            },
+            {
+              "name": "List Occasions Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?type=occasions"
+              }
+            },
+            {
+              "name": "List Fabric Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?type=fabric"
+              }
+            },
+            {
+              "name": "Browse Products",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+              }
+            },
+            {
+              "name": "View Product Details",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products/{{product_slug}}"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Merchant",
+      "item": [
+        {
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Select Role",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/select-role",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"role\": \"merchant\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Registration completed',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){pm.collectionVariables.set('merchant_token',pm.response.json().data.accessToken);pm.collectionVariables.set('refresh_token',pm.response.json().data.refreshToken);pm.collectionVariables.unset('registration_token');}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Password Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/password-login",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifier\": \"+919876543211\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Continue as Guest",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/guest",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Request Merchant OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/request-otp",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"name\": \"Merchant Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Verify Merchant OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/auth/ecommerce/verify-otp",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"otp\": \"000000\",\n  \"rememberMe\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('OTP response received',()=>pm.response.to.have.status(200));",
+                      "if(pm.response.code===200){const data=pm.response.json().data;if(data.registrationRequired){pm.collectionVariables.set('registration_token',data.registrationToken);}else{pm.collectionVariables.set('merchant_token',data.accessToken);pm.collectionVariables.set('refresh_token',data.refreshToken);}}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Google Sign In",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/auth/ecommerce/google"
+              }
+            },
+            {
+              "name": "Facebook Sign In",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/auth/ecommerce/facebook"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Catalogue",
+          "item": [
+            {
+              "name": "List Weaves Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?type=weaves"
+              }
+            },
+            {
+              "name": "List Occasions Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?type=occasions"
+              }
+            },
+            {
+              "name": "List Fabric Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/categories?type=fabric"
+              }
+            },
+            {
+              "name": "Browse Products",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+              }
+            },
+            {
+              "name": "View Product Details",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products/{{product_slug}}"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

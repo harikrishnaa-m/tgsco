@@ -101,3 +101,10 @@ export const productQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(48).default(12),
 });
+
+export const productFilterQuerySchema = productQuerySchema.pick({
+  category: true,
+  categoryId: true,
+  categoryIds: true,
+  type: true,
+});

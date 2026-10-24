@@ -202,6 +202,7 @@ export async function listProducts(query) {
       $or: [{ categorySlug: query.category }, { categorySlugs: query.category }],
     });
   }
+
   if (query.categoryId || query.categoryIds?.length) {
     const categoryIds = query.categoryIds?.length ? query.categoryIds : [query.categoryId];
     taxonomyFilters.push({
@@ -246,6 +247,57 @@ export async function listProducts(query) {
     CatalogProduct.countDocuments(filter),
   ]);
   return { items, pagination: { page: query.page, limit: query.limit, total, pages: Math.ceil(total / query.limit) } };
+}
+
+export async function getProductFilterOptions(query) {
+  const filter = { active: true };
+  const taxonomyFilters = [];
+  if (query.category) {
+    taxonomyFilters.push({
+      $or: [{ categorySlug: query.category }, { categorySlugs: query.category }],
+    });
+  }
+  if (query.categoryId || query.categoryIds?.length) {
+    const categoryIds = query.categoryIds?.length ? query.categoryIds : [query.categoryId];
+    const objectIds = categoryIds.map((id) => new mongoose.Types.ObjectId(id));
+    taxonomyFilters.push({
+      $or: [
+        { category: { $in: objectIds } },
+        { categories: { $in: objectIds } },
+      ],
+    });
+  }
+  if (query.type) {
+    taxonomyFilters.push({
+      $or: [{ type: query.type }, { types: query.type }],
+    });
+  }
+  if (taxonomyFilters.length) filter.$and = taxonomyFilters;
+
+  const [handloomType, weave, fabric, color, priceBounds] = await Promise.all([
+    CatalogProduct.distinct('attributes.handloomType', filter),
+    CatalogProduct.distinct('attributes.weave', filter),
+    CatalogProduct.distinct('attributes.fabric', filter),
+    CatalogProduct.distinct('attributes.colour', filter),
+    CatalogProduct.aggregate([
+      { $match: filter },
+      {
+        $group: {
+          _id: null,
+          min: { $min: '$price' },
+          max: { $max: '$price' },
+        },
+      },
+    ]),
+  ]);
+
+  const price = priceBounds[0] || { min: null, max: null };
+  return {
+    handloomType: handloomType.filter(Boolean).sort(),
+    weaveCraft: [...new Set([...weave, ...fabric].filter(Boolean))].sort(),
+    color: color.filter(Boolean).sort(),
+    price: { min: price.min, max: price.max },
+  };
 }
 
 export async function getProduct(slug) {

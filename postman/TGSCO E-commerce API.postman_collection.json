@@ -1101,6 +1101,14 @@
               }
             },
             {
+              "name": "Get Dynamic Product Filters",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products/filters?categoryId={{weddings_category_id}}"
+              }
+            },
+            {
               "name": "View Product Details",
               "request": {
                 "method": "GET",
@@ -1369,6 +1377,14 @@
                 "method": "GET",
                 "header": [],
                 "url": "{{base_url}}/catalog/products?categoryIds={{weddings_category_id}},{{cotton_category_id}}&sort=newest&page=1&limit=12"
+              }
+            },
+            {
+              "name": "Get Dynamic Product Filters",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/catalog/products/filters?categoryIds={{weddings_category_id}},{{cotton_category_id}}"
               }
             },
             {

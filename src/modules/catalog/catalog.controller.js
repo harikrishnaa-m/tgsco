@@ -3,6 +3,7 @@ import {
   categorySchema,
   groupSchema,
   productQuerySchema,
+  productFilterQuerySchema,
   productSchema,
 } from './catalog.validation.js';
 import {
@@ -16,6 +17,7 @@ import {
   getCategory,
   listCategories,
   listProducts,
+  getProductFilterOptions,
   parseCatalogContent,
   removeCategory,
   removeGroup,
@@ -57,6 +59,13 @@ export async function getAdminCategory(req, res) {
 
 export async function getProducts(req, res) {
   res.json({ success: true, data: await listProducts(productQuerySchema.parse(req.query)) });
+}
+
+export async function getProductFilters(req, res) {
+  res.json({
+    success: true,
+    data: await getProductFilterOptions(productFilterQuerySchema.parse(req.query)),
+  });
 }
 
 export async function getProductBySlug(req, res) {

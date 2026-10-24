@@ -97,6 +97,7 @@ Catalogue endpoints are available under `/api/v1/catalog`:
 | `GET` | `/catalog/categories` | Public |
 | `GET` | `/catalog/groups` | Public catalogue groups |
 | `GET` | `/catalog/products` | Public PLP with filters and pagination |
+| `GET` | `/catalog/products/filters` | Public dynamic filter options |
 | `GET` | `/catalog/products/<id-or-slug>` | Public PDP by product ID or SEO slug |
 | `GET` | `/catalog/admin/groups` | Admin group management |
 | `GET` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
@@ -110,6 +111,14 @@ response includes each category ID. Product browsing accepts
 `categoryId=<id>` or comma-separated `categoryIds=<id-1>,<id-2>` for ID-based
 filtering. Slug and type filters remain supported as compatibility aliases.
 New groups can be added without changing the API code.
+
+The filter-options endpoint returns distinct values from active products and
+the current price range. It can be scoped by `categoryId`, `categoryIds`,
+`category`, or legacy `type`, for example:
+
+```text
+GET /catalog/products/filters?categoryId=<category-id>
+```
 
 Product catalogue content supports the Figma PDP/PLP fields, product images,
 inventory, product attributes, and merchant bulk-price tiers. Product image

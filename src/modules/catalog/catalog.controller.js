@@ -6,7 +6,7 @@ import {
   productSchema,
 } from './catalog.validation.js';
 import {
-  getProduct,
+  getPublicProduct,
   getAdminProduct,
   getGroup,
   listAdminGroups,
@@ -60,7 +60,7 @@ export async function getProducts(req, res) {
 }
 
 export async function getProductBySlug(req, res) {
-  res.json({ success: true, data: await getProduct(req.params.slug) });
+  res.json({ success: true, data: await getPublicProduct(req.params.identifier) });
 }
 
 export async function getAdminProducts(req, res) {

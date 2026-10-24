@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import { AppError } from '../../errors/app-error.js';
 import { CatalogCategory } from '../../models/catalog-category.model.js';
 import { CatalogGroup } from '../../models/catalog-group.model.js';
@@ -90,7 +92,7 @@ export async function getGroup(id, includeInactive = false) {
 export async function listCategories(type, groupId) {
   const match = { active: true };
   if (type) match.type = type;
-  if (groupId) match.group = groupId;
+  if (groupId) match.group = new mongoose.Types.ObjectId(groupId);
 
   return CatalogCategory.aggregate([
     { $match: match },
@@ -150,7 +152,10 @@ export async function getCategory(id) {
 }
 
 export async function listAdminCategories(type, groupId) {
-  const filter = { ...(type ? { type } : {}), ...(groupId ? { group: groupId } : {}) };
+  const filter = {
+    ...(type ? { type } : {}),
+    ...(groupId ? { group: new mongoose.Types.ObjectId(groupId) } : {}),
+  };
   return CatalogCategory.find(filter).sort({ type: 1, name: 1 }).lean();
 }
 
@@ -245,6 +250,15 @@ export async function listProducts(query) {
 
 export async function getProduct(slug) {
   const product = await CatalogProduct.findOne({ slug, active: true }).lean();
+  if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  return product;
+}
+
+export async function getPublicProduct(identifier) {
+  const filter = mongoose.isValidObjectId(identifier)
+    ? { _id: identifier, active: true }
+    : { slug: identifier, active: true };
+  const product = await CatalogProduct.findOne(filter).lean();
   if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
   return product;
 }

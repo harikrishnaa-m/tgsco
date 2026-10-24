@@ -97,7 +97,7 @@ Catalogue endpoints are available under `/api/v1/catalog`:
 | `GET` | `/catalog/categories` | Public |
 | `GET` | `/catalog/groups` | Public catalogue groups |
 | `GET` | `/catalog/products` | Public PLP with filters and pagination |
-| `GET` | `/catalog/products/<slug>` | Public PDP |
+| `GET` | `/catalog/products/<id-or-slug>` | Public PDP by product ID or SEO slug |
 | `GET` | `/catalog/admin/groups` | Admin group management |
 | `GET` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
 | `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |

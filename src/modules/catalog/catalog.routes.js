@@ -30,7 +30,7 @@ router.get('/categories', getCategories);
 router.get('/groups', getGroups);
 router.get('/groups/:id', getGroupById);
 router.get('/products', getProducts);
-router.get('/products/:slug', getProductBySlug);
+router.get('/products/:identifier', getProductBySlug);
 router.get('/admin/groups', requireAdmin, getAdminGroups);
 router.get('/admin/groups/:id', requireAdmin, getAdminGroupById);
 router.get('/admin/categories', requireAdmin, getAdminCategories);

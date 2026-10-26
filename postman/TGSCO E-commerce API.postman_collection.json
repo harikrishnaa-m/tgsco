@@ -7,7 +7,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:5000/api/v1"
+      "value": "http://localhost:5000"
     },
     {
       "key": "admin_token",
@@ -111,7 +111,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/login",
+                "url": "{{base_url}}/api/v1/auth/login",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}",
@@ -150,7 +150,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories",
+                "url": "{{base_url}}/api/v1/catalog/admin/categories",
                 "body": {
                   "mode": "formdata",
                   "formdata": [
@@ -216,7 +216,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/products",
+                "url": "{{base_url}}/api/v1/catalog/admin/products",
                 "body": {
                   "mode": "formdata",
                   "formdata": [
@@ -385,7 +385,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/groups"
+                "url": "{{base_url}}/api/v1/catalog/admin/groups"
               },
               "event": [
                 {
@@ -441,7 +441,7 @@
                     }
                   ]
                 },
-                "url": "{{base_url}}/catalog/admin/groups"
+                "url": "{{base_url}}/api/v1/catalog/admin/groups"
               },
               "event": [
                 {
@@ -492,7 +492,7 @@
                     }
                   ]
                 },
-                "url": "{{base_url}}/catalog/admin/groups/{{group_id}}"
+                "url": "{{base_url}}/api/v1/catalog/admin/groups/{{group_id}}"
               }
             },
             {
@@ -505,7 +505,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/groups/{{group_id}}"
+                "url": "{{base_url}}/api/v1/catalog/admin/groups/{{group_id}}"
               }
             },
             {
@@ -518,7 +518,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories"
+                "url": "{{base_url}}/api/v1/catalog/admin/categories"
               },
               "event": [
                 {
@@ -543,7 +543,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories/{{category_id}}"
+                "url": "{{base_url}}/api/v1/catalog/admin/categories/{{category_id}}"
               }
             },
             {
@@ -560,7 +560,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories/{{category_id}}",
+                "url": "{{base_url}}/api/v1/catalog/admin/categories/{{category_id}}",
                 "body": {
                   "mode": "formdata",
                   "formdata": [
@@ -604,7 +604,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories/{{category_id}}"
+                "url": "{{base_url}}/api/v1/catalog/admin/categories/{{category_id}}"
               }
             },
             {
@@ -617,7 +617,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/products"
+                "url": "{{base_url}}/api/v1/catalog/admin/products"
               }
             },
             {
@@ -630,7 +630,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/products/{{product_id}}"
+                "url": "{{base_url}}/api/v1/catalog/admin/products/{{product_id}}"
               }
             },
             {
@@ -647,7 +647,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/products/{{product_id}}",
+                "url": "{{base_url}}/api/v1/catalog/admin/products/{{product_id}}",
                 "body": {
                   "mode": "formdata",
                   "formdata": [
@@ -799,7 +799,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/products/{{product_id}}"
+                "url": "{{base_url}}/api/v1/catalog/admin/products/{{product_id}}"
               }
             },
             {
@@ -812,7 +812,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories?type=weaves"
+                "url": "{{base_url}}/api/v1/catalog/admin/categories?type=weaves"
               },
               "event": [
                 {
@@ -837,7 +837,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories?type=occasions"
+                "url": "{{base_url}}/api/v1/catalog/admin/categories?type=occasions"
               },
               "event": [
                 {
@@ -862,7 +862,7 @@
                     "value": "Bearer {{admin_token}}"
                   }
                 ],
-                "url": "{{base_url}}/catalog/admin/categories?type=fabric"
+                "url": "{{base_url}}/api/v1/catalog/admin/categories?type=fabric"
               },
               "event": [
                 {
@@ -897,9 +897,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders?search=DEL123&status=processing&paymentStatus=captured&from=2026-10-01&to=2026-10-26&sort=newest&page=1&limit=20"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders?search=DEL123&status=processing&paymentStatus=captured&from=2026-10-01&to=2026-10-26&sort=newest&page=1&limit=20"
               },
               "event": [
                 {
@@ -929,9 +927,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/filters"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/filters"
               },
               "event": [
                 {
@@ -960,9 +956,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}"
               },
               "event": [
                 {
@@ -992,9 +986,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/status"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/status",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"status\": \"processing\",\n  \"message\": \"Order approved for packing.\"\n}",
@@ -1032,9 +1024,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/shipment",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"DEL123456789\",\n  \"status\": \"label_created\",\n  \"shippedAt\": \"2026-10-27T09:00:00.000Z\",\n  \"estimatedDeliveryAt\": \"2026-11-02T00:00:00.000Z\"\n}",
@@ -1072,9 +1062,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/shipment",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"DEL123456789\",\n  \"status\": \"in_transit\",\n  \"shippedAt\": \"2026-10-27T09:00:00.000Z\",\n  \"estimatedDeliveryAt\": \"2026-11-02T00:00:00.000Z\"\n}",
@@ -1112,9 +1100,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment/status"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/shipment/status",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"status\": \"delivered\"\n}",
@@ -1152,9 +1138,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/notes",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"message\": \"Customer requested careful packaging.\"\n}",
@@ -1192,9 +1176,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/notes"
               },
               "event": [
                 {
@@ -1223,9 +1205,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/cancel"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/cancel",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"reason\": \"Customer cancellation request\",\n  \"refund\": {\n    \"amount\": 1250,\n    \"status\": \"requested\",\n    \"reference\": \"REF-EXAMPLE-001\"\n  }\n}",
@@ -1263,9 +1243,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/invoice"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/invoice"
               },
               "event": [
                 {
@@ -1309,9 +1287,7 @@
                     }
                   }
                 },
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/refunds"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/refunds"
               },
               "event": [
                 {
@@ -1341,9 +1317,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/refunds/{{refund_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/refunds/{{refund_id}}"
               },
               "event": [
                 {
@@ -1378,9 +1352,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings"
               },
               "event": [
                 {
@@ -1409,9 +1381,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/metadata"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/metadata"
               },
               "event": [
                 {
@@ -1440,9 +1410,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/invoice"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/invoice"
               },
               "event": [
                 {
@@ -1472,9 +1440,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/invoice"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/invoice",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"legalBusinessName\": \"TGSCO Textiles Private Limited\",\n  \"displayBusinessName\": \"TGSCO\",\n  \"sellerAddress\": {\n    \"line1\": \"12 Textile Market Road\",\n    \"line2\": \"Banjara Hills\",\n    \"city\": \"Hyderabad\",\n    \"state\": \"Telangana\",\n    \"postalCode\": \"500034\",\n    \"country\": \"India\"\n  },\n  \"gstin\": \"36ABCDE1234F1Z5\",\n  \"pan\": \"ABCDE1234F\",\n  \"contact\": {\n    \"phone\": \"+919876543210\",\n    \"email\": \"accounts@example.com\"\n  },\n  \"invoicePrefix\": \"TGS\",\n  \"financialYear\": \"2026-27\",\n  \"nextSequence\": 1,\n  \"terms\": \"Goods once sold are subject to the returns policy.\",\n  \"returnsPolicy\": \"Returns accepted within seven days for eligible products.\",\n  \"signatory\": {\n    \"name\": \"A. Signatory\",\n    \"designation\": \"Director\"\n  },\n  \"bankDetails\": {\n    \"bankName\": \"Example Bank\",\n    \"accountName\": \"TGSCO Textiles Private Limited\",\n    \"accountNumber\": \"0000000000\",\n    \"ifsc\": \"EXMP0000001\"\n  },\n  \"active\": true\n}",
@@ -1513,9 +1479,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/shipping"
               },
               "event": [
                 {
@@ -1545,9 +1509,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/shipping",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  true,\r\n    \"percentage\":  3.5,\r\n    \"type\":  \"shipping\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  2500,\r\n    \"taxRate\":  18,\r\n    \"name\":  \"Standard shipping\",\r\n    \"active\":  true,\r\n    \"code\":  \"shipping-standard\",\r\n    \"conditions\":  {\r\n                       \"serviceLevel\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -1586,9 +1548,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping/{{shipping_charge_id}}"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/shipping/{{shipping_charge_id}}",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  true,\r\n    \"percentage\":  3.75,\r\n    \"type\":  \"shipping\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  2500,\r\n    \"taxRate\":  18,\r\n    \"name\":  \"Standard shipping\",\r\n    \"active\":  true,\r\n    \"code\":  \"shipping-standard\",\r\n    \"conditions\":  {\r\n                       \"serviceLevel\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -1626,9 +1586,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping/{{shipping_charge_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/shipping/{{shipping_charge_id}}"
               },
               "event": [
                 {
@@ -1657,9 +1615,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/packing"
               },
               "event": [
                 {
@@ -1689,9 +1645,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/packing",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  false,\r\n    \"percentage\":  1.5,\r\n    \"type\":  \"packing\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  5000,\r\n    \"taxRate\":  0,\r\n    \"name\":  \"Standard packing\",\r\n    \"active\":  true,\r\n    \"code\":  \"packing-standard\",\r\n    \"conditions\":  {\r\n                       \"packaging\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -1730,9 +1684,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing/{{packing_charge_id}}"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/packing/{{packing_charge_id}}",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  false,\r\n    \"percentage\":  1.75,\r\n    \"type\":  \"packing\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  5000,\r\n    \"taxRate\":  0,\r\n    \"name\":  \"Standard packing\",\r\n    \"active\":  true,\r\n    \"code\":  \"packing-standard\",\r\n    \"conditions\":  {\r\n                       \"packaging\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -1770,9 +1722,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing/{{packing_charge_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/packing/{{packing_charge_id}}"
               },
               "event": [
                 {
@@ -1801,9 +1751,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/charges"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/charges",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"type\": \"shipping\",\n  \"code\": \"cod\",\n  \"name\": \"Cash on delivery\",\n  \"method\": \"flat\",\n  \"amount\": 40,\n  \"percentage\": 0,\n  \"freeAbove\": 10000,\n  \"taxable\": false,\n  \"taxRate\": 0,\n  \"active\": true,\n  \"conditions\": {\n    \"paymentMethod\": \"cod\",\n    \"appliesTo\": \"all\"\n  }\n}",
@@ -1842,9 +1790,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/charges/{{shipping_charge_id}}"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/charges/{{shipping_charge_id}}",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"type\": \"shipping\",\n  \"code\": \"cod\",\n  \"name\": \"Cash on delivery\",\n  \"method\": \"flat\",\n  \"amount\": 45,\n  \"percentage\": 0,\n  \"freeAbove\": 10000,\n  \"taxable\": false,\n  \"taxRate\": 0,\n  \"active\": true,\n  \"conditions\": {\n    \"paymentMethod\": \"cod\",\n    \"appliesTo\": \"all\"\n  }\n}",
@@ -1882,9 +1828,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/charges/{{shipping_charge_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/charges/{{shipping_charge_id}}"
               },
               "event": [
                 {
@@ -1918,7 +1862,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/select-role",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/select-role",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"role\": \"customer\",\n  \"email\": \"customer@example.com\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
@@ -1952,7 +1896,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/password-login",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/password-login",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"identifier\": \"+919876543210\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
@@ -1974,7 +1918,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/guest",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/guest",
                 "body": {
                   "mode": "raw",
                   "raw": "{}",
@@ -1996,7 +1940,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/request-otp",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/request-otp",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"email\": \"customer@example.com\",\n  \"name\": \"Customer Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
@@ -2018,7 +1962,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/verify-otp",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/verify-otp",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"otp\": \"000000\",\n  \"rememberMe\": true\n}",
@@ -2052,7 +1996,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/resend-otp",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/resend-otp",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mobile\": \"+919876543210\",\n  \"email\": \"customer@example.com\",\n  \"name\": \"Customer Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
@@ -2069,7 +2013,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/auth/ecommerce/google"
+                "url": "{{base_url}}/api/v1/auth/ecommerce/google"
               }
             },
             {
@@ -2077,7 +2021,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/auth/ecommerce/facebook"
+                "url": "{{base_url}}/api/v1/auth/ecommerce/facebook"
               }
             }
           ]
@@ -2090,7 +2034,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/groups"
+                "url": "{{base_url}}/api/v1/catalog/groups"
               },
               "event": [
                 {
@@ -2110,7 +2054,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?type=weaves"
+                "url": "{{base_url}}/api/v1/catalog/categories?type=weaves"
               }
             },
             {
@@ -2118,7 +2062,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?groupId={{weaves_group_id}}"
+                "url": "{{base_url}}/api/v1/catalog/categories?groupId={{weaves_group_id}}"
               }
             },
             {
@@ -2126,7 +2070,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?type=occasions"
+                "url": "{{base_url}}/api/v1/catalog/categories?type=occasions"
               }
             },
             {
@@ -2134,7 +2078,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?type=fabric"
+                "url": "{{base_url}}/api/v1/catalog/categories?type=fabric"
               }
             },
             {
@@ -2142,7 +2086,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+                "url": "{{base_url}}/api/v1/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
               }
             },
             {
@@ -2150,7 +2094,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products?categoryId={{weddings_category_id}}&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+                "url": "{{base_url}}/api/v1/catalog/products?categoryId={{weddings_category_id}}&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
               }
             },
             {
@@ -2158,7 +2102,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products/filters?categoryId={{weddings_category_id}}"
+                "url": "{{base_url}}/api/v1/catalog/products/filters?categoryId={{weddings_category_id}}"
               }
             },
             {
@@ -2166,7 +2110,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products/{{product_slug}}"
+                "url": "{{base_url}}/api/v1/catalog/products/{{product_slug}}"
               }
             },
             {
@@ -2174,7 +2118,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products/{{product_id}}"
+                "url": "{{base_url}}/api/v1/catalog/products/{{product_id}}"
               }
             }
           ]
@@ -2192,7 +2136,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/cart"
+                "url": "{{base_url}}/api/v1/cart"
               }
             },
             {
@@ -2218,7 +2162,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/cart/items"
+                "url": "{{base_url}}/api/v1/cart/items"
               }
             },
             {
@@ -2244,7 +2188,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/cart/merge"
+                "url": "{{base_url}}/api/v1/cart/merge"
               }
             },
             {
@@ -2270,7 +2214,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/cart/items/{{product_id}}"
+                "url": "{{base_url}}/api/v1/cart/items/{{product_id}}"
               }
             },
             {
@@ -2283,7 +2227,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/cart/items/{{product_id}}"
+                "url": "{{base_url}}/api/v1/cart/items/{{product_id}}"
               }
             },
             {
@@ -2296,7 +2240,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/cart"
+                "url": "{{base_url}}/api/v1/cart"
               }
             }
           ]
@@ -2314,7 +2258,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/wishlist"
+                "url": "{{base_url}}/api/v1/wishlist"
               }
             },
             {
@@ -2340,7 +2284,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/wishlist/items"
+                "url": "{{base_url}}/api/v1/wishlist/items"
               }
             },
             {
@@ -2366,7 +2310,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/wishlist/merge"
+                "url": "{{base_url}}/api/v1/wishlist/merge"
               }
             },
             {
@@ -2379,7 +2323,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/wishlist/items/{{product_id}}"
+                "url": "{{base_url}}/api/v1/wishlist/items/{{product_id}}"
               }
             },
             {
@@ -2392,7 +2336,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/wishlist"
+                "url": "{{base_url}}/api/v1/wishlist"
               }
             }
           ]
@@ -2410,7 +2354,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses"
+                "url": "{{base_url}}/api/v1/addresses"
               }
             },
             {
@@ -2436,7 +2380,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/addresses"
+                "url": "{{base_url}}/api/v1/addresses"
               }
             },
             {
@@ -2449,7 +2393,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses/{{address_id}}"
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
               }
             },
             {
@@ -2462,7 +2406,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses/{{address_id}}/default"
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}/default"
               }
             },
             {
@@ -2475,7 +2419,7 @@
                     "value": "Bearer {{customer_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses/{{address_id}}"
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
               }
             }
           ]
@@ -2494,7 +2438,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/summary"
+                "url": "{{base_url}}/api/v1/checkout/summary"
               }
             },
             {
@@ -2518,7 +2462,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders",
+                "url": "{{base_url}}/api/v1/checkout/orders",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"shippingAddressId\": \"{{address_id}}\",\n  \"paymentMethod\": \"cod\"\n}",
@@ -2551,7 +2495,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders",
+                "url": "{{base_url}}/api/v1/checkout/orders",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"shippingAddressId\": \"{{address_id}}\",\n  \"paymentMethod\": \"razorpay\"\n}",
@@ -2574,7 +2518,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders"
+                "url": "{{base_url}}/api/v1/checkout/orders"
               }
             },
             {
@@ -2588,7 +2532,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders/{{order_id}}"
+                "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}"
               }
             },
             {
@@ -2602,7 +2546,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders/{{order_id}}/cancel"
+                "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}/cancel"
               }
             },
             {
@@ -2621,7 +2565,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/payments/razorpay/verify",
+                "url": "{{base_url}}/api/v1/checkout/payments/razorpay/verify",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"orderId\": \"{{order_id}}\",\n  \"razorpayOrderId\": \"{{razorpay_order_id}}\",\n  \"razorpayPaymentId\": \"{{razorpay_payment_id}}\",\n  \"razorpaySignature\": \"{{razorpay_signature}}\"\n}",
@@ -2653,7 +2597,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/select-role",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/select-role",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"role\": \"merchant\",\n  \"email\": \"merchant@example.com\",\n  \"registrationToken\": \"{{registration_token}}\"\n}",
@@ -2687,7 +2631,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/password-login",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/password-login",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"identifier\": \"+919876543211\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
@@ -2709,7 +2653,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/guest",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/guest",
                 "body": {
                   "mode": "raw",
                   "raw": "{}",
@@ -2731,7 +2675,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/request-otp",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/request-otp",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"email\": \"merchant@example.com\",\n  \"name\": \"Merchant Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
@@ -2753,7 +2697,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/verify-otp",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/verify-otp",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"otp\": \"000000\",\n  \"rememberMe\": true\n}",
@@ -2787,7 +2731,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/auth/ecommerce/resend-otp",
+                "url": "{{base_url}}/api/v1/auth/ecommerce/resend-otp",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mobile\": \"+919876543211\",\n  \"email\": \"merchant@example.com\",\n  \"name\": \"Merchant Name\",\n  \"password\": \"change-this-password\",\n  \"rememberMe\": true\n}",
@@ -2804,7 +2748,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/auth/ecommerce/google"
+                "url": "{{base_url}}/api/v1/auth/ecommerce/google"
               }
             },
             {
@@ -2812,7 +2756,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/auth/ecommerce/facebook"
+                "url": "{{base_url}}/api/v1/auth/ecommerce/facebook"
               }
             }
           ]
@@ -2825,7 +2769,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/groups"
+                "url": "{{base_url}}/api/v1/catalog/groups"
               },
               "event": [
                 {
@@ -2845,7 +2789,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?type=weaves"
+                "url": "{{base_url}}/api/v1/catalog/categories?type=weaves"
               }
             },
             {
@@ -2853,7 +2797,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?groupId={{weaves_group_id}}"
+                "url": "{{base_url}}/api/v1/catalog/categories?groupId={{weaves_group_id}}"
               }
             },
             {
@@ -2861,7 +2805,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?type=occasions"
+                "url": "{{base_url}}/api/v1/catalog/categories?type=occasions"
               }
             },
             {
@@ -2869,7 +2813,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/categories?type=fabric"
+                "url": "{{base_url}}/api/v1/catalog/categories?type=fabric"
               }
             },
             {
@@ -2877,7 +2821,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+                "url": "{{base_url}}/api/v1/catalog/products?type=weaves&category=weaves&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
               }
             },
             {
@@ -2885,7 +2829,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products?categoryIds={{weddings_category_id}},{{cotton_category_id}}&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
+                "url": "{{base_url}}/api/v1/catalog/products?categoryIds={{weddings_category_id}},{{cotton_category_id}}&handloomType=Pochampally%20Ikat,Gadwal%20Pattu&weaveCraft=Pure%20Mulberry%20Silk,Cotton-Silk%20Blend&color=Red,Blue&minPrice=2000&maxPrice=18000&sort=price-asc&page=1&limit=12"
               }
             },
             {
@@ -2893,7 +2837,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products/filters?categoryIds={{weddings_category_id}},{{cotton_category_id}}"
+                "url": "{{base_url}}/api/v1/catalog/products/filters?categoryIds={{weddings_category_id}},{{cotton_category_id}}"
               }
             },
             {
@@ -2901,7 +2845,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products/{{product_slug}}"
+                "url": "{{base_url}}/api/v1/catalog/products/{{product_slug}}"
               }
             },
             {
@@ -2909,7 +2853,7 @@
               "request": {
                 "method": "GET",
                 "header": [],
-                "url": "{{base_url}}/catalog/products/{{product_id}}"
+                "url": "{{base_url}}/api/v1/catalog/products/{{product_id}}"
               }
             }
           ]
@@ -2927,7 +2871,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/cart"
+                "url": "{{base_url}}/api/v1/cart"
               }
             },
             {
@@ -2953,7 +2897,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/cart/items"
+                "url": "{{base_url}}/api/v1/cart/items"
               }
             },
             {
@@ -2979,7 +2923,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/cart/merge"
+                "url": "{{base_url}}/api/v1/cart/merge"
               }
             },
             {
@@ -3005,7 +2949,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/cart/items/{{product_id}}"
+                "url": "{{base_url}}/api/v1/cart/items/{{product_id}}"
               }
             },
             {
@@ -3018,7 +2962,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/cart/items/{{product_id}}"
+                "url": "{{base_url}}/api/v1/cart/items/{{product_id}}"
               }
             },
             {
@@ -3031,7 +2975,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/cart"
+                "url": "{{base_url}}/api/v1/cart"
               }
             }
           ]
@@ -3049,7 +2993,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/wishlist"
+                "url": "{{base_url}}/api/v1/wishlist"
               }
             },
             {
@@ -3075,7 +3019,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/wishlist/items"
+                "url": "{{base_url}}/api/v1/wishlist/items"
               }
             },
             {
@@ -3101,7 +3045,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/wishlist/merge"
+                "url": "{{base_url}}/api/v1/wishlist/merge"
               }
             },
             {
@@ -3114,7 +3058,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/wishlist/items/{{product_id}}"
+                "url": "{{base_url}}/api/v1/wishlist/items/{{product_id}}"
               }
             },
             {
@@ -3127,7 +3071,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/wishlist"
+                "url": "{{base_url}}/api/v1/wishlist"
               }
             }
           ]
@@ -3145,7 +3089,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses"
+                "url": "{{base_url}}/api/v1/addresses"
               }
             },
             {
@@ -3171,7 +3115,7 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/addresses"
+                "url": "{{base_url}}/api/v1/addresses"
               }
             },
             {
@@ -3184,7 +3128,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses/{{address_id}}"
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
               }
             },
             {
@@ -3197,7 +3141,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses/{{address_id}}/default"
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}/default"
               }
             },
             {
@@ -3210,7 +3154,7 @@
                     "value": "Bearer {{merchant_token}}"
                   }
                 ],
-                "url": "{{base_url}}/addresses/{{address_id}}"
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
               }
             }
           ]
@@ -3229,7 +3173,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/summary"
+                "url": "{{base_url}}/api/v1/checkout/summary"
               }
             },
             {
@@ -3253,7 +3197,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders",
+                "url": "{{base_url}}/api/v1/checkout/orders",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"shippingAddressId\": \"{{address_id}}\",\n  \"paymentMethod\": \"cod\"\n}",
@@ -3286,7 +3230,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders",
+                "url": "{{base_url}}/api/v1/checkout/orders",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"shippingAddressId\": \"{{address_id}}\",\n  \"paymentMethod\": \"razorpay\"\n}",
@@ -3309,7 +3253,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders"
+                "url": "{{base_url}}/api/v1/checkout/orders"
               }
             },
             {
@@ -3323,7 +3267,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders/{{order_id}}"
+                "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}"
               }
             },
             {
@@ -3337,7 +3281,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/orders/{{order_id}}/cancel"
+                "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}/cancel"
               }
             },
             {
@@ -3356,7 +3300,7 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{base_url}}/checkout/payments/razorpay/verify",
+                "url": "{{base_url}}/api/v1/checkout/payments/razorpay/verify",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"orderId\": \"{{order_id}}\",\n  \"razorpayOrderId\": \"{{razorpay_order_id}}\",\n  \"razorpayPaymentId\": \"{{razorpay_payment_id}}\",\n  \"razorpaySignature\": \"{{razorpay_signature}}\"\n}",
@@ -3400,7 +3344,7 @@
                 }
               }
             },
-            "url": "{{base_url}}/checkout/payments/razorpay/webhook"
+            "url": "{{base_url}}/api/v1/checkout/payments/razorpay/webhook"
           }
         }
       ]

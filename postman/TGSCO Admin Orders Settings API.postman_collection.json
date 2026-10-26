@@ -7,7 +7,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:5000/api/v1"
+      "value": "http://localhost:5000"
     },
     {
       "key": "admin_email",
@@ -63,9 +63,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/auth/login"
-                },
+                "url": "{{base_url}}/api/v1/auth/login",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
@@ -114,9 +112,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders?search=DEL123&status=processing&paymentStatus=captured&from=2026-10-01&to=2026-10-26&sort=newest&page=1&limit=20"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders?search=DEL123&status=processing&paymentStatus=captured&from=2026-10-01&to=2026-10-26&sort=newest&page=1&limit=20"
               },
               "event": [
                 {
@@ -146,9 +142,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/filters"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/filters"
               },
               "event": [
                 {
@@ -177,9 +171,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}"
               },
               "event": [
                 {
@@ -209,9 +201,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/status"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/status",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"status\": \"processing\",\n  \"message\": \"Order approved for packing.\"\n}",
@@ -249,9 +239,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/shipment",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"DEL123456789\",\n  \"status\": \"label_created\",\n  \"shippedAt\": \"2026-10-27T09:00:00.000Z\",\n  \"estimatedDeliveryAt\": \"2026-11-02T00:00:00.000Z\"\n}",
@@ -289,9 +277,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/shipment",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"DEL123456789\",\n  \"status\": \"in_transit\",\n  \"shippedAt\": \"2026-10-27T09:00:00.000Z\",\n  \"estimatedDeliveryAt\": \"2026-11-02T00:00:00.000Z\"\n}",
@@ -329,9 +315,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment/status"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/shipment/status",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"status\": \"delivered\"\n}",
@@ -369,9 +353,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/notes",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"message\": \"Customer requested careful packaging.\"\n}",
@@ -409,9 +391,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/notes"
               },
               "event": [
                 {
@@ -440,9 +420,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/cancel"
-                },
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/cancel",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"reason\": \"Customer cancellation request\",\n  \"refund\": {\n    \"amount\": 1250,\n    \"status\": \"requested\",\n    \"reference\": \"REF-EXAMPLE-001\"\n  }\n}",
@@ -480,9 +458,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/invoice"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/invoice"
               },
               "event": [
                 {
@@ -526,9 +502,7 @@
                     }
                   }
                 },
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/refunds"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/refunds"
               },
               "event": [
                 {
@@ -558,9 +532,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/refunds/{{refund_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/refunds/{{refund_id}}"
               },
               "event": [
                 {
@@ -595,9 +567,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings"
               },
               "event": [
                 {
@@ -626,9 +596,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/metadata"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/metadata"
               },
               "event": [
                 {
@@ -657,9 +625,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/invoice"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/invoice"
               },
               "event": [
                 {
@@ -689,9 +655,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/invoice"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/invoice",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"legalBusinessName\": \"TGSCO Textiles Private Limited\",\n  \"displayBusinessName\": \"TGSCO\",\n  \"sellerAddress\": {\n    \"line1\": \"12 Textile Market Road\",\n    \"line2\": \"Banjara Hills\",\n    \"city\": \"Hyderabad\",\n    \"state\": \"Telangana\",\n    \"postalCode\": \"500034\",\n    \"country\": \"India\"\n  },\n  \"gstin\": \"36ABCDE1234F1Z5\",\n  \"pan\": \"ABCDE1234F\",\n  \"contact\": {\n    \"phone\": \"+919876543210\",\n    \"email\": \"accounts@example.com\"\n  },\n  \"invoicePrefix\": \"TGS\",\n  \"financialYear\": \"2026-27\",\n  \"nextSequence\": 1,\n  \"terms\": \"Goods once sold are subject to the returns policy.\",\n  \"returnsPolicy\": \"Returns accepted within seven days for eligible products.\",\n  \"signatory\": {\n    \"name\": \"A. Signatory\",\n    \"designation\": \"Director\"\n  },\n  \"bankDetails\": {\n    \"bankName\": \"Example Bank\",\n    \"accountName\": \"TGSCO Textiles Private Limited\",\n    \"accountNumber\": \"0000000000\",\n    \"ifsc\": \"EXMP0000001\"\n  },\n  \"active\": true\n}",
@@ -730,9 +694,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/shipping"
               },
               "event": [
                 {
@@ -762,9 +724,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/shipping",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  true,\r\n    \"percentage\":  3.5,\r\n    \"type\":  \"shipping\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  2500,\r\n    \"taxRate\":  18,\r\n    \"name\":  \"Standard shipping\",\r\n    \"active\":  true,\r\n    \"code\":  \"shipping-standard\",\r\n    \"conditions\":  {\r\n                       \"serviceLevel\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -803,9 +763,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping/{{shipping_charge_id}}"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/shipping/{{shipping_charge_id}}",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  true,\r\n    \"percentage\":  3.75,\r\n    \"type\":  \"shipping\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  2500,\r\n    \"taxRate\":  18,\r\n    \"name\":  \"Standard shipping\",\r\n    \"active\":  true,\r\n    \"code\":  \"shipping-standard\",\r\n    \"conditions\":  {\r\n                       \"serviceLevel\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -843,9 +801,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping/{{shipping_charge_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/shipping/{{shipping_charge_id}}"
               },
               "event": [
                 {
@@ -874,9 +830,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/packing"
               },
               "event": [
                 {
@@ -906,9 +860,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/packing",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  false,\r\n    \"percentage\":  1.5,\r\n    \"type\":  \"packing\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  5000,\r\n    \"taxRate\":  0,\r\n    \"name\":  \"Standard packing\",\r\n    \"active\":  true,\r\n    \"code\":  \"packing-standard\",\r\n    \"conditions\":  {\r\n                       \"packaging\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -947,9 +899,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing/{{packing_charge_id}}"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/packing/{{packing_charge_id}}",
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n    \"taxable\":  false,\r\n    \"percentage\":  1.75,\r\n    \"type\":  \"packing\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  5000,\r\n    \"taxRate\":  0,\r\n    \"name\":  \"Standard packing\",\r\n    \"active\":  true,\r\n    \"code\":  \"packing-standard\",\r\n    \"conditions\":  {\r\n                       \"packaging\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
@@ -987,9 +937,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/packing/{{packing_charge_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/packing/{{packing_charge_id}}"
               },
               "event": [
                 {
@@ -1018,9 +966,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/charges"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/charges",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"type\": \"shipping\",\n  \"code\": \"cod\",\n  \"name\": \"Cash on delivery\",\n  \"method\": \"flat\",\n  \"amount\": 40,\n  \"percentage\": 0,\n  \"freeAbove\": 10000,\n  \"taxable\": false,\n  \"taxRate\": 0,\n  \"active\": true,\n  \"conditions\": {\n    \"paymentMethod\": \"cod\",\n    \"appliesTo\": \"all\"\n  }\n}",
@@ -1059,9 +1005,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/charges/{{shipping_charge_id}}"
-                },
+                "url": "{{base_url}}/api/v1/admin/settings/charges/{{shipping_charge_id}}",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"type\": \"shipping\",\n  \"code\": \"cod\",\n  \"name\": \"Cash on delivery\",\n  \"method\": \"flat\",\n  \"amount\": 45,\n  \"percentage\": 0,\n  \"freeAbove\": 10000,\n  \"taxable\": false,\n  \"taxRate\": 0,\n  \"active\": true,\n  \"conditions\": {\n    \"paymentMethod\": \"cod\",\n    \"appliesTo\": \"all\"\n  }\n}",
@@ -1099,9 +1043,7 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{base_url}}/admin/settings/charges/{{shipping_charge_id}}"
-                }
+                "url": "{{base_url}}/api/v1/admin/settings/charges/{{shipping_charge_id}}"
               },
               "event": [
                 {

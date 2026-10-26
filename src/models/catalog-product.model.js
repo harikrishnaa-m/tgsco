@@ -35,6 +35,7 @@ const catalogProductSchema = new mongoose.Schema(
     discountPercent: { type: Number, min: 0, max: 100 },
     currency: { type: String, default: 'INR', trim: true },
     stockQuantity: { type: Number, required: true, min: 0, default: 0 },
+    reservedQuantity: { type: Number, required: true, min: 0, default: 0 },
     active: { type: Boolean, default: true },
     mainImage: { type: productImageSchema, default: null },
     galleryImages: { type: [productImageSchema], default: [] },

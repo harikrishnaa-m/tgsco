@@ -112,6 +112,157 @@ response includes each category ID. Product browsing accepts
 filtering. Slug and type filters remain supported as compatibility aliases.
 New groups can be added without changing the API code.
 
+Authenticated carts are available under `/api/v1/cart` for customer and
+merchant accounts:
+
+| Method | Endpoint | Purpose |
+| ------ | -------- | ------- |
+| `GET` | `/cart` | Get the current cart |
+| `POST` | `/cart/merge` | Merge a guest cart after login |
+| `POST` | `/cart/items` | Add a product quantity |
+| `PATCH` | `/cart/items/<product-id>` | Replace a product quantity |
+| `DELETE` | `/cart/items/<product-id>` | Remove a product |
+| `DELETE` | `/cart` | Clear the cart |
+
+Cart requests require `Authorization: Bearer <customer-or-merchant-token>`.
+Customer carts use the product price. Merchant carts use the matching bulk
+price tier for each item's current quantity, falling back to the base price
+when no tier matches. Stock is validated when adding or updating quantities.
+
+Guest carts can be stored in frontend local storage. After login, send the
+guest items to `/cart/merge`; the backend combines quantities with the
+authenticated cart, validates active products and stock, and the frontend can
+clear its local guest cart after a successful response.
+
+### Wishlist
+
+Authenticated customers and merchants can manage one wishlist each:
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/wishlist` | Get wishlist products |
+| `POST` | `/wishlist/items` | Add an active product (`productId`) |
+| `POST` | `/wishlist/merge` | Merge guest wishlist product IDs after login |
+| `DELETE` | `/wishlist/items/:productId` | Remove a product |
+| `DELETE` | `/wishlist` | Clear the wishlist |
+
+Wishlist items do not have quantities or prices locked in. The response shows
+the product's current price, stock, and active status. Adding the same product
+again is idempotent.
+
+### Addresses
+
+Authenticated customers and merchants can manage Indian delivery addresses:
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/addresses` | List the user's addresses |
+| `POST` | `/addresses` | Create an address |
+| `GET` | `/addresses/:id` | Get one address |
+| `PATCH` | `/addresses/:id` | Update an address |
+| `PATCH` | `/addresses/:id/default` | Make an address the default |
+| `DELETE` | `/addresses/:id` | Delete an address |
+
+Address IDs are used for all address operations. The module validates Indian
+mobile numbers and six-digit PIN codes. The first address is automatically
+default, and deleting the default address promotes the most recently created
+remaining address.
+
+### Checkout and payments
+
+Checkout uses the authenticated cart and address IDs:
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/checkout/summary` | Revalidate cart, stock, and current prices |
+| `POST` | `/checkout/orders` | Create a COD or Razorpay order |
+| `GET` | `/checkout/orders` | List the user's orders |
+| `GET` | `/checkout/orders/:id` | Get one order |
+| `POST` | `/checkout/orders/:id/cancel` | Cancel an eligible order |
+| `POST` | `/checkout/payments/razorpay/verify` | Verify the client payment signature |
+| `POST` | `/checkout/payments/razorpay/webhook` | Receive Razorpay payment events |
+
+Checkout accepts `shippingAddressId` and an optional `billingAddressId`. The
+backend validates ownership, calculates totals from current product data,
+reserves stock, and stores immutable shipping and billing address snapshots on
+the order. Use an `Idempotency-Key` header when creating an order.
+
+COD and Razorpay are selected with `paymentMethod: "cod"` or
+`paymentMethod: "razorpay"`. Razorpay credentials and webhook secrets must be
+configured through environment variables; payment amounts are always
+calculated server-side.
+
+### Razorpay refunds
+
+Admin refunds are available under `/api/v1/admin/orders` and require a captured
+Razorpay payment:
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `POST` | `/admin/orders/:id/refunds` | Create a full or partial Razorpay refund |
+| `GET` | `/admin/orders/:id/refunds/:refundId` | Reconcile a refund with Razorpay |
+
+Refund creation requires an `Idempotency-Key` header and a server-validated
+body such as:
+
+```json
+{
+  "amount": 100,
+  "reason": "Customer-approved partial refund",
+  "notes": { "supportTicket": "SUP-1001" }
+}
+```
+
+The amount is sent to Razorpay in paise by the server and cannot exceed the
+captured order amount minus existing non-failed refunds. Razorpay refund
+webhooks (`refund.created`, `refund.processed`, `refund.failed`, and
+`refund.updated`) are verified using `RAZORPAY_WEBHOOK_SECRET`, processed
+idempotently, and stored in the order's `refunds` array. Provider refund IDs,
+statuses, timestamps, failure details, and aggregate refunded amount are
+preserved. A fully processed refund changes payment and order status to
+`refunded`; partial refunds leave the payment captured.
+
+### Admin orders and settings
+
+Admin order operations are protected by the admin access token:
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/admin/orders` | Search, filter, sort and paginate orders |
+| GET | `/admin/orders/filters` | Status and charge filter metadata |
+| GET | `/admin/orders/:id` | Order detail, timeline and snapshots |
+| PATCH | `/admin/orders/:id/status` | Apply a valid order status transition |
+| POST/PATCH | `/admin/orders/:id/shipment` | Create or update courier shipment |
+| POST | `/admin/orders/:id/notes` | Add an internal order note |
+| POST | `/admin/orders/:id/cancel` | Cancel and optionally record refund data |
+| GET | `/admin/orders/:id/invoice` | Invoice and seller snapshot data |
+
+Settings are managed at `/admin/settings`. `PUT /invoice` stores Indian seller
+and invoice fields (GSTIN, PAN, address, bank/signatory details and sequence).
+Shipping and packing charge rules can be created or updated through
+`/shipping`, `/packing`, or `/charges`; rules support flat/percentage amounts,
+free-above thresholds and taxability. Deleting a charge archives it.
+Checkout reads active rules and snapshots applied charges and seller settings
+onto each order; product prices remain separate from those charges.
+
+Merchant carts require a quantity that matches one of the product's configured
+`bulkPricing` tiers. Products without bulk pricing, quantities below the first
+bulk tier, and quantities that fall between configured tiers are unavailable to
+merchants. Customer carts are not subject to this bulk-only rule.
+
+After login, the frontend can send its locally stored guest wishlist to
+`/wishlist/merge`:
+
+```json
+{
+  "productIds": ["product-id-1", "product-id-2"]
+}
+```
+
+The response includes `unavailableProductIds` for products that are no longer
+active or do not exist. The frontend can clear its local guest wishlist after
+the merge response is received.
+
 The filter-options endpoint returns distinct values from active products and
 the current price range. It can be scoped by `categoryId`, `categoryIds`,
 `category`, or legacy `type`, for example:

@@ -28,6 +28,15 @@ const envSchema = z.object({
   FACEBOOK_APP_SECRET: z.string().optional(),
   FACEBOOK_CONFIG_ID: z.string().optional(),
   FACEBOOK_REDIRECT_URI: z.string().url().optional(),
+  RAZORPAY_KEY_ID: z.string().optional(),
+  RAZORPAY_KEY_SECRET: z.string().optional(),
+  RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
+  COD_ENABLED: z.preprocess(
+    (value) => (typeof value === 'string' ? value.toLowerCase() === 'true' : value),
+    z.boolean().default(true),
+  ),
+  COD_MAX_ORDER_VALUE: z.coerce.number().nonnegative().default(50000),
+  PAYMENT_RESERVATION_MINUTES: z.coerce.number().int().positive().default(15),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

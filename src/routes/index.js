@@ -11,6 +11,11 @@ import contactContentRoutes from '../modules/contact-content/contact-content.rou
 import contactInquiryRoutes from '../modules/contact-inquiry/contact-inquiry.routes.js';
 import videoMediaRoutes from '../modules/video-media/video-media.routes.js';
 import catalogRoutes from '../modules/catalog/catalog.routes.js';
+import cartRoutes from '../modules/cart/cart.routes.js';
+import wishlistRoutes from '../modules/wishlist/wishlist.routes.js';
+import addressRoutes from '../modules/address/address.routes.js';
+import checkoutRoutes from '../modules/checkout/checkout.routes.js';
+import adminRoutes from '../modules/admin/admin.routes.js';
 
 const router = Router();
 
@@ -25,5 +30,10 @@ router.use('/contact-content', contactContentRoutes);
 router.use('/contact-inquiries', contactInquiryRoutes);
 router.use('/media/videos', videoMediaRoutes);
 router.use('/catalog', catalogRoutes);
+router.use('/cart', cartRoutes);
+router.use('/wishlist', wishlistRoutes);
+router.use('/addresses', addressRoutes);
+router.use('/checkout', checkoutRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

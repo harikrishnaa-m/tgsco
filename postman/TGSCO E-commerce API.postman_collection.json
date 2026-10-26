@@ -64,6 +64,34 @@
     {
       "key": "order_id",
       "value": ""
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com"
+    },
+    {
+      "key": "admin_password",
+      "value": "password"
+    },
+    {
+      "key": "admin_refresh_token",
+      "value": ""
+    },
+    {
+      "key": "invoice_setting_id",
+      "value": ""
+    },
+    {
+      "key": "shipping_charge_id",
+      "value": ""
+    },
+    {
+      "key": "packing_charge_id",
+      "value": ""
+    },
+    {
+      "key": "refund_id",
+      "value": ""
     }
   ],
   "item": [
@@ -870,16 +898,21 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders?page=1&limit=20",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders?page=1&limit=20"
-                  ]
+                  "raw": "{{base_url}}/admin/orders?search=DEL123&status=processing&paymentStatus=captured&from=2026-10-01&to=2026-10-26&sort=newest&page=1&limit=20"
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data.items && body.data.items[0] && (body.data.items[0]._id || body.data.items[0].id); if (value) pm.collectionVariables.set('order_id', value); }"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Order filters",
@@ -897,17 +930,20 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/filters",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "filters"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/filters"
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Order detail",
@@ -925,20 +961,24 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "{{order_id}}"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}"
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data._id || body.data.id; if (value) pm.collectionVariables.set('order_id', value); }"
+                    ]
+                  }
+                }
+              ]
             },
             {
-              "name": "Update status",
+              "name": "Update order status",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -953,27 +993,29 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/status",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "{{order_id}}",
-                    "status"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/status"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"status\": \"processing\"\n}",
+                  "raw": "{\n  \"status\": \"processing\",\n  \"message\": \"Order approved for packing.\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Create shipment",
@@ -991,30 +1033,112 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "{{order_id}}",
-                    "shipment"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"TRACK123\"\n}",
+                  "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"DEL123456789\",\n  \"status\": \"label_created\",\n  \"shippedAt\": \"2026-10-27T09:00:00.000Z\",\n  \"estimatedDeliveryAt\": \"2026-11-02T00:00:00.000Z\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             },
             {
-              "name": "Add note",
+              "name": "Update shipment",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"courier\": \"Delhivery\",\n  \"trackingNumber\": \"DEL123456789\",\n  \"status\": \"in_transit\",\n  \"shippedAt\": \"2026-10-27T09:00:00.000Z\",\n  \"estimatedDeliveryAt\": \"2026-11-02T00:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update shipment status",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/shipment/status"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"delivered\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Add order note",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1029,27 +1153,60 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "{{order_id}}",
-                    "notes"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"message\": \"Packed for dispatch\"\n}",
+                  "raw": "{\n  \"message\": \"Customer requested careful packaging.\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Order notes and timeline",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/notes"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Cancel order",
@@ -1067,27 +1224,29 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/cancel",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "{{order_id}}",
-                    "cancel"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/cancel"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"reason\": \"Customer request\"\n}",
+                  "raw": "{\n  \"reason\": \"Customer cancellation request\",\n  \"refund\": {\n    \"amount\": 1250,\n    \"status\": \"requested\",\n    \"reference\": \"REF-EXAMPLE-001\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Invoice data",
@@ -1105,24 +1264,136 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/orders/{{order_id}}/invoice",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "orders",
-                    "{{order_id}}",
-                    "invoice"
-                  ]
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/invoice"
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data.invoice && (body.data.invoice._id || body.data.invoice.id); if (value) pm.collectionVariables.set('invoice_setting_id', value); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Initiate refund",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "refund-{{$guid}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 100,\n  \"reason\": \"Customer-approved partial refund\",\n  \"notes\": {\n    \"supportTicket\": \"SUP-1001\",\n    \"requestedBy\": \"admin\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/refunds"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const id = body.data && (body.data.refundId || (body.data.refund && body.data.refund.refundId)); if (id) pm.collectionVariables.set('refund_id', id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Verify refund",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/refunds/{{refund_id}}"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const id = body.data && (body.data.refundId || (body.data.refund && body.data.refund.refundId)); if (id) pm.collectionVariables.set('refund_id', id); }"
+                    ]
+                  }
+                }
+              ]
             }
           ]
         },
         {
           "name": "Settings",
           "item": [
+            {
+              "name": "Get all settings",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
             {
               "name": "Settings metadata",
               "request": {
@@ -1139,20 +1410,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/settings/metadata",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "settings",
-                    "metadata"
-                  ]
+                  "raw": "{{base_url}}/admin/settings/metadata"
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             },
             {
-              "name": "Get settings",
+              "name": "Get invoice settings",
               "request": {
                 "method": "GET",
                 "header": [
@@ -1167,16 +1441,21 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/settings",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "settings"
-                  ]
+                  "raw": "{{base_url}}/admin/settings/invoice"
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && body.data[0] && (body.data[0]._id || body.data[0].id); if (value) pm.collectionVariables.set('invoice_setting_id', value); }"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Save invoice settings",
@@ -1194,26 +1473,62 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/settings/invoice",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "settings",
-                    "invoice"
-                  ]
+                  "raw": "{{base_url}}/admin/settings/invoice"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"legalBusinessName\": \"TGSCO\",\n  \"displayBusinessName\": \"TGSCO\",\n  \"sellerAddress\": {\n    \"line1\": \"Seller address\",\n    \"city\": \"Hyderabad\",\n    \"state\": \"Telangana\",\n    \"postalCode\": \"500001\",\n    \"country\": \"India\"\n  },\n  \"gstin\": \"GSTIN\",\n  \"pan\": \"PAN\",\n  \"invoicePrefix\": \"INV\",\n  \"financialYear\": \"2026-27\",\n  \"nextSequence\": 1\n}",
+                  "raw": "{\n  \"legalBusinessName\": \"TGSCO Textiles Private Limited\",\n  \"displayBusinessName\": \"TGSCO\",\n  \"sellerAddress\": {\n    \"line1\": \"12 Textile Market Road\",\n    \"line2\": \"Banjara Hills\",\n    \"city\": \"Hyderabad\",\n    \"state\": \"Telangana\",\n    \"postalCode\": \"500034\",\n    \"country\": \"India\"\n  },\n  \"gstin\": \"36ABCDE1234F1Z5\",\n  \"pan\": \"ABCDE1234F\",\n  \"contact\": {\n    \"phone\": \"+919876543210\",\n    \"email\": \"accounts@example.com\"\n  },\n  \"invoicePrefix\": \"TGS\",\n  \"financialYear\": \"2026-27\",\n  \"nextSequence\": 1,\n  \"terms\": \"Goods once sold are subject to the returns policy.\",\n  \"returnsPolicy\": \"Returns accepted within seven days for eligible products.\",\n  \"signatory\": {\n    \"name\": \"A. Signatory\",\n    \"designation\": \"Director\"\n  },\n  \"bankDetails\": {\n    \"bankName\": \"Example Bank\",\n    \"accountName\": \"TGSCO Textiles Private Limited\",\n    \"accountNumber\": \"0000000000\",\n    \"ifsc\": \"EXMP0000001\"\n  },\n  \"active\": true\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && (body.data._id || body.data.id); if (value) pm.collectionVariables.set('invoice_setting_id', value); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List shipping charges",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/shipping"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && body.data[0] && (body.data[0]._id || body.data[0].id); if (value) pm.collectionVariables.set('shipping_charge_id', value); }"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Create shipping charge",
@@ -1231,26 +1546,133 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/settings/shipping",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "settings",
-                    "shipping"
-                  ]
+                  "raw": "{{base_url}}/admin/settings/shipping"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"code\": \"shipping-standard\",\n  \"name\": \"Standard shipping\",\n  \"method\": \"flat\",\n  \"amount\": 60,\n  \"taxable\": true,\n  \"taxRate\": 18\n}",
+                  "raw": "{\r\n    \"taxable\":  true,\r\n    \"percentage\":  3.5,\r\n    \"type\":  \"shipping\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  2500,\r\n    \"taxRate\":  18,\r\n    \"name\":  \"Standard shipping\",\r\n    \"active\":  true,\r\n    \"code\":  \"shipping-standard\",\r\n    \"conditions\":  {\r\n                       \"serviceLevel\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && (body.data._id || body.data.id); if (value) pm.collectionVariables.set('shipping_charge_id', value); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update shipping charge",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/shipping/{{shipping_charge_id}}"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"taxable\":  true,\r\n    \"percentage\":  3.75,\r\n    \"type\":  \"shipping\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  2500,\r\n    \"taxRate\":  18,\r\n    \"name\":  \"Standard shipping\",\r\n    \"active\":  true,\r\n    \"code\":  \"shipping-standard\",\r\n    \"conditions\":  {\r\n                       \"serviceLevel\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Archive shipping charge",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/shipping/{{shipping_charge_id}}"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List packing charges",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/packing"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && body.data[0] && (body.data[0]._id || body.data[0].id); if (value) pm.collectionVariables.set('packing_charge_id', value); }"
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Create packing charge",
@@ -1268,26 +1690,213 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/admin/settings/packing",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "admin",
-                    "settings",
-                    "packing"
-                  ]
+                  "raw": "{{base_url}}/admin/settings/packing"
                 },
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"code\": \"packing\",\n  \"name\": \"Packing\",\n  \"method\": \"flat\",\n  \"amount\": 20,\n  \"taxable\": false\n}",
+                  "raw": "{\r\n    \"taxable\":  false,\r\n    \"percentage\":  1.5,\r\n    \"type\":  \"packing\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  5000,\r\n    \"taxRate\":  0,\r\n    \"name\":  \"Standard packing\",\r\n    \"active\":  true,\r\n    \"code\":  \"packing-standard\",\r\n    \"conditions\":  {\r\n                       \"packaging\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
                 }
-              }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && (body.data._id || body.data.id); if (value) pm.collectionVariables.set('packing_charge_id', value); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update packing charge",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/packing/{{packing_charge_id}}"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"taxable\":  false,\r\n    \"percentage\":  1.75,\r\n    \"type\":  \"packing\",\r\n    \"method\":  \"percentage\",\r\n    \"freeAbove\":  5000,\r\n    \"taxRate\":  0,\r\n    \"name\":  \"Standard packing\",\r\n    \"active\":  true,\r\n    \"code\":  \"packing-standard\",\r\n    \"conditions\":  {\r\n                       \"packaging\":  \"standard\",\r\n                       \"appliesTo\":  \"all\"\r\n                   },\r\n    \"amount\":  0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Archive packing charge",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/packing/{{packing_charge_id}}"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create generic charge",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/charges"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"shipping\",\n  \"code\": \"cod\",\n  \"name\": \"Cash on delivery\",\n  \"method\": \"flat\",\n  \"amount\": 40,\n  \"percentage\": 0,\n  \"freeAbove\": 10000,\n  \"taxable\": false,\n  \"taxRate\": 0,\n  \"active\": true,\n  \"conditions\": {\n    \"paymentMethod\": \"cod\",\n    \"appliesTo\": \"all\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                      "if (pm.response.code >= 200 && pm.response.code < 300) { const body = pm.response.json(); const value = body.data && (body.data._id || body.data.id); if (value) pm.collectionVariables.set('shipping_charge_id', value); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update generic charge",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/charges/{{shipping_charge_id}}"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"shipping\",\n  \"code\": \"cod\",\n  \"name\": \"Cash on delivery\",\n  \"method\": \"flat\",\n  \"amount\": 45,\n  \"percentage\": 0,\n  \"freeAbove\": 10000,\n  \"taxable\": false,\n  \"taxRate\": 0,\n  \"active\": true,\n  \"conditions\": {\n    \"paymentMethod\": \"cod\",\n    \"appliesTo\": \"all\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Archive generic charge",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/settings/charges/{{shipping_charge_id}}"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                    ]
+                  }
+                }
+              ]
             }
           ]
         }

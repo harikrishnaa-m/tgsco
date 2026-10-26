@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 
 import { env } from '../../config/env.js';
+import { logger } from '../../config/logger.js';
 import { Address } from '../../models/address.model.js';
 import { Cart } from '../../models/cart.model.js';
 import { CatalogProduct } from '../../models/catalog-product.model.js';
@@ -489,21 +490,91 @@ export async function reconcileRazorpayRefund(order, refundId) {
 }
 
 export async function handleRazorpayWebhook(rawBody, signature) {
+  logger.info({
+    webhook: 'razorpay',
+    stage: 'received',
+    hasBody: Boolean(rawBody),
+    hasSignature: Boolean(signature),
+  }, 'Razorpay webhook received');
   if (!env.RAZORPAY_WEBHOOK_SECRET || !rawBody || !signature) {
+    logger.warn({
+      webhook: 'razorpay',
+      stage: 'verification_failed',
+      reason: 'missing_configuration_or_request_data',
+      hasBody: Boolean(rawBody),
+      hasSignature: Boolean(signature),
+      hasWebhookSecret: Boolean(env.RAZORPAY_WEBHOOK_SECRET),
+    }, 'Razorpay webhook rejected');
     throw new AppError('The payment webhook could not be verified.', { statusCode: 400, code: 'INVALID_WEBHOOK' });
   }
   const expected = crypto.createHmac('sha256', env.RAZORPAY_WEBHOOK_SECRET).update(rawBody).digest('hex');
   if (expected !== signature) {
+    logger.warn({
+      webhook: 'razorpay',
+      stage: 'verification_failed',
+      reason: 'signature_mismatch',
+    }, 'Razorpay webhook signature verification failed');
     throw new AppError('The payment webhook signature is invalid.', { statusCode: 400, code: 'INVALID_WEBHOOK_SIGNATURE' });
   }
-  const event = JSON.parse(rawBody.toString('utf8'));
+  let event;
+  try {
+    event = JSON.parse(rawBody.toString('utf8'));
+  } catch (error) {
+    logger.error({
+      err: error,
+      webhook: 'razorpay',
+      stage: 'parse_failed',
+    }, 'Razorpay webhook payload could not be parsed');
+    throw new AppError('The payment webhook payload is not valid JSON.', {
+      statusCode: 400,
+      code: 'INVALID_WEBHOOK_PAYLOAD',
+    });
+  }
+  logger.info({
+    webhook: 'razorpay',
+    stage: 'parsed',
+    eventId: event.id,
+    eventType: event.event,
+  }, 'Razorpay webhook event parsed');
   const entity = event.payload?.payment?.entity || event.payload?.order?.entity;
   const refundEntity = event.payload?.refund?.entity;
   const razorpayOrderId = entity?.order_id || entity?.id;
   const order = refundEntity?.payment_id
     ? await Order.findOne({ razorpayPaymentId: refundEntity.payment_id })
     : await Order.findOne({ razorpayOrderId });
-  if (!order || order.processedWebhookEvents.includes(event.id)) return { received: true };
+  if (!order) {
+    logger.warn({
+      webhook: 'razorpay',
+      stage: 'order_not_found',
+      eventId: event.id,
+      eventType: event.event,
+      razorpayOrderId,
+      razorpayPaymentId: refundEntity?.payment_id,
+      razorpayRefundId: refundEntity?.id,
+    }, 'Razorpay webhook could not be linked to an order');
+    return { received: true };
+  }
+  if (order.processedWebhookEvents.includes(event.id)) {
+    logger.info({
+      webhook: 'razorpay',
+      stage: 'duplicate',
+      eventId: event.id,
+      eventType: event.event,
+      orderId: order._id,
+    }, 'Duplicate Razorpay webhook ignored');
+    return { received: true };
+  }
+  logger.info({
+    webhook: 'razorpay',
+    stage: 'processing',
+    eventId: event.id,
+    eventType: event.event,
+    orderId: order._id,
+    orderNumber: order.orderNumber,
+    razorpayOrderId,
+    razorpayPaymentId: refundEntity?.payment_id || order.razorpayPaymentId,
+    razorpayRefundId: refundEntity?.id,
+  }, 'Processing Razorpay webhook event');
   if (['payment.captured', 'order.paid'].includes(event.event)) {
     await consumeReservations(order);
     order.paymentStatus = 'captured';
@@ -520,6 +591,17 @@ export async function handleRazorpayWebhook(rawBody, signature) {
   }
   order.processedWebhookEvents.push(event.id);
   await order.save();
+  logger.info({
+    webhook: 'razorpay',
+    stage: 'processed',
+    eventId: event.id,
+    eventType: event.event,
+    orderId: order._id,
+    orderNumber: order.orderNumber,
+    paymentStatus: order.paymentStatus,
+    orderStatus: order.orderStatus,
+    refundStatus: refundEntity?.status,
+  }, 'Razorpay webhook processed successfully');
   return { received: true };
 }
 

@@ -40,6 +40,13 @@ DEFAULT_ADMIN_PASSWORD=password
 
 The password is stored as a bcrypt hash and is never logged.
 
+## Deployment
+
+Production runs in Docker on the Hostzop VM behind
+`https://tgscobackend.qmarkdesk.com`, deployed by GitHub Actions on every push
+to `main`. See [DEPLOYMENT.md](./DEPLOYMENT.md) for the one-time server setup,
+required secrets, and rollback.
+
 ## Postman collection
 
 Import [postman/TGSCO Backend.postman_collection.json](./postman/TGSCO%20Backend.postman_collection.json)

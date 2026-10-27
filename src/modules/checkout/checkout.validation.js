@@ -16,3 +16,6 @@ export const paymentVerificationSchema = z.object({
 });
 
 export const orderIdSchema = objectId;
+export const cancellationSchema = z.object({
+  reason: z.string().trim().min(1, 'Cancellation reason is required.').max(500, 'Cancellation reason cannot exceed 500 characters.'),
+});

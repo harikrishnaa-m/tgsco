@@ -61,7 +61,8 @@ const refundSchema = new mongoose.Schema({
   paymentId: String,
   amount: { type: Number, required: true, min: 0 },
   currency: { type: String, default: 'INR' },
-  status: { type: String, enum: ['created', 'processed', 'failed', 'pending'], default: 'created' },
+  status: { type: String, enum: ['created', 'processed', 'refunded', 'failed', 'pending'], default: 'created' },
+  returnId: { type: mongoose.Schema.Types.ObjectId, ref: 'Return' },
   reason: String,
   notes: { type: mongoose.Schema.Types.Mixed, default: {} },
   idempotencyKey: String,
@@ -114,6 +115,12 @@ const orderSchema = new mongoose.Schema(
     refund: { type: mongoose.Schema.Types.Mixed, default: null },
     refunds: { type: [refundSchema], default: [] },
     refundedAmount: { type: Number, min: 0, default: 0 },
+    returnStatus: {
+      type: String,
+      enum: ['none', 'requested', 'approved', 'rejected', 'pickup_pending', 'received', 'inspection_pending', 'approved_for_refund', 'refund_pending', 'refunded', 'completed', 'cancelled'],
+      default: 'none',
+    },
+    returnIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Return' }],
   },
   { timestamps: true },
 );

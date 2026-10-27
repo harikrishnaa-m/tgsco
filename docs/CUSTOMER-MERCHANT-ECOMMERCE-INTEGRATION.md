@@ -47,6 +47,32 @@ and `503` missing provider/configuration. The server applies a 100-request
 per-15-minute rate limit. There is no pagination query parameter currently:
 cart, wishlist, addresses, and order list return complete arrays.
 
+## Cancellation and returns
+
+`POST /api/v1/checkout/orders/:id/cancel` is available to the owning customer
+or merchant. Cancellation is allowed through the configured
+`cancellationAllowedUntil` status (default `shipped`). Active stock
+reservations are released. Captured Razorpay payments create a server-side
+refund and remain pending until the Razorpay webhook/reconciliation confirms
+the final payment and order status. When a linked Razorpay refund reaches
+`processed` (or the provider reports `refunded`), the return is completed
+automatically; no manual return PATCH is required. COD cancellations never
+call Razorpay and return a `manual_pending` refund record where money is due.
+
+Returns use immutable order item snapshots:
+
+- `POST /api/v1/orders/:id/returns` body
+  `{ "items": [{ "productId": "...", "quantity": 1 }], "reason": "...", "customerNote": "..." }`
+- `GET /api/v1/orders/:id/returns` and `GET /api/v1/returns`
+- `POST /api/v1/returns/:returnId/cancel`
+
+Only delivered orders within the configured `returnWindowDays` (default 7)
+are eligible. Product IDs must belong to the order; quantities cannot exceed
+the purchased quantity or prior non-cancelled return requests. Return statuses
+are `requested`, `approved`, `rejected`, `pickup_pending`, `received`,
+`inspection_pending`, `approved_for_refund`, `refund_pending`, `refunded`,
+`completed`, and `cancelled`.
+
 ## Cart
 
 All cart routes are under `/api/v1/cart`. The server creates one cart per
@@ -103,11 +129,35 @@ quantities keyed by product ID in local storage, then after login:
 
 1. Keep the guest snapshot while obtaining the new access token.
 2. `POST /api/v1/cart/merge` with all guest entries. The service combines
-   duplicate guest IDs and adds them to server quantities; it validates active
-   products, stock, and merchant tiers atomically enough to reject the merge.
+   duplicate guest IDs and adds them to server quantities. For merchant users,
+   an invalid quantity is automatically raised to the next configured bulk-tier
+   minimum when one exists. The response includes an `adjustments` array so the
+   frontend can notify the merchant of each quantity increase. If no higher
+   tier exists, or the adjusted quantity exceeds stock, the merge is rejected.
 3. Replace the client cart with the returned `data`, and only then delete the
    local guest cart. On `409`, keep local data and show the returned conflict.
 4. `GET /api/v1/cart` on subsequent page loads.
+
+For example, a merge response may include:
+
+```json
+{
+  "items": [],
+  "adjustments": [
+    {
+      "productId": "64f000000000000000000001",
+      "productName": "Pochampally Ikat Silk Sarees",
+      "requestedQuantity": 1,
+      "adjustedQuantity": 10,
+      "reason": "MERCHANT_BULK_MINIMUM"
+    }
+  ]
+}
+```
+
+The backend never silently reduces quantities. It only raises an invalid
+merchant quantity to the next eligible bulk minimum. A quantity that already
+matches a tier is unchanged.
 
 ## Wishlist
 
@@ -211,6 +261,39 @@ Routes:
 | `PATCH`  | `/api/v1/addresses/:id`         | Any non-empty subset of create fields            |
 | `PATCH`  | `/api/v1/addresses/:id/default` | `{}`; makes it default                           |
 | `DELETE` | `/api/v1/addresses/:id`         | `{ "deleted": true, "addressId": string }`       |
+
+Update an address with `PATCH /api/v1/addresses/:id`. The request may contain
+any non-empty subset of the fields below; the complete form is:
+
+```http
+PATCH /api/v1/addresses/66a000000000000000000301
+Authorization: Bearer <customer_token-or-merchant_token>
+Content-Type: application/json
+```
+
+```json
+{
+  "label": "home",
+  "recipientName": "Asha Rao",
+  "mobile": "+919876543210",
+  "alternateMobile": "9876543210",
+  "addressLine1": "12 Market Road",
+  "addressLine2": "Flat 4B",
+  "locality": "Indiranagar",
+  "landmark": "Near Metro",
+  "city": "Bengaluru",
+  "district": "Bengaluru Urban",
+  "state": "Karnataka",
+  "stateCode": "KA",
+  "postalCode": "560038",
+  "country": "India",
+  "deliveryInstructions": "Call on arrival",
+  "isDefault": true
+}
+```
+
+The authenticated customer or merchant may update only their own address.
+Setting `isDefault` to `true` unsets that user's previous default address.
 
 Each address response includes Mongo timestamps and `user` in addition to the
 fields above:
@@ -522,3 +605,79 @@ detail after Razorpay webhooks. A captured Razorpay order may therefore remain
    creating a second order. On expired/failed payment, show the cancelled
    order and restore cart UI from the user's current cart (the server may
    have cleared it at initial Razorpay order creation).
+
+## Returns
+
+Returns use the same authenticated customer/merchant token as orders. `POST
+/api/v1/orders/:id/returns` requires `items` (`productId`, `quantity`), `reason`,
+optional `customerNote`, and `pickupAddressId`. The address must belong to the
+authenticated user; its complete value is copied immutably to `pickupAddress`
+on the return. `GET /api/v1/returns/:returnId` returns the complete return and
+populated order summary. Listings are available at `/api/v1/returns` and
+`/api/v1/orders/:id/returns` with `search`, `status`, `reason`, `from`, `to`,
+`paymentMethod`, `paymentStatus`, `page`, `limit`, and `sort=newest|oldest`.
+`GET /api/v1/returns/filters` describes supported statuses, reasons, and
+payment values. Customers can cancel with
+`POST /api/v1/returns/:returnId/cancel` body `{ "reason": "..." }` (maximum
+500 characters).
+
+For COD returns, `refundMethodId` is also required. Customers and merchants
+can save and manage refund destinations using:
+
+| Method   | Path                                     | Purpose                                 |
+| -------- | ---------------------------------------- | --------------------------------------- |
+| `POST`   | `/api/v1/refund-methods`                 | Save a UPI or bank-transfer destination |
+| `GET`    | `/api/v1/refund-methods`                 | List saved destinations                 |
+| `GET`    | `/api/v1/refund-methods/:refundMethodId` | Get one saved destination               |
+| `PATCH`  | `/api/v1/refund-methods/:refundMethodId` | Replace and validate a destination      |
+| `DELETE` | `/api/v1/refund-methods/:refundMethodId` | Delete a destination                    |
+
+UPI request:
+
+```json
+{
+  "method": "upi",
+  "upiId": "merchant@example",
+  "confirmUpiId": "merchant@example",
+  "label": "Primary UPI",
+  "isDefault": true
+}
+```
+
+Bank-transfer request:
+
+```json
+{
+  "method": "bank_transfer",
+  "accountHolderName": "Hari Asok",
+  "accountNumber": "123456789012",
+  "confirmAccountNumber": "123456789012",
+  "ifscCode": "HDFC0001234",
+  "confirmIfscCode": "HDFC0001234",
+  "bankName": "HDFC Bank",
+  "branchName": "Kochi Main Branch",
+  "accountType": "savings",
+  "label": "Primary bank account",
+  "isDefault": true
+}
+```
+
+UPI ID, account number, IFSC code, required bank fields, and both confirmation
+values are validated by the API. Account numbers are masked in customer-facing
+refund-method list/detail responses. The selected method is copied into the
+return as an immutable refund-destination snapshot for admin processing.
+
+COD refund methods are not used for Razorpay returns; Razorpay returns use the
+provider refund lifecycle and are completed automatically after a processed
+refund webhook.
+
+Allowed return transitions are:
+`requested -> approved|rejected|cancelled`,
+`approved -> pickup_pending|cancelled`,
+`pickup_pending -> received|cancelled`,
+`received -> inspection_pending`,
+`inspection_pending -> approved_for_refund|rejected`,
+`approved_for_refund -> refund_pending`, `refund_pending -> completed` (the
+automatic Razorpay path) or `refunded` (legacy/manual records), and
+`refunded -> completed`. All other transitions are rejected. A processed
+linked refund adds `Refund processed` and `Return completed` timeline entries.

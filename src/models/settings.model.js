@@ -27,3 +27,17 @@ export const InvoiceSettings = mongoose.models.InvoiceSettings
   || mongoose.model('InvoiceSettings', invoiceSettingsSchema);
 export const ChargeSettings = mongoose.models.ChargeSettings
   || mongoose.model('ChargeSettings', chargeSettingsSchema);
+
+const orderPolicySettingsSchema = new mongoose.Schema({
+  key: { type: String, default: 'default', unique: true },
+  cancellationAllowedUntil: {
+    type: String,
+    enum: ['pending_payment', 'confirmed', 'processing', 'shipped'],
+    default: 'shipped',
+  },
+  returnWindowDays: { type: Number, min: 0, max: 365, default: 7 },
+  updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+}, { timestamps: true });
+
+export const OrderPolicySettings = mongoose.models.OrderPolicySettings
+  || mongoose.model('OrderPolicySettings', orderPolicySettingsSchema);

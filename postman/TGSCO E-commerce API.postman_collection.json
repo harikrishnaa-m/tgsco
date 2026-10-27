@@ -92,6 +92,42 @@
     {
       "key": "refund_id",
       "value": ""
+    },
+    {
+      "key": "return_id",
+      "value": ""
+    },
+    {
+      "key": "address_id",
+      "value": ""
+    },
+    {
+      "key": "refund_method_id",
+      "value": ""
+    },
+    {
+      "key": "return_status",
+      "value": ""
+    },
+    {
+      "key": "return_reason",
+      "value": ""
+    },
+    {
+      "key": "return_from",
+      "value": ""
+    },
+    {
+      "key": "return_to",
+      "value": ""
+    },
+    {
+      "key": "payment_method",
+      "value": ""
+    },
+    {
+      "key": "payment_status",
+      "value": ""
     }
   ],
   "item": [
@@ -1843,6 +1879,134 @@
               ]
             }
           ]
+        },
+        {
+          "name": "Returns & Refunds",
+          "item": [
+            {
+              "name": "Mark COD Return Refunded",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                "description": "Admin-only COD refund processing. Required fields: status, refundMethod, refundReference, refundAmount, refundProcessedAt, and refundNotes.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"status\":\"refunded\",\"refundMethod\":\"upi\",\"refundReference\":\"UPI-REF-{{return_id}}\",\"refundAmount\":1000,\"refundProcessedAt\":\"2026-10-27T00:00:00.000Z\",\"refundNotes\":\"COD refund sent via UPI.\"}"
+                }
+              }
+            },
+            {
+              "name": "Mark COD Return Completed",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                "description": "Admin-only COD refund processing. Required fields: status, refundMethod, refundReference, refundAmount, refundProcessedAt, and refundNotes.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"status\":\"completed\",\"refundMethod\":\"bank_transfer\",\"refundReference\":\"BANK-REF-{{return_id}}\",\"refundAmount\":1000,\"refundProcessedAt\":\"2026-10-27T00:00:00.000Z\",\"refundNotes\":\"COD return completed after bank transfer.\"}"
+                }
+              }
+            },
+            {
+              "name": "List Admin Returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "******"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns"
+              }
+            },
+            {
+              "name": "Admin Return Filters",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "******"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/filters"
+              }
+            },
+            {
+              "name": "Admin Return Detail",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "******"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}"
+              }
+            },
+            {
+              "name": "List Order Returns (Admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "******"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}/returns"
+              }
+            },
+            {
+              "name": "Update Return Status",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "******"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"refunded\",\n  \"message\": \"Refund processed.\",\n  \"refundAmount\": 1000,\n  \"refundMethod\": \"upi\",\n  \"refundReference\": \"UPI-REF-{{return_id}}\",\n  \"refundProcessedAt\": \"2026-10-27T00:00:00.000Z\",\n  \"refundNotes\": \"COD refund processed.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "COD admin completion requires refundMethod and refundReference."
+              }
+            }
+          ]
         }
       ]
     },
@@ -2348,13 +2512,18 @@
               "name": "List Addresses",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{customer_token}}"
-                  }
-                ],
-                "url": "{{base_url}}/api/v1/addresses"
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -2362,10 +2531,6 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{customer_token}}"
-                  },
                   {
                     "key": "Content-Type",
                     "value": "application/json"
@@ -2380,46 +2545,103 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/api/v1/addresses"
+                "url": "{{base_url}}/api/v1/addresses",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
               "name": "Get Address",
               "request": {
                 "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Address",
+              "request": {
+                "method": "PATCH",
                 "header": [
                   {
-                    "key": "Authorization",
-                    "value": "Bearer {{customer_token}}"
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"home\",\n  \"recipientName\": \"Updated Recipient\",\n  \"mobile\": \"9876543210\",\n  \"alternateMobile\": \"9123456789\",\n  \"addressLine1\": \"42 Updated Market Road\",\n  \"addressLine2\": \"Flat 8C\",\n  \"locality\": \"Indiranagar\",\n  \"landmark\": \"Near Updated Metro\",\n  \"city\": \"Bengaluru\",\n  \"district\": \"Bengaluru Urban\",\n  \"state\": \"Karnataka\",\n  \"stateCode\": \"KA\",\n  \"postalCode\": \"560038\",\n  \"country\": \"India\",\n  \"deliveryInstructions\": \"Call before delivery\",\n  \"isDefault\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
               "name": "Set Default Address",
               "request": {
                 "method": "PATCH",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{customer_token}}"
-                  }
-                ],
-                "url": "{{base_url}}/api/v1/addresses/{{address_id}}/default"
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}/default",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
               "name": "Delete Address",
               "request": {
                 "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{customer_token}}"
-                  }
-                ],
-                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             }
           ]
@@ -2569,6 +2791,341 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"orderId\": \"{{order_id}}\",\n  \"razorpayOrderId\": \"{{razorpay_order_id}}\",\n  \"razorpayPaymentId\": \"{{razorpay_payment_id}}\",\n  \"razorpaySignature\": \"{{razorpay_signature}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refund Methods",
+          "item": [
+            {
+              "name": "Create Refund Method (UPI)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"method\":\"upi\",\"upiId\":\"customer.refunds@upi\",\"confirmUpiId\":\"customer.refunds@upi\",\"accountHolderName\":\"TGSCO Customer\",\"accountNumber\":\"\",\"confirmAccountNumber\":\"\",\"ifscCode\":\"\",\"confirmIfscCode\":\"\",\"bankName\":\"\",\"branchName\":\"\",\"accountType\":\"\",\"label\":\"Primary UPI\",\"isDefault\":true}"
+                },
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "type": "text/javascript",
+                      "exec": [
+                        "pm.test(\"Refund method created\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                        "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                        "  var data = pm.response.json();",
+                        "  var id = data.id || (data.data && data.data.id) || data.refundMethodId || (data.data && data.data.refundMethodId);",
+                        "  if (id) pm.collectionVariables.set(\"refund_method_id\", id);",
+                        "}"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "List Refund Methods",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests."
+              }
+            },
+            {
+              "name": "Get Refund Method by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods/{{refund_method_id}}",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests."
+              }
+            },
+            {
+              "name": "Update Refund Method (Bank Transfer)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods/{{refund_method_id}}",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"method\":\"bank_transfer\",\"upiId\":\"\",\"confirmUpiId\":\"\",\"accountHolderName\":\"TGSCO Customer\",\"accountNumber\":\"123456789012\",\"confirmAccountNumber\":\"123456789012\",\"ifscCode\":\"HDFC0001234\",\"confirmIfscCode\":\"HDFC0001234\",\"bankName\":\"HDFC Bank\",\"branchName\":\"Main Branch\",\"accountType\":\"savings\",\"label\":\"Primary Bank Account\",\"isDefault\":true}"
+                }
+              }
+            },
+            {
+              "name": "Delete Refund Method",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods/{{refund_method_id}}",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Returns & Cancellation",
+          "item": [
+            {
+              "name": "Create Return",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/orders/{{order_id}}/returns",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [],\n  \"reason\": \"damaged\",\n  \"customerNote\": \"Item arrived damaged.\",\n  \"pickupAddressId\": \"{{pickup_address_id}}\",\n  \"refundMethodId\": \"{{refund_method_id}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "COD returns require refundMethodId."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List Order Returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/orders/{{order_id}}/returns"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List Returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns?search=&status={{return_status}}&reason={{return_reason}}&from={{return_from}}&to={{return_to}}&paymentMethod={{payment_method}}&paymentStatus={{payment_status}}&page=1&limit=20&sort=newest"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Return Filters",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns/filters"
+              }
+            },
+            {
+              "name": "Return Detail",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns/{{return_id}}"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Cancel Return",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns/{{return_id}}/cancel",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"Customer cancellation request\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cancel Checkout Order",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}/cancel",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"Customer cancellation request\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3083,13 +3640,18 @@
               "name": "List Addresses",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{merchant_token}}"
-                  }
-                ],
-                "url": "{{base_url}}/api/v1/addresses"
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{merchant_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -3097,10 +3659,6 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{merchant_token}}"
-                  },
                   {
                     "key": "Content-Type",
                     "value": "application/json"
@@ -3115,46 +3673,103 @@
                     }
                   }
                 },
-                "url": "{{base_url}}/api/v1/addresses"
+                "url": "{{base_url}}/api/v1/addresses",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{merchant_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
               "name": "Get Address",
               "request": {
                 "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{merchant_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Address",
+              "request": {
+                "method": "PATCH",
                 "header": [
                   {
-                    "key": "Authorization",
-                    "value": "Bearer {{merchant_token}}"
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
-                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"home\",\n  \"recipientName\": \"Updated Recipient\",\n  \"mobile\": \"9876543210\",\n  \"alternateMobile\": \"9123456789\",\n  \"addressLine1\": \"42 Updated Market Road\",\n  \"addressLine2\": \"Flat 8C\",\n  \"locality\": \"Indiranagar\",\n  \"landmark\": \"Near Updated Metro\",\n  \"city\": \"Bengaluru\",\n  \"district\": \"Bengaluru Urban\",\n  \"state\": \"Karnataka\",\n  \"stateCode\": \"KA\",\n  \"postalCode\": \"560038\",\n  \"country\": \"India\",\n  \"deliveryInstructions\": \"Call before delivery\",\n  \"isDefault\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{merchant_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
               "name": "Set Default Address",
               "request": {
                 "method": "PATCH",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{merchant_token}}"
-                  }
-                ],
-                "url": "{{base_url}}/api/v1/addresses/{{address_id}}/default"
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}/default",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{merchant_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             },
             {
               "name": "Delete Address",
               "request": {
                 "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{merchant_token}}"
-                  }
-                ],
-                "url": "{{base_url}}/api/v1/addresses/{{address_id}}"
+                "header": [],
+                "url": "{{base_url}}/api/v1/addresses/{{address_id}}",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{merchant_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
               }
             }
           ]
@@ -3304,6 +3919,341 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"orderId\": \"{{order_id}}\",\n  \"razorpayOrderId\": \"{{razorpay_order_id}}\",\n  \"razorpayPaymentId\": \"{{razorpay_payment_id}}\",\n  \"razorpaySignature\": \"{{razorpay_signature}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refund Methods",
+          "item": [
+            {
+              "name": "Create Refund Method (UPI)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"method\":\"upi\",\"upiId\":\"customer.refunds@upi\",\"confirmUpiId\":\"customer.refunds@upi\",\"accountHolderName\":\"TGSCO Customer\",\"accountNumber\":\"\",\"confirmAccountNumber\":\"\",\"ifscCode\":\"\",\"confirmIfscCode\":\"\",\"bankName\":\"\",\"branchName\":\"\",\"accountType\":\"\",\"label\":\"Primary UPI\",\"isDefault\":true}"
+                },
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "type": "text/javascript",
+                      "exec": [
+                        "pm.test(\"Refund method created\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                        "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                        "  var data = pm.response.json();",
+                        "  var id = data.id || (data.data && data.data.id) || data.refundMethodId || (data.data && data.data.refundMethodId);",
+                        "  if (id) pm.collectionVariables.set(\"refund_method_id\", id);",
+                        "}"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "List Refund Methods",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests."
+              }
+            },
+            {
+              "name": "Get Refund Method by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods/{{refund_method_id}}",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests."
+              }
+            },
+            {
+              "name": "Update Refund Method (Bank Transfer)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods/{{refund_method_id}}",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"method\":\"bank_transfer\",\"upiId\":\"\",\"confirmUpiId\":\"\",\"accountHolderName\":\"TGSCO Customer\",\"accountNumber\":\"123456789012\",\"confirmAccountNumber\":\"123456789012\",\"ifscCode\":\"HDFC0001234\",\"confirmIfscCode\":\"HDFC0001234\",\"bankName\":\"HDFC Bank\",\"branchName\":\"Main Branch\",\"accountType\":\"savings\",\"label\":\"Primary Bank Account\",\"isDefault\":true}"
+                }
+              }
+            },
+            {
+              "name": "Delete Refund Method",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/refund-methods/{{refund_method_id}}",
+                "description": "Refund method CRUD workflow. Use refundMethodId for COD return requests."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Returns & Cancellation",
+          "item": [
+            {
+              "name": "Create Return",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/orders/{{order_id}}/returns",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [],\n  \"reason\": \"damaged\",\n  \"customerNote\": \"Item arrived damaged.\",\n  \"pickupAddressId\": \"{{pickup_address_id}}\",\n  \"refundMethodId\": \"{{refund_method_id}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "COD returns require refundMethodId."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List Order Returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/orders/{{order_id}}/returns"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "List Returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns?search=&status={{return_status}}&reason={{return_reason}}&from={{return_from}}&to={{return_to}}&paymentMethod={{payment_method}}&paymentStatus={{payment_status}}&page=1&limit=20&sort=newest"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Return Filters",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns/filters"
+              }
+            },
+            {
+              "name": "Return Detail",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns/{{return_id}}"
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                      "  try {",
+                      "    const body = pm.response.json();",
+                      "    const candidates = [body.return_id, body.returnId, body.id, body.data && (body.data.return_id || body.data.returnId || body.data.id), body.data && body.data.return && (body.data.return.id || body.data.return.return_id)];",
+                      "    let id = candidates.find(v => v);",
+                      "    if (!id && Array.isArray(body.data) && body.data.length) id = body.data[0].return_id || body.data[0].returnId || body.data[0].id;",
+                      "    if (!id && Array.isArray(body.returns) && body.returns.length) id = body.returns[0].return_id || body.returns[0].returnId || body.returns[0].id;",
+                      "    if (id) pm.collectionVariables.set('return_id', String(id));",
+                      "  } catch (e) {}",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Cancel Return",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/returns/{{return_id}}/cancel",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"Customer cancellation request\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Cancel Checkout Order",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}/cancel",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"Customer cancellation request\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"

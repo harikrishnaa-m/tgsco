@@ -1,4 +1,4 @@
-import { ChargeSettings, InvoiceSettings } from '../../models/settings.model.js';
+import { ChargeSettings, InvoiceSettings, OrderPolicySettings } from '../../models/settings.model.js';
 import { Order } from '../../models/order.model.js';
 import { AppError } from '../../errors/app-error.js';
 import {
@@ -45,14 +45,18 @@ export async function saveShipment(id, data, adminId) {
 export async function addNote(id, message, adminId) { const order = await findOrder(id); order.notes.push(message); order.timeline.push({ type: 'note', message, by: adminId }); await order.save(); return order; }
 export async function cancelAdminOrder(id, reason, refund, adminId) {
   const order = await findOrder(id);
-  if (!['pending_payment', 'confirmed', 'processing'].includes(order.orderStatus)) throw new AppError(`Order "${order.orderNumber}" cannot be cancelled while it is "${order.orderStatus}".`, { statusCode: 409, code: 'ORDER_CANNOT_BE_CANCELLED', details: { cancellableStatuses: ['pending_payment', 'confirmed', 'processing'] } });
+  const settings = await getOrderPolicies();
+  const cancellable = ['pending_payment', 'confirmed', 'processing', 'shipped'];
+  if (cancellable.indexOf(order.orderStatus) > cancellable.indexOf(settings.cancellationAllowedUntil)) throw new AppError(`Order "${order.orderNumber}" can only be cancelled until it is "${settings.cancellationAllowedUntil}".`, { statusCode: 409, code: 'ORDER_CANNOT_BE_CANCELLED', details: { cancellationAllowedUntil: settings.cancellationAllowedUntil } });
   if (refund?.amount !== undefined && refund.amount > order.grandTotal) throw new AppError('The refund amount cannot exceed the order total.', { statusCode: 400, code: 'INVALID_REFUND_AMOUNT', details: { orderTotal: order.grandTotal, requestedRefund: refund.amount } });
   await releaseReservations(order.reservations);
   order.reservations.forEach((reservation) => {
     if (reservation.status === 'active') reservation.status = 'released';
   });
   order.orderStatus = 'cancelled'; order.cancellation = { reason, by: adminId, at: new Date() };
-  if (refund) order.refund = refund;
+  if (order.paymentMethod === 'razorpay' && order.paymentStatus === 'captured') {
+    await initiateRazorpayRefund(order, { amount: refund?.amount || order.grandTotal, reason: 'order_cancellation', notes: { orderId: String(order._id) } }, `cancel-${order._id}`);
+  } else if (order.paymentMethod === 'cod' && refund?.amount) order.refund = { ...refund, status: 'manual_pending', amount: refund.amount };
   order.timeline.push({ type: 'cancellation', message: reason, by: adminId }); await order.save(); return order;
 }
 export async function invoiceData(id) {
@@ -101,7 +105,17 @@ export async function settingsMeta() {
 }
 export async function listSettings(type) {
   if (type === 'invoice') return InvoiceSettings.find({}).sort({ createdAt: -1 }).lean();
-  return type ? ChargeSettings.find({ type }).sort({ createdAt: -1 }).lean() : { invoice: await InvoiceSettings.find({}).lean(), charges: await ChargeSettings.find({}).lean() };
+  return type === 'order-policies' ? getOrderPolicies() : type ? ChargeSettings.find({ type }).sort({ createdAt: -1 }).lean() : { invoice: await InvoiceSettings.find({}).lean(), charges: await ChargeSettings.find({}).lean(), orderPolicies: await getOrderPolicies() };
+}
+export async function getOrderPolicies() {
+  return (await OrderPolicySettings.findOne({ key: 'default' }).lean())
+    || { key: 'default', cancellationAllowedUntil: 'shipped', returnWindowDays: 7 };
+}
+export async function saveOrderPolicies(data, adminId) {
+  return OrderPolicySettings.findOneAndUpdate(
+    { key: 'default' }, { ...data, key: 'default', updatedBy: adminId },
+    { upsert: true, new: true, runValidators: true },
+  );
 }
 export async function upsertInvoice(data, id) { return InvoiceSettings.findOneAndUpdate({ key: 'default' }, { ...data, key: 'default', updatedBy: id }, { upsert: true, new: true, runValidators: true }); }
 export async function saveCharge(data, chargeId) {

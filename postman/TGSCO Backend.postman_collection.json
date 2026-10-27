@@ -40,6 +40,14 @@
       "key": "admin_role",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    },
+    {
+      "key": "return_id",
+      "value": ""
     }
   ],
   "item": [
@@ -5917,6 +5925,68 @@
             }
           },
           "description": "Delete a previously uploaded video using the key returned by Upload Video."
+        }
+      ]
+    },
+    {
+      "name": "Returns and cancellation",
+      "item": [
+        {
+          "name": "returns",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/orders/{{order_id}}/returns",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"items\":[{\"productId\":\"{{product_id}}\",\"quantity\":1}],\"reason\":\"Product not required\",\"customerNote\":\"Optional note\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"return_id\", pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "returns",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/returns"
+          }
+        },
+        {
+          "name": "cancel",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/checkout/orders/{{order_id}}/cancel"
+          }
         }
       ]
     }

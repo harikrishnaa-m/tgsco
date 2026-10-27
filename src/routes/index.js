@@ -16,6 +16,7 @@ import wishlistRoutes from '../modules/wishlist/wishlist.routes.js';
 import addressRoutes from '../modules/address/address.routes.js';
 import checkoutRoutes from '../modules/checkout/checkout.routes.js';
 import adminRoutes from '../modules/admin/admin.routes.js';
+import returnsRoutes from '../modules/returns/returns.routes.js';
 
 const router = Router();
 
@@ -35,5 +36,6 @@ router.use('/wishlist', wishlistRoutes);
 router.use('/addresses', addressRoutes);
 router.use('/checkout', checkoutRoutes);
 router.use('/admin', adminRoutes);
+router.use('/', returnsRoutes);
 
 export default router;

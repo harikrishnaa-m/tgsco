@@ -40,10 +40,15 @@ export const settings = async (req, res) => res.json({ success: true, data: awai
 export const invoiceSettings = async (req, res) => res.json({ success: true, data: await service.listSettings('invoice') });
 export const shippingSettings = async (req, res) => res.json({ success: true, data: await service.listSettings('shipping') });
 export const packingSettings = async (req, res) => res.json({ success: true, data: await service.listSettings('packing') });
+export const orderPolicies = async (req, res) => res.json({ success: true, data: await service.getOrderPolicies() });
 export const metadata = async (req, res) => res.json({ success: true, data: await service.settingsMeta() });
 export const saveInvoice = async (req, res) => res.json({ success: true, data: await service.upsertInvoice(parse(v.invoiceBody, req.body, 'INVALID_INVOICE_SETTINGS', 'Invoice and seller settings are invalid.'), req.user.sub) });
 export const saveCharge = async (req, res) => {
   const body = { ...req.body, ...(req.params.type ? { type: req.params.type } : {}) };
   res.status(req.params.id ? 200 : 201).json({ success: true, data: await service.saveCharge(parse(v.chargeBody, body, 'INVALID_CHARGE_RULE', 'The charge rule is invalid.'), req.params.id) });
 };
+export const saveOrderPolicies = async (req, res) => res.json({
+  success: true,
+  data: await service.saveOrderPolicies(parse(v.orderPoliciesBody, req.body, 'INVALID_ORDER_POLICIES', 'Order cancellation and return policies are invalid.'), req.user.sub),
+});
 export const archiveCharge = async (req, res) => res.json({ success: true, data: await service.archiveCharge(req.params.id) });

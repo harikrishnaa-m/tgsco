@@ -422,8 +422,10 @@ to the specified order.
 The reconcile response is the same refund object. Reconciliation can update
 `amount`, `currency`, `status`, `createdAt`, `processedAt`, `notes`, and
 `failure`, and updates the order's `refunds`, `refund`, and `refundedAmount`
-fields. A fully processed refund can also set order and payment status to
-`refunded`.
+fields. A fully processed/refunded refund sets order and payment status to `refunded`.
+If the refund is linked to a return, reconciliation completes that return
+automatically and records `Refund processed` and `Return completed` timeline
+entries.
 
 ## Order, payment, and shipment statuses
 
@@ -719,3 +721,27 @@ unexpected failures use the repository's standard error-handler conventions.
   configured flat, percentage, and free-above rules.
 - Refund creation depends on Razorpay availability; local records are updated
   by the verified webhook or reconciliation endpoint.
+
+## Order policies and returns
+
+`GET /api/v1/admin/settings/order-policies` returns `{ cancellationAllowedUntil, returnWindowDays }`. Update it with `PUT /api/v1/admin/settings/order-policies`. The cancellation value is `pending_payment`, `confirmed`, `processing`, or `shipped`; return days is an integer from 0 to 365. Defaults are `shipped` and `7`.
+
+Admin return endpoints are `GET /api/v1/admin/orders/:id/returns`, `GET /api/v1/admin/returns`, `GET /api/v1/admin/returns/:returnId`, and `PATCH /api/v1/admin/returns/:returnId/status`. The detail endpoint validates the MongoDB return ID and returns `404 RETURN_NOT_FOUND` when the return does not exist. Its complete return record includes the customer, populated order and payment/refund data, pickup address, product snapshots, the customer-selected COD refund destination, and timeline. The status body is `{ "status": "approved", "message": "optional", "refundAmount": 0 }`. Supported statuses are `approved`, `rejected`, `pickup_pending`, `received`, `inspection_pending`, `approved_for_refund`, `refund_pending`, `refunded`, `completed`, and `cancelled`. Captured Razorpay refunds use the existing webhook/reconciliation lifecycle: a linked refund reported as `processed` or `refunded` automatically moves the return to `completed`, preserves the refund/payment status, and adds both refund and completion timeline entries. The `refunded` PATCH remains for legacy records; new processed refunds must not be manually completed. COD is recorded as `manual_pending` until an admin supplies the refund method and reference. No courier integration is performed.
+
+## Returns administration
+
+`GET /api/v1/admin/returns` and `GET /api/v1/admin/orders/:id/returns` return
+paginated returns. They accept `search`, `status`, `reason`, `from`, `to`,
+`paymentMethod`, `paymentStatus`, `page`, `limit`, and `sort`. Use
+`GET /api/v1/admin/returns/filters` for status/reason/payment metadata.
+Use `GET /api/v1/admin/returns/:returnId` for the complete detail record,
+including populated customer/order data and the persisted payment, refund,
+pickup-address, product-snapshot, and timeline fields.
+Update a return with `PATCH /api/v1/admin/returns/:returnId/status` using
+`status`, optional `message`, and optional `refundAmount`. For a COD return,
+moving to `refunded` or `completed` additionally requires
+`refundMethod` (`upi` or `bank_transfer`) and `refundReference`; admins may
+also provide `refundProcessedAt` and `refundNotes`. The API stores these
+details with the processing timestamp and admin ID. Updates must follow
+the strict transition graph documented in the customer integration guide;
+invalid transitions include the current and allowed statuses in the error.

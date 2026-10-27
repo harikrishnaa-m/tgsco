@@ -89,3 +89,10 @@ export const chargeBody = z.object({
   if (value.method === 'percentage' && value.percentage === undefined) context.addIssue({ code: 'custom', path: ['percentage'], message: 'A percentage charge requires percentage.' });
   if (!value.taxable && value.taxRate > 0) context.addIssue({ code: 'custom', path: ['taxRate'], message: 'Set taxable to true before configuring a tax rate.' });
 });
+export const orderPoliciesBody = z.object({
+  cancellationAllowedUntil: z.enum(['pending_payment', 'confirmed', 'processing', 'shipped'], {
+    error: 'Cancellation policy must be pending_payment, confirmed, processing, or shipped.',
+  }).default('shipped'),
+  returnWindowDays: z.number({ error: 'Return window must be a whole number of days.' })
+    .int('Return window must be a whole number of days.').min(0).max(365).default(7),
+});

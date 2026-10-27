@@ -8,7 +8,7 @@ import {
   verifyRazorpayPayment,
 } from './checkout.service.js';
 import { logger } from '../../config/logger.js';
-import { checkoutOrderSchema, orderIdSchema, paymentVerificationSchema } from './checkout.validation.js';
+import { checkoutOrderSchema, orderIdSchema, paymentVerificationSchema, cancellationSchema } from './checkout.validation.js';
 
 export async function summary(req, res) {
   res.json({ success: true, data: await getCheckoutSummary(req.user) });
@@ -49,5 +49,5 @@ export async function detail(req, res) {
 }
 
 export async function cancel(req, res) {
-  res.json({ success: true, data: await cancelOrder(req.user, orderIdSchema.parse(req.params.id)) });
+  res.json({ success: true, data: await cancelOrder(req.user, orderIdSchema.parse(req.params.id), cancellationSchema.parse(req.body).reason) });
 }

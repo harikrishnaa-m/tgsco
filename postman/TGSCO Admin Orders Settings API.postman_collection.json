@@ -44,6 +44,26 @@
     {
       "key": "refund_id",
       "value": ""
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    },
+    {
+      "key": "return_id",
+      "value": ""
+    },
+    {
+      "key": "refund_method_id",
+      "value": ""
+    },
+    {
+      "key": "customer_token",
+      "value": ""
+    },
+    {
+      "key": "merchant_token",
+      "value": ""
     }
   ],
   "item": [
@@ -1056,6 +1076,273 @@
                   }
                 }
               ]
+            }
+          ]
+        },
+        {
+          "name": "Returns & Refunds",
+          "item": [
+            {
+              "name": "order-policies",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/settings/order-policies"
+              }
+            },
+            {
+              "name": "order-policies",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/settings/order-policies",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"cancellationAllowedUntil\":\"shipped\",\"returnWindowDays\":7}"
+                }
+              }
+            },
+            {
+              "name": "returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns"
+              }
+            },
+            {
+              "name": "status",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "description": "Use for operational return transitions. Linked Razorpay refunds reported as processed/refunded complete the return automatically through the webhook or reconciliation endpoint; do not PATCH completed for new refunds. The refunded status remains available for legacy records.",
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"status\":\"approved\",\"message\":\"Approved\"}"
+                }
+              }
+            },
+            {
+              "name": "List admin returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/admin/returns?status={{return_status}}&reason={{return_reason}}&from={{return_from}}&to={{return_to}}&paymentMethod={{payment_method}}&paymentStatus={{payment_status}}&page=1&limit=20&sort=newest",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "admin",
+                    "returns?status={{return_status}}&reason={{return_reason}}&from={{return_from}}&to={{return_to}}&paymentMethod={{payment_method}}&paymentStatus={{payment_status}}&page=1&limit=20&sort=newest"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) { const items = pm.response.json().data.items || []; if (items[0] && items[0]._id) pm.collectionVariables.set('return_id', items[0]._id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Admin return filters",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/admin/returns/filters",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "admin",
+                    "returns",
+                    "filters"
+                  ]
+                }
+              },
+              "event": []
+            },
+            {
+              "name": "Admin return detail",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "******"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/admin/returns/{{return_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "admin",
+                    "returns",
+                    "{{return_id}}"
+                  ]
+                }
+              },
+              "event": []
+            },
+            {
+              "name": "Order returns",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/admin/orders/{{order_id}}/returns?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "admin",
+                    "orders",
+                    "{{order_id}}",
+                    "returns?page=1&limit=20"
+                  ]
+                }
+              },
+              "event": []
+            },
+            {
+              "name": "Update return status",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"approved\",\n  \"message\": \"Approved\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "admin",
+                    "returns",
+                    "{{return_id}}",
+                    "status"
+                  ]
+                }
+              },
+              "event": []
+            },
+            {
+              "name": "Mark COD Return Refunded",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                "description": "Admin-only COD refund processing. Required fields: status, refundMethod, refundReference, refundAmount, refundProcessedAt, and refundNotes.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"status\":\"refunded\",\"refundMethod\":\"upi\",\"refundReference\":\"UPI-REF-{{return_id}}\",\"refundAmount\":1000,\"refundProcessedAt\":\"2026-10-27T00:00:00.000Z\",\"refundNotes\":\"COD refund sent via UPI.\"}"
+                }
+              }
+            },
+            {
+              "name": "Mark COD Return Completed",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
+                "description": "Admin-only COD refund processing. Required fields: status, refundMethod, refundReference, refundAmount, refundProcessedAt, and refundNotes.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"status\":\"completed\",\"refundMethod\":\"bank_transfer\",\"refundReference\":\"BANK-REF-{{return_id}}\",\"refundAmount\":1000,\"refundProcessedAt\":\"2026-10-27T00:00:00.000Z\",\"refundNotes\":\"COD return completed after bank transfer.\"}"
+                }
+              }
             }
           ]
         }

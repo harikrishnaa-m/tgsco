@@ -220,7 +220,10 @@ webhooks (`refund.created`, `refund.processed`, `refund.failed`, and
 idempotently, and stored in the order's `refunds` array. Provider refund IDs,
 statuses, timestamps, failure details, and aggregate refunded amount are
 preserved. A fully processed refund changes payment and order status to
-`refunded`; partial refunds leave the payment captured.
+`refunded`; partial refunds leave the payment captured. When a refund is linked
+to a return, a processed/refunded Razorpay webhook or reconciliation response
+automatically completes that return and records refund-processed and
+return-completed timeline entries.
 
 ### Admin orders and settings
 

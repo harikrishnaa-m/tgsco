@@ -100,13 +100,28 @@ export async function mergeCart(user, { items }) {
   const existingQuantities = new Map(
     cart.items.map((item) => [item.product._id.toString(), item.quantity]),
   );
+  const adjustments = [];
   for (const [productId, quantity] of requestedQuantities) {
     const product = productsById.get(productId);
-    const nextQuantity = (existingQuantities.get(productId) || 0) + quantity;
+    const requestedFinalQuantity = (existingQuantities.get(productId) || 0) + quantity;
+    let nextQuantity = requestedFinalQuantity;
     if (user.role === 'merchant' && getUnitPrice(product, user.role, nextQuantity) === undefined) {
-      throw new AppError(`The quantity for ${product.name} must match a configured bulk tier.`, {
-        statusCode: 409,
-        code: 'BULK_QUANTITY_REQUIRED',
+      const nextTier = (product.bulkPricing || [])
+        .filter((tier) => tier.minimumQuantity > requestedFinalQuantity)
+        .sort((a, b) => a.minimumQuantity - b.minimumQuantity)[0];
+      if (!nextTier) {
+        throw new AppError(`The quantity for ${product.name} must match a configured bulk tier.`, {
+          statusCode: 409,
+          code: 'BULK_QUANTITY_REQUIRED',
+        });
+      }
+      nextQuantity = nextTier.minimumQuantity;
+      adjustments.push({
+        productId,
+        productName: product.name,
+        requestedQuantity: requestedFinalQuantity,
+        adjustedQuantity: nextQuantity,
+        reason: 'MERCHANT_BULK_MINIMUM',
       });
     }
     if (nextQuantity > product.stockQuantity) {
@@ -117,11 +132,14 @@ export async function mergeCart(user, { items }) {
     }
     const item = cart.items.find((entry) => entry.product._id.toString() === productId);
     if (item) item.quantity = nextQuantity;
-    else cart.items.push({ product: product._id, quantity });
+    else cart.items.push({ product: product._id, quantity: nextQuantity });
   }
   await cart.save();
   const populated = await Cart.findById(cart._id).populate('items.product');
-  return formatCart(populated, user.role);
+  return {
+    ...formatCart(populated, user.role),
+    adjustments,
+  };
 }
 
 export async function updateCartItem(user, productId, quantity) {

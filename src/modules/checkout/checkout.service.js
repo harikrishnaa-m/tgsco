@@ -6,7 +6,8 @@ import { Address } from '../../models/address.model.js';
 import { Cart } from '../../models/cart.model.js';
 import { CatalogProduct } from '../../models/catalog-product.model.js';
 import { Order } from '../../models/order.model.js';
-import { ChargeSettings, InvoiceSettings } from '../../models/settings.model.js';
+import { Return } from '../../models/return.model.js';
+import { ChargeSettings, InvoiceSettings, OrderPolicySettings } from '../../models/settings.model.js';
 import { AppError } from '../../errors/app-error.js';
 import { getMerchantBulkTier, getUnitPrice } from '../catalog/catalog-pricing.js';
 
@@ -379,7 +380,7 @@ function refundAmountInProgress(order) {
     .reduce((total, refund) => total + refund.amount, 0);
 }
 
-function updateRefundFromProvider(order, entity, fallbackStatus) {
+async function updateRefundFromProvider(order, entity, fallbackStatus) {
   const amount = Number(entity.amount || 0) / 100;
   const status = entity.status || fallbackStatus;
   const existing = order.refunds.find((refund) => refund.refundId === entity.id);
@@ -388,12 +389,13 @@ function updateRefundFromProvider(order, entity, fallbackStatus) {
     paymentId: entity.payment_id || order.razorpayPaymentId,
     amount,
     currency: entity.currency || order.currency,
-    status: ['processed', 'failed', 'created', 'pending'].includes(status) ? status : fallbackStatus,
+    status: ['processed', 'refunded', 'failed', 'created', 'pending'].includes(status) ? status : fallbackStatus,
     createdAt: entity.created_at ? new Date(entity.created_at * 1000) : existing?.createdAt,
     processedAt: entity.processed_at
       ? new Date(entity.processed_at * 1000)
       : status === 'processed' ? (existing?.processedAt || new Date()) : existing?.processedAt,
     notes: entity.notes || existing?.notes || {},
+    returnId: entity.notes?.returnId || existing?.returnId,
     failure: status === 'failed' ? {
       reason: entity.error_reason || entity.failure_reason,
       description: entity.error_description || entity.failure_description,
@@ -404,13 +406,29 @@ function updateRefundFromProvider(order, entity, fallbackStatus) {
   else order.refunds.push(values);
   order.refundedAmount = refundAmountInProgress(order);
   const fullyRefunded = order.refundedAmount >= order.grandTotal;
-  if (fullyRefunded && status === 'processed') {
+  const refundProcessed = ['processed', 'refunded'].includes(status);
+  if (fullyRefunded && refundProcessed) {
+    // Keep the local terminal refund/payment state stable across a later
+    // reconciliation response that still reports Razorpay's "processed".
+    values.status = 'refunded';
     order.paymentStatus = 'refunded';
     order.orderStatus = 'refunded';
-  } else if (status === 'processed' && order.paymentStatus !== 'refunded') {
+  } else if (refundProcessed && order.paymentStatus !== 'refunded') {
     order.paymentStatus = 'captured';
   }
   order.refund = values;
+  if (values.returnId && refundProcessed) {
+    const item = await Return.findById(values.returnId);
+    if (item && ['refund_pending', 'approved_for_refund', 'refunded'].includes(item.status)) {
+      item.status = 'completed';
+      item.timeline.push({ status: 'completed', message: 'Refund processed', at: new Date() });
+      item.timeline.push({ status: 'completed', message: 'Return completed', at: new Date() });
+      await item.save();
+      order.returnStatus = 'completed';
+      order.timeline.push({ type: 'return', message: 'Refund processed' });
+      order.timeline.push({ type: 'return', message: 'Return completed' });
+    }
+  }
 }
 
 export async function initiateRazorpayRefund(order, input, idempotencyKey) {
@@ -454,7 +472,7 @@ export async function initiateRazorpayRefund(order, input, idempotencyKey) {
   } catch {
     throw new AppError('Razorpay returned an unreadable refund response.', { statusCode: 502, code: 'REFUND_PROVIDER_ERROR' });
   }
-  updateRefundFromProvider(order, { ...entity, notes: input.notes }, entity.status || 'created');
+  await updateRefundFromProvider(order, { ...entity, notes: input.notes }, entity.status || 'created');
   const latest = order.refunds[order.refunds.length - 1];
   latest.reason = input.reason;
   latest.notes = input.notes || {};
@@ -484,7 +502,7 @@ export async function reconcileRazorpayRefund(order, refundId) {
   } catch {
     throw new AppError('Razorpay returned an unreadable refund response.', { statusCode: 502, code: 'REFUND_PROVIDER_ERROR' });
   }
-  updateRefundFromProvider(order, entity, entity.status || local.status);
+  await updateRefundFromProvider(order, entity, entity.status || local.status);
   await order.save();
   return order.refunds.find((refund) => refund.refundId === refundId);
 }
@@ -587,7 +605,7 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     order.paymentStatus = 'failed';
     order.orderStatus = 'cancelled';
   } else if (['refund.created', 'refund.processed', 'refund.failed', 'refund.updated', 'refund.speed_changed'].includes(event.event) && refundEntity) {
-    updateRefundFromProvider(order, refundEntity, event.event === 'refund.failed' ? 'failed' : event.event === 'refund.processed' ? 'processed' : 'created');
+    await updateRefundFromProvider(order, refundEntity, event.event === 'refund.failed' ? 'failed' : event.event === 'refund.processed' ? 'processed' : 'created');
   }
   order.processedWebhookEvents.push(event.id);
   await order.save();
@@ -632,16 +650,23 @@ export async function getOrder(user, orderId) {
   return order;
 }
 
-export async function cancelOrder(user, orderId) {
+export async function cancelOrder(user, orderId, reason) {
   const order = await Order.findOne({ _id: orderId, user: user.sub });
   if (!order) throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
-  if (!['pending_payment', 'confirmed'].includes(order.orderStatus)) {
-    throw new AppError('This order can no longer be cancelled.', { statusCode: 409, code: 'ORDER_CANNOT_BE_CANCELLED' });
+  const settings = await OrderPolicySettings.findOne({ key: 'default' }).lean()
+    || { cancellationAllowedUntil: 'shipped' };
+  const allowed = ['pending_payment', 'confirmed', 'processing', 'shipped'];
+  if (allowed.indexOf(order.orderStatus) > allowed.indexOf(settings.cancellationAllowedUntil)) {
+    throw new AppError(`This order can only be cancelled until it is "${settings.cancellationAllowedUntil}".`, { statusCode: 409, code: 'ORDER_CANNOT_BE_CANCELLED', details: { cancellationAllowedUntil: settings.cancellationAllowedUntil } });
   }
   await releaseReservations(order.reservations);
   order.reservations.forEach((reservation) => { reservation.status = 'released'; });
   order.orderStatus = 'cancelled';
-  if (order.paymentStatus !== 'captured') order.paymentStatus = 'failed';
+  if (order.paymentMethod === 'razorpay' && order.paymentStatus === 'captured') {
+    await initiateRazorpayRefund(order, { amount: order.grandTotal, reason: 'order_cancellation', notes: { orderId: String(order._id) } }, `cancel-${order._id}`);
+  } else if (order.paymentStatus !== 'captured') order.paymentStatus = 'failed';
+  order.cancellation = { reason, customerReason: reason, by: user.sub, at: new Date() };
+  order.timeline.push({ type: 'cancellation', message: `Order cancelled by customer: ${reason}`, by: user.sub });
   await order.save();
   return order;
 }

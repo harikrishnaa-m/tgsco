@@ -18,7 +18,10 @@ export async function listAddresses(user) {
 export async function getAddress(user, addressId) {
   const address = await Address.findOne({ _id: addressId, user: user.sub }).lean();
   if (!address) {
-    throw new AppError('The address was not found.', { statusCode: 404, code: 'ADDRESS_NOT_FOUND' });
+    throw new AppError('The address was not found.', {
+      statusCode: 404,
+      code: 'ADDRESS_NOT_FOUND',
+    });
   }
   return address;
 }
@@ -33,7 +36,10 @@ export async function createAddress(user, input) {
 export async function updateAddress(user, addressId, input) {
   const address = await Address.findOne({ _id: addressId, user: user.sub });
   if (!address) {
-    throw new AppError('The address was not found.', { statusCode: 404, code: 'ADDRESS_NOT_FOUND' });
+    throw new AppError('The address was not found.', {
+      statusCode: 404,
+      code: 'ADDRESS_NOT_FOUND',
+    });
   }
   if (input.isDefault) await unsetDefault(user.sub, address._id);
   Object.assign(address, input);
@@ -44,7 +50,10 @@ export async function updateAddress(user, addressId, input) {
 export async function setDefaultAddress(user, addressId) {
   const address = await Address.findOne({ _id: addressId, user: user.sub });
   if (!address) {
-    throw new AppError('The address was not found.', { statusCode: 404, code: 'ADDRESS_NOT_FOUND' });
+    throw new AppError('The address was not found.', {
+      statusCode: 404,
+      code: 'ADDRESS_NOT_FOUND',
+    });
   }
   await unsetDefault(user.sub, address._id);
   address.isDefault = true;
@@ -55,7 +64,10 @@ export async function setDefaultAddress(user, addressId) {
 export async function deleteAddress(user, addressId) {
   const address = await Address.findOneAndDelete({ _id: addressId, user: user.sub });
   if (!address) {
-    throw new AppError('The address was not found.', { statusCode: 404, code: 'ADDRESS_NOT_FOUND' });
+    throw new AppError('The address was not found.', {
+      statusCode: 404,
+      code: 'ADDRESS_NOT_FOUND',
+    });
   }
   if (address.isDefault) {
     const replacement = await Address.findOne({ user: user.sub }).sort({ createdAt: -1 });

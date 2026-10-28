@@ -7,7 +7,11 @@ import { Cart } from '../../models/cart.model.js';
 import { CatalogProduct } from '../../models/catalog-product.model.js';
 import { Order } from '../../models/order.model.js';
 import { Return } from '../../models/return.model.js';
-import { ChargeSettings, InvoiceSettings, OrderPolicySettings } from '../../models/settings.model.js';
+import {
+  ChargeSettings,
+  InvoiceSettings,
+  OrderPolicySettings,
+} from '../../models/settings.model.js';
 import { AppError } from '../../errors/app-error.js';
 import { getMerchantBulkTier, getUnitPrice } from '../catalog/catalog-pricing.js';
 
@@ -43,25 +47,39 @@ function toOrderResponse(order, payment) {
 async function calculateChargesUnsafe(subtotal, paymentMethod, destinationState, sellerState) {
   const charges = await ChargeSettings.find({ active: true }).lean();
   const appliedCharges = [];
-  let shippingFee = 0; let packingFee = 0; let codFee = 0; let taxAmount = 0;
+  let shippingFee = 0;
+  let packingFee = 0;
+  let codFee = 0;
+  let taxAmount = 0;
   const taxBreakdown = [];
   for (const charge of charges) {
     if (charge.freeAbove !== undefined && subtotal >= charge.freeAbove) continue;
     if (charge.code === 'cod' && paymentMethod !== 'cod') continue;
-    const amount = charge.method === 'percentage' ? subtotal * (charge.percentage || 0) / 100 : (charge.amount || 0);
+    const amount =
+      charge.method === 'percentage'
+        ? (subtotal * (charge.percentage || 0)) / 100
+        : charge.amount || 0;
     if (charge.code === 'cod') codFee += amount;
     else if (charge.type === 'shipping') shippingFee += amount;
     if (charge.type === 'packing') packingFee += amount;
-    const tax = charge.taxable ? amount * (charge.taxRate || 0) / 100 : 0;
+    const tax = charge.taxable ? (amount * (charge.taxRate || 0)) / 100 : 0;
     taxAmount += tax;
-    const intraState = destinationState && sellerState
-      && destinationState.trim().toLowerCase() === sellerState.trim().toLowerCase();
+    const intraState =
+      destinationState &&
+      sellerState &&
+      destinationState.trim().toLowerCase() === sellerState.trim().toLowerCase();
     const cgst = charge.taxable && intraState ? tax / 2 : 0;
     const sgst = charge.taxable && intraState ? tax / 2 : 0;
     const igst = charge.taxable && !intraState ? tax : 0;
     const component = {
-      code: charge.code, name: charge.name, taxableAmount: amount, taxRate: charge.taxRate || 0,
-      taxAmount: tax, cgst, sgst, igst,
+      code: charge.code,
+      name: charge.name,
+      taxableAmount: amount,
+      taxRate: charge.taxRate || 0,
+      taxAmount: tax,
+      cgst,
+      sgst,
+      igst,
     };
     appliedCharges.push({ ...component, taxable: charge.taxable });
     if (charge.taxable) taxBreakdown.push(component);
@@ -71,18 +89,30 @@ async function calculateChargesUnsafe(subtotal, paymentMethod, destinationState,
 
 async function calculateCharges(subtotal, paymentMethod, destinationState, sellerState) {
   try {
-    const result = await calculateChargesUnsafe(subtotal, paymentMethod, destinationState, sellerState);
-    if (!Number.isFinite(result.taxAmount) || !Number.isFinite(result.shippingFee)
-      || !Number.isFinite(result.packingFee) || !Number.isFinite(result.codFee)) {
+    const result = await calculateChargesUnsafe(
+      subtotal,
+      paymentMethod,
+      destinationState,
+      sellerState,
+    );
+    if (
+      !Number.isFinite(result.taxAmount) ||
+      !Number.isFinite(result.shippingFee) ||
+      !Number.isFinite(result.packingFee) ||
+      !Number.isFinite(result.codFee)
+    ) {
       throw new Error('Charge calculation produced a non-finite amount.');
     }
     return result;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError('Configured checkout charges could not be calculated. Please contact an administrator.', {
-      statusCode: 503,
-      code: 'CHARGE_CALCULATION_FAILED',
-    });
+    throw new AppError(
+      'Configured checkout charges could not be calculated. Please contact an administrator.',
+      {
+        statusCode: 503,
+        code: 'CHARGE_CALCULATION_FAILED',
+      },
+    );
   }
 }
 
@@ -108,12 +138,14 @@ async function loadCheckoutData(user) {
       availableQuantity,
       unitPrice,
       lineTotal: unitPrice === undefined ? null : unitPrice * item.quantity,
-      bulkEligible: user.role !== 'merchant' || getMerchantBulkTier(product, item.quantity) !== undefined,
+      bulkEligible:
+        user.role !== 'merchant' || getMerchantBulkTier(product, item.quantity) !== undefined,
     };
   });
   const warnings = [];
   for (const item of items) {
-    if (!item.product.active) warnings.push({ productId: item.product._id, type: 'PRODUCT_UNAVAILABLE' });
+    if (!item.product.active)
+      warnings.push({ productId: item.product._id, type: 'PRODUCT_UNAVAILABLE' });
     if (item.quantity > item.availableQuantity) {
       warnings.push({
         productId: item.product._id,
@@ -163,7 +195,8 @@ export async function getCheckoutSummary(user) {
     taxAmount: charges.taxAmount,
     taxBreakdown: charges.taxBreakdown,
     discountAmount: 0,
-    grandTotal: subtotal + charges.shippingFee + charges.packingFee + charges.codFee + charges.taxAmount,
+    grandTotal:
+      subtotal + charges.shippingFee + charges.packingFee + charges.codFee + charges.taxAmount,
     currency,
     canCheckout: warnings.length === 0,
     warnings,
@@ -180,17 +213,23 @@ async function reserveItems(items) {
           active: true,
           $expr: {
             $gte: [
-              { $subtract: [{ $ifNull: ['$stockQuantity', 0] }, { $ifNull: ['$reservedQuantity', 0] }] },
+              {
+                $subtract: [
+                  { $ifNull: ['$stockQuantity', 0] },
+                  { $ifNull: ['$reservedQuantity', 0] },
+                ],
+              },
               item.quantity,
             ],
           },
         },
         { $inc: { reservedQuantity: item.quantity } },
       );
-      if (result.modifiedCount !== 1) throw new AppError(`Insufficient stock for ${item.product.name}.`, {
-        statusCode: 409,
-        code: 'INSUFFICIENT_STOCK',
-      });
+      if (result.modifiedCount !== 1)
+        throw new AppError(`Insufficient stock for ${item.product.name}.`, {
+          statusCode: 409,
+          code: 'INSUFFICIENT_STOCK',
+        });
       reservations.push({ productId: item.product._id, quantity: item.quantity, status: 'active' });
     }
     return reservations;
@@ -255,7 +294,10 @@ export async function createOrder(user, input, idempotencyKey) {
     if (existing) return toOrderResponse(existing);
   }
   if (input.paymentMethod === 'cod' && !env.COD_ENABLED) {
-    throw new AppError('Cash on Delivery is not available.', { statusCode: 409, code: 'COD_NOT_AVAILABLE' });
+    throw new AppError('Cash on Delivery is not available.', {
+      statusCode: 409,
+      code: 'COD_NOT_AVAILABLE',
+    });
   }
   const { items, warnings, currency, subtotal } = await loadCheckoutData(user);
   if (warnings.length) {
@@ -272,17 +314,19 @@ export async function createOrder(user, input, idempotencyKey) {
     });
   }
   const shippingAddress = await Address.findOne({ _id: input.shippingAddressId, user: user.sub });
-  if (!shippingAddress) throw new AppError('The shipping address was not found.', {
-    statusCode: 404,
-    code: 'ADDRESS_NOT_FOUND',
-  });
+  if (!shippingAddress)
+    throw new AppError('The shipping address was not found.', {
+      statusCode: 404,
+      code: 'ADDRESS_NOT_FOUND',
+    });
   const billingAddress = input.billingAddressId
     ? await Address.findOne({ _id: input.billingAddressId, user: user.sub })
     : shippingAddress;
-  if (!billingAddress) throw new AppError('The billing address was not found.', {
-    statusCode: 404,
-    code: 'ADDRESS_NOT_FOUND',
-  });
+  if (!billingAddress)
+    throw new AppError('The billing address was not found.', {
+      statusCode: 404,
+      code: 'ADDRESS_NOT_FOUND',
+    });
   if (input.paymentMethod === 'cod' && subtotal > env.COD_MAX_ORDER_VALUE) {
     throw new AppError('Cash on Delivery is not available for this order value.', {
       statusCode: 409,
@@ -323,14 +367,16 @@ export async function createOrder(user, input, idempotencyKey) {
     appliedCharges: charges.appliedCharges,
     sellerSnapshot: seller,
     invoiceSnapshot: seller,
-    grandTotal: subtotal + charges.shippingFee + charges.packingFee + charges.codFee + charges.taxAmount,
+    grandTotal:
+      subtotal + charges.shippingFee + charges.packingFee + charges.codFee + charges.taxAmount,
     currency,
     paymentMethod: input.paymentMethod,
     orderStatus: input.paymentMethod === 'cod' ? 'confirmed' : 'pending_payment',
     paymentStatus: input.paymentMethod === 'cod' ? 'pending' : 'created',
-    reservationExpiresAt: input.paymentMethod === 'razorpay'
-      ? new Date(Date.now() + env.PAYMENT_RESERVATION_MINUTES * 60 * 1000)
-      : undefined,
+    reservationExpiresAt:
+      input.paymentMethod === 'razorpay'
+        ? new Date(Date.now() + env.PAYMENT_RESERVATION_MINUTES * 60 * 1000)
+        : undefined,
     reservations,
   });
   try {
@@ -359,14 +405,20 @@ export async function createOrder(user, input, idempotencyKey) {
 export async function verifyRazorpayPayment(user, input) {
   const order = await Order.findOne({ _id: input.orderId, user: user.sub });
   if (!order || order.razorpayOrderId !== input.razorpayOrderId) {
-    throw new AppError('The payment order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
+    throw new AppError('The payment order was not found.', {
+      statusCode: 404,
+      code: 'ORDER_NOT_FOUND',
+    });
   }
   const signature = crypto
     .createHmac('sha256', env.RAZORPAY_KEY_SECRET || '')
     .update(`${input.razorpayOrderId}|${input.razorpayPaymentId}`)
     .digest('hex');
   if (signature !== input.razorpaySignature) {
-    throw new AppError('The payment signature is invalid.', { statusCode: 400, code: 'INVALID_PAYMENT_SIGNATURE' });
+    throw new AppError('The payment signature is invalid.', {
+      statusCode: 400,
+      code: 'INVALID_PAYMENT_SIGNATURE',
+    });
   }
   order.razorpayPaymentId = input.razorpayPaymentId;
   order.paymentStatus = 'authorized';
@@ -389,18 +441,25 @@ async function updateRefundFromProvider(order, entity, fallbackStatus) {
     paymentId: entity.payment_id || order.razorpayPaymentId,
     amount,
     currency: entity.currency || order.currency,
-    status: ['processed', 'refunded', 'failed', 'created', 'pending'].includes(status) ? status : fallbackStatus,
+    status: ['processed', 'refunded', 'failed', 'created', 'pending'].includes(status)
+      ? status
+      : fallbackStatus,
     createdAt: entity.created_at ? new Date(entity.created_at * 1000) : existing?.createdAt,
     processedAt: entity.processed_at
       ? new Date(entity.processed_at * 1000)
-      : status === 'processed' ? (existing?.processedAt || new Date()) : existing?.processedAt,
+      : status === 'processed'
+        ? existing?.processedAt || new Date()
+        : existing?.processedAt,
     notes: entity.notes || existing?.notes || {},
     returnId: entity.notes?.returnId || existing?.returnId,
-    failure: status === 'failed' ? {
-      reason: entity.error_reason || entity.failure_reason,
-      description: entity.error_description || entity.failure_description,
-      code: entity.error_code,
-    } : null,
+    failure:
+      status === 'failed'
+        ? {
+            reason: entity.error_reason || entity.failure_reason,
+            description: entity.error_description || entity.failure_description,
+            code: entity.error_code,
+          }
+        : null,
   };
   if (existing) Object.assign(existing, values);
   else order.refunds.push(values);
@@ -433,10 +492,20 @@ async function updateRefundFromProvider(order, entity, fallbackStatus) {
 
 export async function initiateRazorpayRefund(order, input, idempotencyKey) {
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
-    throw new AppError('Razorpay refunds are not configured.', { statusCode: 503, code: 'REFUND_PROVIDER_NOT_CONFIGURED' });
+    throw new AppError('Razorpay refunds are not configured.', {
+      statusCode: 503,
+      code: 'REFUND_PROVIDER_NOT_CONFIGURED',
+    });
   }
-  if (order.paymentMethod !== 'razorpay' || order.paymentStatus !== 'captured' || !order.razorpayPaymentId) {
-    throw new AppError('A refund can only be created for a captured Razorpay payment.', { statusCode: 409, code: 'REFUND_PAYMENT_NOT_CAPTURED' });
+  if (
+    order.paymentMethod !== 'razorpay' ||
+    order.paymentStatus !== 'captured' ||
+    !order.razorpayPaymentId
+  ) {
+    throw new AppError('A refund can only be created for a captured Razorpay payment.', {
+      statusCode: 409,
+      code: 'REFUND_PAYMENT_NOT_CAPTURED',
+    });
   }
   if (idempotencyKey) {
     const existing = order.refunds.find((refund) => refund.idempotencyKey === idempotencyKey);
@@ -444,9 +513,18 @@ export async function initiateRazorpayRefund(order, input, idempotencyKey) {
   }
   const available = order.grandTotal - refundAmountInProgress(order);
   if (input.amount > available) {
-    throw new AppError('The refund amount exceeds the captured amount still available for refund.', {
-      statusCode: 409, code: 'REFUND_AMOUNT_EXCEEDED', details: { capturedAmount: order.grandTotal, alreadyRefunded: refundAmountInProgress(order), availableAmount: available },
-    });
+    throw new AppError(
+      'The refund amount exceeds the captured amount still available for refund.',
+      {
+        statusCode: 409,
+        code: 'REFUND_AMOUNT_EXCEEDED',
+        details: {
+          capturedAmount: order.grandTotal,
+          alreadyRefunded: refundAmountInProgress(order),
+          availableAmount: available,
+        },
+      },
+    );
   }
   const headers = {
     Authorization: `Basic ${Buffer.from(`${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`).toString('base64')}`,
@@ -455,24 +533,44 @@ export async function initiateRazorpayRefund(order, input, idempotencyKey) {
   if (idempotencyKey) headers['X-Razorpay-Idempotency'] = idempotencyKey;
   let response;
   try {
-    response = await fetch(`https://api.razorpay.com/v1/payments/${order.razorpayPaymentId}/refund`, {
-      method: 'POST', headers, body: JSON.stringify({ amount: Math.round(input.amount * 100), notes: input.notes, receipt: order.orderNumber }),
-    });
+    response = await fetch(
+      `https://api.razorpay.com/v1/payments/${order.razorpayPaymentId}/refund`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          amount: Math.round(input.amount * 100),
+          notes: input.notes,
+          receipt: order.orderNumber,
+        }),
+      },
+    );
   } catch {
-    throw new AppError('Razorpay could not be reached to create the refund. Try again later.', { statusCode: 502, code: 'REFUND_PROVIDER_UNAVAILABLE' });
+    throw new AppError('Razorpay could not be reached to create the refund. Try again later.', {
+      statusCode: 502,
+      code: 'REFUND_PROVIDER_UNAVAILABLE',
+    });
   }
   if (!response.ok) {
     throw new AppError('Razorpay could not create the refund. Verify the payment and try again.', {
-      statusCode: response.status === 400 ? 400 : 502, code: 'REFUND_PROVIDER_ERROR',
+      statusCode: response.status === 400 ? 400 : 502,
+      code: 'REFUND_PROVIDER_ERROR',
     });
   }
   let entity;
   try {
     entity = await response.json();
   } catch {
-    throw new AppError('Razorpay returned an unreadable refund response.', { statusCode: 502, code: 'REFUND_PROVIDER_ERROR' });
+    throw new AppError('Razorpay returned an unreadable refund response.', {
+      statusCode: 502,
+      code: 'REFUND_PROVIDER_ERROR',
+    });
   }
-  await updateRefundFromProvider(order, { ...entity, notes: input.notes }, entity.status || 'created');
+  await updateRefundFromProvider(
+    order,
+    { ...entity, notes: input.notes },
+    entity.status || 'created',
+  );
   const latest = order.refunds[order.refunds.length - 1];
   latest.reason = input.reason;
   latest.notes = input.notes || {};
@@ -483,24 +581,43 @@ export async function initiateRazorpayRefund(order, input, idempotencyKey) {
 
 export async function reconcileRazorpayRefund(order, refundId) {
   const local = order.refunds.find((refund) => refund.refundId === refundId);
-  if (!local) throw new AppError('The refund does not belong to this order.', { statusCode: 404, code: 'REFUND_NOT_FOUND' });
+  if (!local)
+    throw new AppError('The refund does not belong to this order.', {
+      statusCode: 404,
+      code: 'REFUND_NOT_FOUND',
+    });
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
-    throw new AppError('Razorpay refunds are not configured.', { statusCode: 503, code: 'REFUND_PROVIDER_NOT_CONFIGURED' });
+    throw new AppError('Razorpay refunds are not configured.', {
+      statusCode: 503,
+      code: 'REFUND_PROVIDER_NOT_CONFIGURED',
+    });
   }
   let response;
   try {
     response = await fetch(`https://api.razorpay.com/v1/refunds/${refundId}`, {
-      headers: { Authorization: `Basic ${Buffer.from(`${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`).toString('base64')}` },
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`).toString('base64')}`,
+      },
     });
   } catch {
-    throw new AppError('Razorpay could not be reached to verify the refund. Try again later.', { statusCode: 502, code: 'REFUND_PROVIDER_UNAVAILABLE' });
+    throw new AppError('Razorpay could not be reached to verify the refund. Try again later.', {
+      statusCode: 502,
+      code: 'REFUND_PROVIDER_UNAVAILABLE',
+    });
   }
-  if (!response.ok) throw new AppError('Razorpay could not verify this refund. Try again later.', { statusCode: response.status === 404 ? 404 : 502, code: response.status === 404 ? 'REFUND_NOT_FOUND_AT_PROVIDER' : 'REFUND_PROVIDER_ERROR' });
+  if (!response.ok)
+    throw new AppError('Razorpay could not verify this refund. Try again later.', {
+      statusCode: response.status === 404 ? 404 : 502,
+      code: response.status === 404 ? 'REFUND_NOT_FOUND_AT_PROVIDER' : 'REFUND_PROVIDER_ERROR',
+    });
   let entity;
   try {
     entity = await response.json();
   } catch {
-    throw new AppError('Razorpay returned an unreadable refund response.', { statusCode: 502, code: 'REFUND_PROVIDER_ERROR' });
+    throw new AppError('Razorpay returned an unreadable refund response.', {
+      statusCode: 502,
+      code: 'REFUND_PROVIDER_ERROR',
+    });
   }
   await updateRefundFromProvider(order, entity, entity.status || local.status);
   await order.save();
@@ -508,52 +625,76 @@ export async function reconcileRazorpayRefund(order, refundId) {
 }
 
 export async function handleRazorpayWebhook(rawBody, signature) {
-  logger.info({
-    webhook: 'razorpay',
-    stage: 'received',
-    hasBody: Boolean(rawBody),
-    hasSignature: Boolean(signature),
-  }, 'Razorpay webhook received');
-  if (!env.RAZORPAY_WEBHOOK_SECRET || !rawBody || !signature) {
-    logger.warn({
+  logger.info(
+    {
       webhook: 'razorpay',
-      stage: 'verification_failed',
-      reason: 'missing_configuration_or_request_data',
+      stage: 'received',
       hasBody: Boolean(rawBody),
       hasSignature: Boolean(signature),
-      hasWebhookSecret: Boolean(env.RAZORPAY_WEBHOOK_SECRET),
-    }, 'Razorpay webhook rejected');
-    throw new AppError('The payment webhook could not be verified.', { statusCode: 400, code: 'INVALID_WEBHOOK' });
+    },
+    'Razorpay webhook received',
+  );
+  if (!env.RAZORPAY_WEBHOOK_SECRET || !rawBody || !signature) {
+    logger.warn(
+      {
+        webhook: 'razorpay',
+        stage: 'verification_failed',
+        reason: 'missing_configuration_or_request_data',
+        hasBody: Boolean(rawBody),
+        hasSignature: Boolean(signature),
+        hasWebhookSecret: Boolean(env.RAZORPAY_WEBHOOK_SECRET),
+      },
+      'Razorpay webhook rejected',
+    );
+    throw new AppError('The payment webhook could not be verified.', {
+      statusCode: 400,
+      code: 'INVALID_WEBHOOK',
+    });
   }
-  const expected = crypto.createHmac('sha256', env.RAZORPAY_WEBHOOK_SECRET).update(rawBody).digest('hex');
+  const expected = crypto
+    .createHmac('sha256', env.RAZORPAY_WEBHOOK_SECRET)
+    .update(rawBody)
+    .digest('hex');
   if (expected !== signature) {
-    logger.warn({
-      webhook: 'razorpay',
-      stage: 'verification_failed',
-      reason: 'signature_mismatch',
-    }, 'Razorpay webhook signature verification failed');
-    throw new AppError('The payment webhook signature is invalid.', { statusCode: 400, code: 'INVALID_WEBHOOK_SIGNATURE' });
+    logger.warn(
+      {
+        webhook: 'razorpay',
+        stage: 'verification_failed',
+        reason: 'signature_mismatch',
+      },
+      'Razorpay webhook signature verification failed',
+    );
+    throw new AppError('The payment webhook signature is invalid.', {
+      statusCode: 400,
+      code: 'INVALID_WEBHOOK_SIGNATURE',
+    });
   }
   let event;
   try {
     event = JSON.parse(rawBody.toString('utf8'));
   } catch (error) {
-    logger.error({
-      err: error,
-      webhook: 'razorpay',
-      stage: 'parse_failed',
-    }, 'Razorpay webhook payload could not be parsed');
+    logger.error(
+      {
+        err: error,
+        webhook: 'razorpay',
+        stage: 'parse_failed',
+      },
+      'Razorpay webhook payload could not be parsed',
+    );
     throw new AppError('The payment webhook payload is not valid JSON.', {
       statusCode: 400,
       code: 'INVALID_WEBHOOK_PAYLOAD',
     });
   }
-  logger.info({
-    webhook: 'razorpay',
-    stage: 'parsed',
-    eventId: event.id,
-    eventType: event.event,
-  }, 'Razorpay webhook event parsed');
+  logger.info(
+    {
+      webhook: 'razorpay',
+      stage: 'parsed',
+      eventId: event.id,
+      eventType: event.event,
+    },
+    'Razorpay webhook event parsed',
+  );
   const entity = event.payload?.payment?.entity || event.payload?.order?.entity;
   const refundEntity = event.payload?.refund?.entity;
   const razorpayOrderId = entity?.order_id || entity?.id;
@@ -561,38 +702,47 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     ? await Order.findOne({ razorpayPaymentId: refundEntity.payment_id })
     : await Order.findOne({ razorpayOrderId });
   if (!order) {
-    logger.warn({
-      webhook: 'razorpay',
-      stage: 'order_not_found',
-      eventId: event.id,
-      eventType: event.event,
-      razorpayOrderId,
-      razorpayPaymentId: refundEntity?.payment_id,
-      razorpayRefundId: refundEntity?.id,
-    }, 'Razorpay webhook could not be linked to an order');
+    logger.warn(
+      {
+        webhook: 'razorpay',
+        stage: 'order_not_found',
+        eventId: event.id,
+        eventType: event.event,
+        razorpayOrderId,
+        razorpayPaymentId: refundEntity?.payment_id,
+        razorpayRefundId: refundEntity?.id,
+      },
+      'Razorpay webhook could not be linked to an order',
+    );
     return { received: true };
   }
   if (order.processedWebhookEvents.includes(event.id)) {
-    logger.info({
+    logger.info(
+      {
+        webhook: 'razorpay',
+        stage: 'duplicate',
+        eventId: event.id,
+        eventType: event.event,
+        orderId: order._id,
+      },
+      'Duplicate Razorpay webhook ignored',
+    );
+    return { received: true };
+  }
+  logger.info(
+    {
       webhook: 'razorpay',
-      stage: 'duplicate',
+      stage: 'processing',
       eventId: event.id,
       eventType: event.event,
       orderId: order._id,
-    }, 'Duplicate Razorpay webhook ignored');
-    return { received: true };
-  }
-  logger.info({
-    webhook: 'razorpay',
-    stage: 'processing',
-    eventId: event.id,
-    eventType: event.event,
-    orderId: order._id,
-    orderNumber: order.orderNumber,
-    razorpayOrderId,
-    razorpayPaymentId: refundEntity?.payment_id || order.razorpayPaymentId,
-    razorpayRefundId: refundEntity?.id,
-  }, 'Processing Razorpay webhook event');
+      orderNumber: order.orderNumber,
+      razorpayOrderId,
+      razorpayPaymentId: refundEntity?.payment_id || order.razorpayPaymentId,
+      razorpayRefundId: refundEntity?.id,
+    },
+    'Processing Razorpay webhook event',
+  );
   if (['payment.captured', 'order.paid'].includes(event.event)) {
     await consumeReservations(order);
     order.paymentStatus = 'captured';
@@ -601,25 +751,47 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     await Cart.updateOne({ user: order.user }, { $set: { items: [] } });
   } else if (event.event === 'payment.failed') {
     await releaseReservations(order.reservations);
-    order.reservations.forEach((reservation) => { reservation.status = 'released'; });
+    order.reservations.forEach((reservation) => {
+      reservation.status = 'released';
+    });
     order.paymentStatus = 'failed';
     order.orderStatus = 'cancelled';
-  } else if (['refund.created', 'refund.processed', 'refund.failed', 'refund.updated', 'refund.speed_changed'].includes(event.event) && refundEntity) {
-    await updateRefundFromProvider(order, refundEntity, event.event === 'refund.failed' ? 'failed' : event.event === 'refund.processed' ? 'processed' : 'created');
+  } else if (
+    [
+      'refund.created',
+      'refund.processed',
+      'refund.failed',
+      'refund.updated',
+      'refund.speed_changed',
+    ].includes(event.event) &&
+    refundEntity
+  ) {
+    await updateRefundFromProvider(
+      order,
+      refundEntity,
+      event.event === 'refund.failed'
+        ? 'failed'
+        : event.event === 'refund.processed'
+          ? 'processed'
+          : 'created',
+    );
   }
   order.processedWebhookEvents.push(event.id);
   await order.save();
-  logger.info({
-    webhook: 'razorpay',
-    stage: 'processed',
-    eventId: event.id,
-    eventType: event.event,
-    orderId: order._id,
-    orderNumber: order.orderNumber,
-    paymentStatus: order.paymentStatus,
-    orderStatus: order.orderStatus,
-    refundStatus: refundEntity?.status,
-  }, 'Razorpay webhook processed successfully');
+  logger.info(
+    {
+      webhook: 'razorpay',
+      stage: 'processed',
+      eventId: event.id,
+      eventType: event.event,
+      orderId: order._id,
+      orderNumber: order.orderNumber,
+      paymentStatus: order.paymentStatus,
+      orderStatus: order.orderStatus,
+      refundStatus: refundEntity?.status,
+    },
+    'Razorpay webhook processed successfully',
+  );
   return { received: true };
 }
 
@@ -632,7 +804,9 @@ export async function releaseExpiredReservations() {
   });
   for (const order of expiredOrders) {
     await releaseReservations(order.reservations);
-    order.reservations.forEach((reservation) => { reservation.status = 'released'; });
+    order.reservations.forEach((reservation) => {
+      reservation.status = 'released';
+    });
     order.paymentStatus = 'failed';
     order.orderStatus = 'cancelled';
     await order.save();
@@ -646,27 +820,51 @@ export async function listOrders(user) {
 
 export async function getOrder(user, orderId) {
   const order = await Order.findOne({ _id: orderId, user: user.sub }).lean();
-  if (!order) throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
+  if (!order)
+    throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
   return order;
 }
 
 export async function cancelOrder(user, orderId, reason) {
   const order = await Order.findOne({ _id: orderId, user: user.sub });
-  if (!order) throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
-  const settings = await OrderPolicySettings.findOne({ key: 'default' }).lean()
-    || { cancellationAllowedUntil: 'shipped' };
+  if (!order)
+    throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
+  const settings = (await OrderPolicySettings.findOne({ key: 'default' }).lean()) || {
+    cancellationAllowedUntil: 'shipped',
+  };
   const allowed = ['pending_payment', 'confirmed', 'processing', 'shipped'];
   if (allowed.indexOf(order.orderStatus) > allowed.indexOf(settings.cancellationAllowedUntil)) {
-    throw new AppError(`This order can only be cancelled until it is "${settings.cancellationAllowedUntil}".`, { statusCode: 409, code: 'ORDER_CANNOT_BE_CANCELLED', details: { cancellationAllowedUntil: settings.cancellationAllowedUntil } });
+    throw new AppError(
+      `This order can only be cancelled until it is "${settings.cancellationAllowedUntil}".`,
+      {
+        statusCode: 409,
+        code: 'ORDER_CANNOT_BE_CANCELLED',
+        details: { cancellationAllowedUntil: settings.cancellationAllowedUntil },
+      },
+    );
   }
   await releaseReservations(order.reservations);
-  order.reservations.forEach((reservation) => { reservation.status = 'released'; });
+  order.reservations.forEach((reservation) => {
+    reservation.status = 'released';
+  });
   order.orderStatus = 'cancelled';
   if (order.paymentMethod === 'razorpay' && order.paymentStatus === 'captured') {
-    await initiateRazorpayRefund(order, { amount: order.grandTotal, reason: 'order_cancellation', notes: { orderId: String(order._id) } }, `cancel-${order._id}`);
+    await initiateRazorpayRefund(
+      order,
+      {
+        amount: order.grandTotal,
+        reason: 'order_cancellation',
+        notes: { orderId: String(order._id) },
+      },
+      `cancel-${order._id}`,
+    );
   } else if (order.paymentStatus !== 'captured') order.paymentStatus = 'failed';
   order.cancellation = { reason, customerReason: reason, by: user.sub, at: new Date() };
-  order.timeline.push({ type: 'cancellation', message: `Order cancelled by customer: ${reason}`, by: user.sub });
+  order.timeline.push({
+    type: 'cancellation',
+    message: `Order cancelled by customer: ${reason}`,
+    by: user.sub,
+  });
   await order.save();
   return order;
 }

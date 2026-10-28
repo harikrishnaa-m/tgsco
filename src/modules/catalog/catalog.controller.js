@@ -97,11 +97,7 @@ export async function createGroup(req, res) {
 export async function updateGroup(req, res) {
   res.json({
     success: true,
-    data: await saveGroup(
-      groupSchema.parse(parseCatalogContent(req)),
-      req.files,
-      req.params.id,
-    ),
+    data: await saveGroup(groupSchema.parse(parseCatalogContent(req)), req.files, req.params.id),
   });
 }
 
@@ -136,7 +132,11 @@ export async function createProduct(req, res) {
 export async function updateProduct(req, res) {
   res.json({
     success: true,
-    data: await saveProduct(productSchema.parse(parseCatalogContent(req)), req.files, req.params.id),
+    data: await saveProduct(
+      productSchema.parse(parseCatalogContent(req)),
+      req.files,
+      req.params.id,
+    ),
   });
 }
 

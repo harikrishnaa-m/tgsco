@@ -169,14 +169,15 @@ export async function completeUserRegistration({ registrationToken, role, email 
   }
   if (typeof payload !== 'object' || payload.type !== 'registration') {
     if (typeof payload === 'object' && payload.type === 'social-registration') {
-      const identityQuery = payload.provider === 'facebook'
-        ? {
-            $or: [
-              { facebookId: payload.providerId },
-              ...(payload.email ? [{ email: payload.email }] : []),
-            ],
-          }
-        : { email: payload.email };
+      const identityQuery =
+        payload.provider === 'facebook'
+          ? {
+              $or: [
+                { facebookId: payload.providerId },
+                ...(payload.email ? [{ email: payload.email }] : []),
+              ],
+            }
+          : { email: payload.email };
       const existingUser = await User.findOne(identityQuery);
       if (existingUser) {
         if (payload.provider === 'facebook' && !existingUser.facebookId) {
@@ -322,7 +323,10 @@ export async function loginWithSocial(provider, code, role, rememberMe) {
   let providerId;
   if (provider === 'google') {
     if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET || !env.GOOGLE_REDIRECT_URI) {
-      throw new AppError('Google sign-in is not configured.', { statusCode: 503, code: 'GOOGLE_AUTH_NOT_CONFIGURED' });
+      throw new AppError('Google sign-in is not configured.', {
+        statusCode: 503,
+        code: 'GOOGLE_AUTH_NOT_CONFIGURED',
+      });
     }
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
@@ -337,7 +341,10 @@ export async function loginWithSocial(provider, code, role, rememberMe) {
     });
     const tokens = await tokenResponse.json();
     if (!tokenResponse.ok || !tokens.access_token) {
-      throw new AppError('Google sign-in could not be completed.', { statusCode: 502, code: 'GOOGLE_AUTH_ERROR' });
+      throw new AppError('Google sign-in could not be completed.', {
+        statusCode: 502,
+        code: 'GOOGLE_AUTH_ERROR',
+      });
     }
     const profileResponse = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
       headers: { authorization: `Bearer ${tokens.access_token}` },
@@ -348,7 +355,10 @@ export async function loginWithSocial(provider, code, role, rememberMe) {
     providerId = profile.sub;
   } else {
     if (!env.FACEBOOK_APP_ID || !env.FACEBOOK_APP_SECRET || !env.FACEBOOK_REDIRECT_URI) {
-      throw new AppError('Facebook sign-in is not configured.', { statusCode: 503, code: 'FACEBOOK_AUTH_NOT_CONFIGURED' });
+      throw new AppError('Facebook sign-in is not configured.', {
+        statusCode: 503,
+        code: 'FACEBOOK_AUTH_NOT_CONFIGURED',
+      });
     }
     const tokenUrl = new URL('https://graph.facebook.com/v20.0/oauth/access_token');
     tokenUrl.search = new URLSearchParams({
@@ -360,7 +370,10 @@ export async function loginWithSocial(provider, code, role, rememberMe) {
     const tokenResponse = await fetch(tokenUrl);
     const tokens = await tokenResponse.json();
     if (!tokenResponse.ok || !tokens.access_token) {
-      throw new AppError('Facebook sign-in could not be completed.', { statusCode: 502, code: 'FACEBOOK_AUTH_ERROR' });
+      throw new AppError('Facebook sign-in could not be completed.', {
+        statusCode: 502,
+        code: 'FACEBOOK_AUTH_ERROR',
+      });
     }
     const profileResponse = await fetch(
       `https://graph.facebook.com/me?fields=id,name,email&access_token=${encodeURIComponent(tokens.access_token)}`,
@@ -379,10 +392,7 @@ export async function loginWithSocial(provider, code, role, rememberMe) {
   const existingUser = await User.findOne({
     ...(provider === 'facebook'
       ? {
-          $or: [
-            { facebookId: providerId },
-            ...(email ? [{ email: email.toLowerCase() }] : []),
-          ],
+          $or: [{ facebookId: providerId }, ...(email ? [{ email: email.toLowerCase() }] : [])],
         }
       : { email: email.toLowerCase() }),
     ...(role ? { role } : { role: { $in: ['customer', 'merchant'] } }),

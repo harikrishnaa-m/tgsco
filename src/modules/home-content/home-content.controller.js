@@ -1,8 +1,5 @@
 import { AppError } from '../../errors/app-error.js';
-import {
-  sectionContentSchema,
-  validatePairedSectionImages,
-} from './home-content.validation.js';
+import { sectionContentSchema, validatePairedSectionImages } from './home-content.validation.js';
 import {
   createHomeSection,
   deleteHomeSection,

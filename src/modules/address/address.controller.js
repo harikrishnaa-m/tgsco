@@ -17,13 +17,19 @@ export async function getAddressById(req, res) {
 }
 
 export async function create(req, res) {
-  res.status(201).json({ success: true, data: await createAddress(req.user, addressSchema.parse(req.body)) });
+  res
+    .status(201)
+    .json({ success: true, data: await createAddress(req.user, addressSchema.parse(req.body)) });
 }
 
 export async function update(req, res) {
   res.json({
     success: true,
-    data: await updateAddress(req.user, addressId.parse(req.params.id), updateAddressSchema.parse(req.body)),
+    data: await updateAddress(
+      req.user,
+      addressId.parse(req.params.id),
+      updateAddressSchema.parse(req.body),
+    ),
   });
 }
 

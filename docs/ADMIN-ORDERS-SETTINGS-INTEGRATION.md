@@ -745,3 +745,238 @@ also provide `refundProcessedAt` and `refundNotes`. The API stores these
 details with the processing timestamp and admin ID. Updates must follow
 the strict transition graph documented in the customer integration guide;
 invalid transitions include the current and allowed statuses in the error.
+
+## Admin profile and password
+
+Administrators use the same authenticated profile endpoints:
+
+| Method  | Path                       | Purpose                                 |
+| ------- | -------------------------- | --------------------------------------- |
+| `GET`   | `/api/v1/profile`          | Get the logged-in admin profile         |
+| `PATCH` | `/api/v1/profile`          | Update admin name, email, and/or mobile |
+| `PATCH` | `/api/v1/profile/password` | Change the admin password               |
+
+Updating admin contact details requires the current password:
+
+```json
+{
+  "currentPassword": "{{admin_password}}",
+  "name": "Updated Admin",
+  "email": "new-admin@example.com",
+  "mobile": "+919876543299"
+}
+```
+
+Changing the admin password requires:
+
+```json
+{
+  "currentPassword": "{{admin_password}}",
+  "newPassword": "NewAdminPassword123!",
+  "confirmNewPassword": "NewAdminPassword123!"
+}
+```
+
+The email/mobile values must be unique across all accounts. A successful
+password change revokes refresh tokens, so other devices must authenticate
+again. Password hashes are never returned. Errors include
+`CURRENT_PASSWORD_INVALID`, `EMAIL_ALREADY_IN_USE`,
+`MOBILE_ALREADY_IN_USE`, `PASSWORD_NOT_SET`, and
+`INVALID_PROFILE_REQUEST`.
+
+## Inventory management
+
+Inventory is an admin-only, single-location stock module. It keeps sellable
+stock separate from active checkout reservations:
+
+```text
+availableQuantity = stockQuantity - reservedQuantity
+```
+
+Stock changes are applied immediately and every change creates an immutable
+movement record with the product snapshot, before/after quantities, reason,
+reference, note, and admin ID.
+
+### Inventory endpoints
+
+| Method | Path                                           | Purpose                                                     |
+| ------ | ---------------------------------------------- | ----------------------------------------------------------- |
+| `GET`  | `/api/v1/admin/inventory`                      | List inventory with search, status, sorting, and pagination |
+| `GET`  | `/api/v1/admin/inventory/summary`              | Get stock totals and low/out-of-stock counts                |
+| `GET`  | `/api/v1/admin/inventory/filters`              | Get supported inventory statuses, movement types, and sorts |
+| `GET`  | `/api/v1/admin/inventory/reservations`         | List active order reservations                              |
+| `GET`  | `/api/v1/admin/inventory/:productId`           | Get one product's inventory detail                          |
+| `GET`  | `/api/v1/admin/inventory/:productId/movements` | List the product's movement ledger                          |
+| `POST` | `/api/v1/admin/inventory/:productId/adjust`    | Increase or decrease stock with a reason                    |
+| `POST` | `/api/v1/admin/inventory/:productId/restock`   | Receive stock from a supplier                               |
+| `POST` | `/api/v1/admin/inventory/:productId/damage`    | Remove damaged/lost stock                                   |
+| `POST` | `/api/v1/admin/inventory/:productId/return`    | Put an inspected customer return back into stock            |
+| `POST` | `/api/v1/admin/inventory/:productId/reconcile` | Reconcile system stock with a physical count                |
+
+### Inventory list filters
+
+```text
+search
+status: in_stock | low_stock | out_of_stock
+active: true | false | all
+sort: newest | oldest | name | stock-asc | stock-desc
+page
+limit: 1–100
+```
+
+Each inventory item contains:
+
+```json
+{
+  "productId": "product-id",
+  "sku": "TGS-SAREE-001",
+  "name": "Pochampally Ikat Saree",
+  "barcode": null,
+  "active": true,
+  "stockQuantity": 100,
+  "reservedQuantity": 10,
+  "availableQuantity": 90,
+  "lowStockThreshold": 10,
+  "reorderQuantity": 50,
+  "status": "in_stock"
+}
+```
+
+Statuses are calculated as:
+
+```text
+availableQuantity <= 0                         → out_of_stock
+availableQuantity <= lowStockThreshold         → low_stock
+otherwise                                      → in_stock
+```
+
+### Stock adjustment request
+
+```json
+{
+  "direction": "increase",
+  "quantity": 25,
+  "reason": "Opening stock correction",
+  "note": "Verified against supplier document",
+  "referenceType": "purchase_order",
+  "referenceId": "PO-2026-001"
+}
+```
+
+`direction` is `increase` or `decrease`. `quantity` must be a positive whole
+number. `reason` is mandatory; `note`, `referenceType`, and `referenceId` are
+optional.
+
+### Restock request
+
+```json
+{
+  "quantity": 50,
+  "reason": "Supplier delivery received",
+  "note": "Quality checked",
+  "supplierName": "Supplier Name",
+  "supplierInvoiceNumber": "INV-2026-001",
+  "unitCost": 450,
+  "receivedAt": "2026-10-28T05:00:00.000Z",
+  "referenceId": "PO-2026-001"
+}
+```
+
+`quantity` and `reason` are mandatory. Supplier, invoice, cost, receiving
+date, note, and reference are optional.
+
+### Damage, return, and reconciliation requests
+
+Damage:
+
+```json
+{
+  "quantity": 3,
+  "reason": "Damaged during inspection",
+  "note": "Removed from sellable stock",
+  "referenceId": "DAMAGE-2026-001"
+}
+```
+
+Return-to-stock:
+
+```json
+{
+  "quantity": 1,
+  "reason": "Return inspected and approved for resale",
+  "note": "Packaging intact",
+  "returnId": "return-id"
+}
+```
+
+Physical reconciliation:
+
+```json
+{
+  "physicalQuantity": 96,
+  "reason": "Monthly physical stock count",
+  "note": "Count completed by warehouse team"
+}
+```
+
+All three requests require a positive `quantity` and `reason`, except
+reconciliation, which requires non-negative `physicalQuantity` and `reason`.
+Reconciliation automatically calculates the stock delta.
+
+### Movement ledger response
+
+Movement history supports:
+
+```text
+movementType
+from
+to
+page
+limit
+```
+
+Movement types are:
+
+```text
+restock
+adjustment
+damage
+return
+physical_count
+reservation
+reservation_release
+sale
+```
+
+Each movement records:
+
+```json
+{
+  "product": "product-id",
+  "sku": "TGS-SAREE-001",
+  "productName": "Pochampally Ikat Saree",
+  "movementType": "restock",
+  "quantity": 50,
+  "quantityDelta": 50,
+  "reservedDelta": 0,
+  "stockBefore": 50,
+  "stockAfter": 100,
+  "reservedBefore": 10,
+  "reservedAfter": 10,
+  "reason": "Supplier delivery received",
+  "note": "Quality checked",
+  "referenceType": "purchase_order",
+  "referenceId": "PO-2026-001",
+  "supplierName": "Supplier Name",
+  "supplierInvoiceNumber": "INV-2026-001",
+  "unitCost": 450,
+  "receivedAt": "2026-10-28T05:00:00.000Z",
+  "performedBy": "admin-id",
+  "createdAt": "2026-10-28T05:00:00.000Z"
+}
+```
+
+The API rejects any adjustment that would make available stock negative or
+below active reservations with `409 NEGATIVE_AVAILABLE_STOCK`. Concurrent
+stock changes are protected with an optimistic stock check and return
+`409 INVENTORY_CONCURRENT_UPDATE` when the product changed during processing.

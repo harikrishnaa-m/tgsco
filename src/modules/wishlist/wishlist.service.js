@@ -62,13 +62,13 @@ export async function mergeWishlist(user, { productIds }) {
     .select('_id')
     .lean();
   const availableIds = new Set(products.map((product) => product._id.toString()));
-  const unavailableProductIds = uniqueProductIds.filter((productId) => !availableIds.has(productId));
+  const unavailableProductIds = uniqueProductIds.filter(
+    (productId) => !availableIds.has(productId),
+  );
 
   const wishlist = await getOrCreateWishlist(user.sub);
   const savedIds = new Set(
-    wishlist.items
-      .filter((item) => item.product)
-      .map((item) => item.product._id.toString()),
+    wishlist.items.filter((item) => item.product).map((item) => item.product._id.toString()),
   );
   for (const productId of uniqueProductIds) {
     if (availableIds.has(productId) && !savedIds.has(productId)) {

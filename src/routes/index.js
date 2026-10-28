@@ -17,6 +17,8 @@ import addressRoutes from '../modules/address/address.routes.js';
 import checkoutRoutes from '../modules/checkout/checkout.routes.js';
 import adminRoutes from '../modules/admin/admin.routes.js';
 import returnsRoutes from '../modules/returns/returns.routes.js';
+import profileRoutes from '../modules/profile/profile.routes.js';
+import inventoryRoutes from '../modules/inventory/inventory.routes.js';
 
 const router = Router();
 
@@ -36,6 +38,8 @@ router.use('/wishlist', wishlistRoutes);
 router.use('/addresses', addressRoutes);
 router.use('/checkout', checkoutRoutes);
 router.use('/admin', adminRoutes);
+router.use('/admin/inventory', inventoryRoutes);
+router.use('/profile', profileRoutes);
 router.use('/', returnsRoutes);
 
 export default router;

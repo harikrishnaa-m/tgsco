@@ -14,8 +14,15 @@ const bulkPriceSchema = z.object({
 
 export const categorySchema = z.object({
   name: z.string().trim().min(1),
-  slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  type: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
+  slug: z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  type: z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .optional(),
   groupId: objectIdSchema.optional(),
   description: z.string().trim().optional(),
   subtitle: z.string().trim().optional(),
@@ -30,46 +37,70 @@ export const categoryQuerySchema = z.object({
 
 export const groupSchema = z.object({
   name: z.string().trim().min(1),
-  slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  slug: z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   description: z.string().trim().optional(),
   image: z.string().trim().optional(),
   active: z.boolean().optional(),
   sortOrder: z.number().int().nonnegative().optional(),
 });
 
-export const productSchema = z.object({
-  name: z.string().trim().min(1),
-  slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  sku: z.string().trim().min(1),
-  categoryIds: z.array(objectIdSchema).min(1).optional(),
-  categorySlug: z.string().trim().min(1).optional(),
-  categorySlugs: z.array(z.string().trim().min(1)).min(1).optional(),
-  type: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
-  types: z.array(z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).min(1).optional(),
-  shortDescription: z.string().trim().optional(),
-  description: z.string().trim().optional(),
-  price: z.number().nonnegative(),
-  originalPrice: z.number().nonnegative().optional(),
-  discountPercent: z.number().min(0).max(100).optional(),
-  currency: z.string().trim().default('INR'),
-  stockQuantity: z.number().int().nonnegative(),
-  active: z.boolean().optional(),
-  mainImage: productImageSchema.nullable().optional(),
-  galleryImages: z.array(productImageSchema).default([]),
-  images: z.array(productImageSchema).default([]),
-  attributes: z.record(z.string(), z.unknown()).default({}),
-  bulkPricing: z.array(bulkPriceSchema).default([]),
-  overview: z.string().trim().optional(),
-  craftStory: z.string().trim().optional(),
-  materialCare: z.string().trim().optional(),
-  shippingReturns: z.string().trim().optional(),
-}).refine(
-  (value) => value.categoryIds?.length || value.categorySlug || value.categorySlugs?.length,
-  'Provide at least one category ID or category slug.',
-).refine(
-  (value) => value.type || value.types?.length || value.categoryIds?.length,
-  'Provide at least one catalogue group or category.',
-);
+export const productSchema = z
+  .object({
+    name: z.string().trim().min(1),
+    slug: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    sku: z.string().trim().min(1),
+    categoryIds: z.array(objectIdSchema).min(1).optional(),
+    categorySlug: z.string().trim().min(1).optional(),
+    categorySlugs: z.array(z.string().trim().min(1)).min(1).optional(),
+    type: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      .optional(),
+    types: z
+      .array(
+        z
+          .string()
+          .trim()
+          .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+      )
+      .min(1)
+      .optional(),
+    shortDescription: z.string().trim().optional(),
+    description: z.string().trim().optional(),
+    price: z.number().nonnegative(),
+    originalPrice: z.number().nonnegative().optional(),
+    discountPercent: z.number().min(0).max(100).optional(),
+    currency: z.string().trim().default('INR'),
+    stockQuantity: z.number().int().nonnegative(),
+    barcode: z.string().trim().min(3).max(100).optional(),
+    lowStockThreshold: z.number().int().nonnegative().optional(),
+    reorderQuantity: z.number().int().nonnegative().optional(),
+    active: z.boolean().optional(),
+    mainImage: productImageSchema.nullable().optional(),
+    galleryImages: z.array(productImageSchema).default([]),
+    images: z.array(productImageSchema).default([]),
+    attributes: z.record(z.string(), z.unknown()).default({}),
+    bulkPricing: z.array(bulkPriceSchema).default([]),
+    overview: z.string().trim().optional(),
+    craftStory: z.string().trim().optional(),
+    materialCare: z.string().trim().optional(),
+    shippingReturns: z.string().trim().optional(),
+  })
+  .refine(
+    (value) => value.categoryIds?.length || value.categorySlug || value.categorySlugs?.length,
+    'Provide at least one category ID or category slug.',
+  )
+  .refine(
+    (value) => value.type || value.types?.length || value.categoryIds?.length,
+    'Provide at least one catalogue group or category.',
+  );
 
 const multiValueQuerySchema = z.preprocess(
   (value) =>

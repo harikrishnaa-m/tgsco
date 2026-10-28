@@ -16,5 +16,4 @@ const contactInquirySchema = new mongoose.Schema(
 );
 
 export const ContactInquiry =
-  mongoose.models.ContactInquiry ||
-  mongoose.model('ContactInquiry', contactInquirySchema);
+  mongoose.models.ContactInquiry || mongoose.model('ContactInquiry', contactInquirySchema);

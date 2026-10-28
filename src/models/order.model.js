@@ -46,30 +46,48 @@ const reservationSchema = new mongoose.Schema(
   { _id: false },
 );
 
-const chargeSnapshotSchema = new mongoose.Schema({
-  code: String, name: String, amount: { type: Number, min: 0 },
-  taxRate: { type: Number, min: 0, default: 0 }, taxable: { type: Boolean, default: false },
-}, { _id: false });
+const chargeSnapshotSchema = new mongoose.Schema(
+  {
+    code: String,
+    name: String,
+    amount: { type: Number, min: 0 },
+    taxRate: { type: Number, min: 0, default: 0 },
+    taxable: { type: Boolean, default: false },
+  },
+  { _id: false },
+);
 
-const timelineSchema = new mongoose.Schema({
-  type: { type: String, required: true }, message: { type: String, required: true },
-  by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, createdAt: { type: Date, default: Date.now },
-}, { _id: false });
+const timelineSchema = new mongoose.Schema(
+  {
+    type: { type: String, required: true },
+    message: { type: String, required: true },
+    by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    createdAt: { type: Date, default: Date.now },
+  },
+  { _id: false },
+);
 
-const refundSchema = new mongoose.Schema({
-  refundId: { type: String, trim: true },
-  paymentId: String,
-  amount: { type: Number, required: true, min: 0 },
-  currency: { type: String, default: 'INR' },
-  status: { type: String, enum: ['created', 'processed', 'refunded', 'failed', 'pending'], default: 'created' },
-  returnId: { type: mongoose.Schema.Types.ObjectId, ref: 'Return' },
-  reason: String,
-  notes: { type: mongoose.Schema.Types.Mixed, default: {} },
-  idempotencyKey: String,
-  createdAt: { type: Date, default: Date.now },
-  processedAt: Date,
-  failure: { type: mongoose.Schema.Types.Mixed, default: null },
-}, { _id: false });
+const refundSchema = new mongoose.Schema(
+  {
+    refundId: { type: String, trim: true },
+    paymentId: String,
+    amount: { type: Number, required: true, min: 0 },
+    currency: { type: String, default: 'INR' },
+    status: {
+      type: String,
+      enum: ['created', 'processed', 'refunded', 'failed', 'pending'],
+      default: 'created',
+    },
+    returnId: { type: mongoose.Schema.Types.ObjectId, ref: 'Return' },
+    reason: String,
+    notes: { type: mongoose.Schema.Types.Mixed, default: {} },
+    idempotencyKey: String,
+    createdAt: { type: Date, default: Date.now },
+    processedAt: Date,
+    failure: { type: mongoose.Schema.Types.Mixed, default: null },
+  },
+  { _id: false },
+);
 
 const orderSchema = new mongoose.Schema(
   {
@@ -95,7 +113,16 @@ const orderSchema = new mongoose.Schema(
     paymentMethod: { type: String, enum: ['cod', 'razorpay'], required: true },
     orderStatus: {
       type: String,
-      enum: ['pending_payment', 'confirmed', 'cancelled', 'processing', 'shipped', 'delivered', 'returned', 'refunded'],
+      enum: [
+        'pending_payment',
+        'confirmed',
+        'cancelled',
+        'processing',
+        'shipped',
+        'delivered',
+        'returned',
+        'refunded',
+      ],
       default: 'pending_payment',
     },
     paymentStatus: {
@@ -117,7 +144,20 @@ const orderSchema = new mongoose.Schema(
     refundedAmount: { type: Number, min: 0, default: 0 },
     returnStatus: {
       type: String,
-      enum: ['none', 'requested', 'approved', 'rejected', 'pickup_pending', 'received', 'inspection_pending', 'approved_for_refund', 'refund_pending', 'refunded', 'completed', 'cancelled'],
+      enum: [
+        'none',
+        'requested',
+        'approved',
+        'rejected',
+        'pickup_pending',
+        'received',
+        'inspection_pending',
+        'approved_for_refund',
+        'refund_pending',
+        'refunded',
+        'completed',
+        'cancelled',
+      ],
       default: 'none',
     },
     returnIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Return' }],

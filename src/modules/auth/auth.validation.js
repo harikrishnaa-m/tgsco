@@ -9,7 +9,10 @@ export const refreshTokenSchema = z.object({
   refreshToken: z.string().min(1, 'Please provide a refresh token.'),
 });
 
-const mobileSchema = z.string().trim().regex(/^\+?[1-9]\d{9,14}$/, 'Please provide a valid mobile number.');
+const mobileSchema = z
+  .string()
+  .trim()
+  .regex(/^\+?[1-9]\d{9,14}$/, 'Please provide a valid mobile number.');
 
 export const requestOtpSchema = z.object({
   mobile: mobileSchema,
@@ -21,7 +24,10 @@ export const requestOtpSchema = z.object({
 
 export const verifyOtpSchema = z.object({
   mobile: mobileSchema,
-  otp: z.string().trim().regex(/^\d{6}$/, 'OTP must contain exactly 6 digits.'),
+  otp: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, 'OTP must contain exactly 6 digits.'),
   rememberMe: z.boolean().default(false),
 });
 

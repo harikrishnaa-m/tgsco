@@ -64,6 +64,10 @@
     {
       "key": "merchant_token",
       "value": ""
+    },
+    {
+      "key": "inventory_product_id",
+      "value": ""
     }
   ],
   "item": [
@@ -1163,9 +1167,7 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/api/v1/admin/returns?status={{return_status}}&reason={{return_reason}}&from={{return_from}}&to={{return_to}}&paymentMethod={{payment_method}}&paymentStatus={{payment_status}}&page=1&limit=20&sort=newest",
-                  "host": [
-                    "{{base_url}}"
-                  ],
+                  "host": ["{{base_url}}"],
                   "path": [
                     "api",
                     "v1",
@@ -1197,16 +1199,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/api/v1/admin/returns/filters",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "v1",
-                    "admin",
-                    "returns",
-                    "filters"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "admin", "returns", "filters"]
                 }
               },
               "event": []
@@ -1223,16 +1217,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/api/v1/admin/returns/{{return_id}}",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "v1",
-                    "admin",
-                    "returns",
-                    "{{return_id}}"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "admin", "returns", "{{return_id}}"]
                 }
               },
               "event": []
@@ -1249,9 +1235,7 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/api/v1/admin/orders/{{order_id}}/returns?page=1&limit=20",
-                  "host": [
-                    "{{base_url}}"
-                  ],
+                  "host": ["{{base_url}}"],
                   "path": [
                     "api",
                     "v1",
@@ -1285,17 +1269,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/api/v1/admin/returns/{{return_id}}/status",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "v1",
-                    "admin",
-                    "returns",
-                    "{{return_id}}",
-                    "status"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "admin", "returns", "{{return_id}}", "status"]
                 }
               },
               "event": []
@@ -1341,6 +1316,342 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\"status\":\"completed\",\"refundMethod\":\"bank_transfer\",\"refundReference\":\"BANK-REF-{{return_id}}\",\"refundAmount\":1000,\"refundProcessedAt\":\"2026-10-27T00:00:00.000Z\",\"refundNotes\":\"COD return completed after bank transfer.\"}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Profile & Security",
+          "description": "Profile updates require the current password. New passwords must be at least 8 characters and match their confirmation.",
+          "item": [
+            {
+              "name": "GET Profile",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "description": "Retrieve the authenticated profile. A valid Bearer token is required; changing profile data requires the current password.",
+                "url": "{{base_url}}/api/v1/profile"
+              }
+            },
+            {
+              "name": "Update Profile",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "description": "Update profile details. The current password is required for this protected operation.",
+                "url": "{{base_url}}/api/v1/profile",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentPassword\": \"admin-current-password\",\n  \"name\": \"Admin User\",\n  \"email\": \"admin@example.com\",\n  \"mobile\": \"+919876543212\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Change Password",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "description": "Change the password. Provide the current password; the new password and confirmation must match and each must be at least 8 characters.",
+                "url": "{{base_url}}/api/v1/profile/password",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentPassword\": \"admin-current-password\",\n  \"newPassword\": \"admin-new-password\",\n  \"confirmNewPassword\": \"admin-new-password\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Inventory",
+          "item": [
+            {
+              "name": "List inventory",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory?search=Pochampally&status=low_stock&active=true&sort=stock-asc&page=1&limit=20"
+              }
+            },
+            {
+              "name": "Inventory summary",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/summary"
+              }
+            },
+            {
+              "name": "Inventory filters",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/filters"
+              }
+            },
+            {
+              "name": "Active reservations",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/reservations?page=1&limit=20"
+              }
+            },
+            {
+              "name": "Inventory detail",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}"
+              }
+            },
+            {
+              "name": "Movement history",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}/movements?movementType=restock&from=2026-10-01&to=2026-10-31&page=1&limit=20"
+              }
+            },
+            {
+              "name": "Adjust inventory",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}/adjust",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"direction\": \"increase\",\n  \"quantity\": 25,\n  \"reason\": \"Opening stock correction\",\n  \"note\": \"Verified against supplier document\",\n  \"referenceType\": \"purchase_order\",\n  \"referenceId\": \"PO-2026-001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Restock inventory",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}/restock",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": 50,\n  \"reason\": \"Supplier delivery received\",\n  \"note\": \"Quality checked\",\n  \"supplierName\": \"Supplier Name\",\n  \"supplierInvoiceNumber\": \"INV-2026-001\",\n  \"unitCost\": 450,\n  \"receivedAt\": \"2026-10-28T05:00:00.000Z\",\n  \"referenceId\": \"PO-2026-001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Record damaged stock",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}/damage",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": 3,\n  \"reason\": \"Damaged during inspection\",\n  \"note\": \"Removed from sellable stock\",\n  \"referenceId\": \"DAMAGE-2026-001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Return stock",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}/return",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": 1,\n  \"reason\": \"Return inspected and approved for resale\",\n  \"note\": \"Packaging intact\",\n  \"returnId\": \"{{return_id}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Reconcile physical stock",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/admin/inventory/{{inventory_product_id}}/reconcile",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"physicalQuantity\": 96,\n  \"reason\": \"Monthly physical stock count\",\n  \"note\": \"Count completed by warehouse team\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
               }
             }

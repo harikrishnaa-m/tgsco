@@ -1,4 +1,8 @@
-import { ChargeSettings, InvoiceSettings, OrderPolicySettings } from '../../models/settings.model.js';
+import {
+  ChargeSettings,
+  InvoiceSettings,
+  OrderPolicySettings,
+} from '../../models/settings.model.js';
 import { Order } from '../../models/order.model.js';
 import { AppError } from '../../errors/app-error.js';
 import {
@@ -8,56 +12,147 @@ import {
 } from '../checkout/checkout.service.js';
 
 const transitions = {
-  pending_payment: ['confirmed', 'cancelled'], confirmed: ['processing', 'cancelled'],
-  processing: ['shipped', 'cancelled'], shipped: ['delivered', 'returned'],
-  delivered: ['returned'], returned: ['refunded'], cancelled: ['refunded'],
+  pending_payment: ['confirmed', 'cancelled'],
+  confirmed: ['processing', 'cancelled'],
+  processing: ['shipped', 'cancelled'],
+  shipped: ['delivered', 'returned'],
+  delivered: ['returned'],
+  returned: ['refunded'],
+  cancelled: ['refunded'],
   refunded: [],
 };
 const findOrder = async (id) => {
   const order = await Order.findById(id);
-  if (!order) throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
+  if (!order)
+    throw new AppError('The order was not found.', { statusCode: 404, code: 'ORDER_NOT_FOUND' });
   return order;
 };
 export async function listAdminOrders(query) {
   const filter = {};
   if (query.status) filter.orderStatus = query.status;
   if (query.paymentStatus) filter.paymentStatus = query.paymentStatus;
-  if (query.search) filter.$or = [{ orderNumber: new RegExp(query.search, 'i') }, { 'shippingAddress.recipientName': new RegExp(query.search, 'i') }, { 'shippingAddress.mobile': new RegExp(query.search, 'i') }];
+  if (query.search)
+    filter.$or = [
+      { orderNumber: new RegExp(query.search, 'i') },
+      { 'shippingAddress.recipientName': new RegExp(query.search, 'i') },
+      { 'shippingAddress.mobile': new RegExp(query.search, 'i') },
+    ];
   if (query.from || query.to) filter.createdAt = {};
   if (query.from) filter.createdAt.$gte = new Date(query.from);
   if (query.to) filter.createdAt.$lte = new Date(query.to);
-  const sort = query.sort === 'oldest' ? { createdAt: 1 } : query.sort === 'total' ? { grandTotal: -1 } : { createdAt: -1 };
-  const [items, total] = await Promise.all([Order.find(filter).sort(sort).skip((query.page - 1) * query.limit).limit(query.limit).lean(), Order.countDocuments(filter)]);
-  return { items, total, page: query.page, limit: query.limit, pages: Math.ceil(total / query.limit) };
+  const sort =
+    query.sort === 'oldest'
+      ? { createdAt: 1 }
+      : query.sort === 'total'
+        ? { grandTotal: -1 }
+        : { createdAt: -1 };
+  const [items, total] = await Promise.all([
+    Order.find(filter)
+      .sort(sort)
+      .skip((query.page - 1) * query.limit)
+      .limit(query.limit)
+      .lean(),
+    Order.countDocuments(filter),
+  ]);
+  return {
+    items,
+    total,
+    page: query.page,
+    limit: query.limit,
+    pages: Math.ceil(total / query.limit),
+  };
 }
-export async function getAdminOrder(id) { return (await findOrder(id)).toObject(); }
+export async function getAdminOrder(id) {
+  return (await findOrder(id)).toObject();
+}
 export async function updateOrderStatus(id, status, message, adminId) {
   const order = await findOrder(id);
-  if (!transitions[order.orderStatus]?.includes(status)) throw new AppError(`Order status cannot change from "${order.orderStatus}" to "${status}".`, { statusCode: 409, code: 'INVALID_ORDER_TRANSITION', details: { currentStatus: order.orderStatus, requestedStatus: status, allowedStatuses: transitions[order.orderStatus] || [] } });
-  order.orderStatus = status; order.timeline.push({ type: 'status', message: message || `Order status changed to ${status}`, by: adminId }); await order.save(); return order;
+  if (!transitions[order.orderStatus]?.includes(status))
+    throw new AppError(`Order status cannot change from "${order.orderStatus}" to "${status}".`, {
+      statusCode: 409,
+      code: 'INVALID_ORDER_TRANSITION',
+      details: {
+        currentStatus: order.orderStatus,
+        requestedStatus: status,
+        allowedStatuses: transitions[order.orderStatus] || [],
+      },
+    });
+  order.orderStatus = status;
+  order.timeline.push({
+    type: 'status',
+    message: message || `Order status changed to ${status}`,
+    by: adminId,
+  });
+  await order.save();
+  return order;
 }
 export async function saveShipment(id, data, adminId) {
   const order = await findOrder(id);
   const shipment = { ...(order.shipment || {}), ...data };
-  if (!shipment.courier || !shipment.trackingNumber) throw new AppError('Courier and tracking number are required before saving a shipment.', { statusCode: 400, code: 'INCOMPLETE_SHIPMENT_DETAILS', details: { required: ['courier', 'trackingNumber'] } });
-  order.shipment = shipment; order.timeline.push({ type: 'shipment', message: `Shipment updated with ${shipment.courier}`, by: adminId }); await order.save(); return order;
+  if (!shipment.courier || !shipment.trackingNumber)
+    throw new AppError('Courier and tracking number are required before saving a shipment.', {
+      statusCode: 400,
+      code: 'INCOMPLETE_SHIPMENT_DETAILS',
+      details: { required: ['courier', 'trackingNumber'] },
+    });
+  order.shipment = shipment;
+  order.timeline.push({
+    type: 'shipment',
+    message: `Shipment updated with ${shipment.courier}`,
+    by: adminId,
+  });
+  await order.save();
+  return order;
 }
-export async function addNote(id, message, adminId) { const order = await findOrder(id); order.notes.push(message); order.timeline.push({ type: 'note', message, by: adminId }); await order.save(); return order; }
+export async function addNote(id, message, adminId) {
+  const order = await findOrder(id);
+  order.notes.push(message);
+  order.timeline.push({ type: 'note', message, by: adminId });
+  await order.save();
+  return order;
+}
 export async function cancelAdminOrder(id, reason, refund, adminId) {
   const order = await findOrder(id);
   const settings = await getOrderPolicies();
   const cancellable = ['pending_payment', 'confirmed', 'processing', 'shipped'];
-  if (cancellable.indexOf(order.orderStatus) > cancellable.indexOf(settings.cancellationAllowedUntil)) throw new AppError(`Order "${order.orderNumber}" can only be cancelled until it is "${settings.cancellationAllowedUntil}".`, { statusCode: 409, code: 'ORDER_CANNOT_BE_CANCELLED', details: { cancellationAllowedUntil: settings.cancellationAllowedUntil } });
-  if (refund?.amount !== undefined && refund.amount > order.grandTotal) throw new AppError('The refund amount cannot exceed the order total.', { statusCode: 400, code: 'INVALID_REFUND_AMOUNT', details: { orderTotal: order.grandTotal, requestedRefund: refund.amount } });
+  if (
+    cancellable.indexOf(order.orderStatus) > cancellable.indexOf(settings.cancellationAllowedUntil)
+  )
+    throw new AppError(
+      `Order "${order.orderNumber}" can only be cancelled until it is "${settings.cancellationAllowedUntil}".`,
+      {
+        statusCode: 409,
+        code: 'ORDER_CANNOT_BE_CANCELLED',
+        details: { cancellationAllowedUntil: settings.cancellationAllowedUntil },
+      },
+    );
+  if (refund?.amount !== undefined && refund.amount > order.grandTotal)
+    throw new AppError('The refund amount cannot exceed the order total.', {
+      statusCode: 400,
+      code: 'INVALID_REFUND_AMOUNT',
+      details: { orderTotal: order.grandTotal, requestedRefund: refund.amount },
+    });
   await releaseReservations(order.reservations);
   order.reservations.forEach((reservation) => {
     if (reservation.status === 'active') reservation.status = 'released';
   });
-  order.orderStatus = 'cancelled'; order.cancellation = { reason, by: adminId, at: new Date() };
+  order.orderStatus = 'cancelled';
+  order.cancellation = { reason, by: adminId, at: new Date() };
   if (order.paymentMethod === 'razorpay' && order.paymentStatus === 'captured') {
-    await initiateRazorpayRefund(order, { amount: refund?.amount || order.grandTotal, reason: 'order_cancellation', notes: { orderId: String(order._id) } }, `cancel-${order._id}`);
-  } else if (order.paymentMethod === 'cod' && refund?.amount) order.refund = { ...refund, status: 'manual_pending', amount: refund.amount };
-  order.timeline.push({ type: 'cancellation', message: reason, by: adminId }); await order.save(); return order;
+    await initiateRazorpayRefund(
+      order,
+      {
+        amount: refund?.amount || order.grandTotal,
+        reason: 'order_cancellation',
+        notes: { orderId: String(order._id) },
+      },
+      `cancel-${order._id}`,
+    );
+  } else if (order.paymentMethod === 'cod' && refund?.amount)
+    order.refund = { ...refund, status: 'manual_pending', amount: refund.amount };
+  order.timeline.push({ type: 'cancellation', message: reason, by: adminId });
+  await order.save();
+  return order;
 }
 export async function invoiceData(id) {
   const order = await findOrder(id);
@@ -76,10 +171,27 @@ export async function invoiceData(id) {
         { $set: { invoiceNumber, invoiceSnapshot: settings } },
         { new: true },
       );
-      if (finalized) return { order: finalized.toObject(), invoice: { ...settings, invoiceNumber } };
-    } else throw new AppError('Active invoice settings are required before finalizing an invoice.', { statusCode: 409, code: 'INVOICE_SETTINGS_NOT_CONFIGURED', details: { required: ['legalBusinessName', 'sellerAddress', 'invoicePrefix', 'financialYear', 'nextSequence'] } });
+      if (finalized)
+        return { order: finalized.toObject(), invoice: { ...settings, invoiceNumber } };
+    } else
+      throw new AppError('Active invoice settings are required before finalizing an invoice.', {
+        statusCode: 409,
+        code: 'INVOICE_SETTINGS_NOT_CONFIGURED',
+        details: {
+          required: [
+            'legalBusinessName',
+            'sellerAddress',
+            'invoicePrefix',
+            'financialYear',
+            'nextSequence',
+          ],
+        },
+      });
   }
-  return { order: (await findOrder(id)).toObject(), invoice: { ...(order.invoiceSnapshot || {}), invoiceNumber: order.invoiceNumber } };
+  return {
+    order: (await findOrder(id)).toObject(),
+    invoice: { ...(order.invoiceSnapshot || {}), invoiceNumber: order.invoiceNumber },
+  };
 }
 export async function initiateRefund(id, input, idempotencyKey) {
   const order = await findOrder(id);
@@ -95,41 +207,108 @@ export async function settingsMeta() {
     Order.distinct('paymentStatus'),
     Order.distinct('shipment.courier', { 'shipment.courier': { $exists: true, $ne: null } }),
     Order.distinct('currency'),
-    Order.aggregate([{ $group: { _id: null, min: { $min: '$grandTotal' }, max: { $max: '$grandTotal' }, earliest: { $min: '$createdAt' }, latest: { $max: '$createdAt' } } }]),
+    Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          min: { $min: '$grandTotal' },
+          max: { $max: '$grandTotal' },
+          earliest: { $min: '$createdAt' },
+          latest: { $max: '$createdAt' },
+        },
+      },
+    ]),
   ]);
   return {
     orderStatuses: [...new Set([...Object.keys(transitions), ...statuses])],
-    paymentStatuses: [...new Set(['pending', 'created', 'authorized', 'captured', 'failed', 'refunded', ...paymentStatuses])],
-    chargeTypes: ['shipping', 'packing'], couriers, currencies, totals: totals[0] || {},
+    paymentStatuses: [
+      ...new Set([
+        'pending',
+        'created',
+        'authorized',
+        'captured',
+        'failed',
+        'refunded',
+        ...paymentStatuses,
+      ]),
+    ],
+    chargeTypes: ['shipping', 'packing'],
+    couriers,
+    currencies,
+    totals: totals[0] || {},
   };
 }
 export async function listSettings(type) {
   if (type === 'invoice') return InvoiceSettings.find({}).sort({ createdAt: -1 }).lean();
-  return type === 'order-policies' ? getOrderPolicies() : type ? ChargeSettings.find({ type }).sort({ createdAt: -1 }).lean() : { invoice: await InvoiceSettings.find({}).lean(), charges: await ChargeSettings.find({}).lean(), orderPolicies: await getOrderPolicies() };
+  return type === 'order-policies'
+    ? getOrderPolicies()
+    : type
+      ? ChargeSettings.find({ type }).sort({ createdAt: -1 }).lean()
+      : {
+          invoice: await InvoiceSettings.find({}).lean(),
+          charges: await ChargeSettings.find({}).lean(),
+          orderPolicies: await getOrderPolicies(),
+        };
 }
 export async function getOrderPolicies() {
-  return (await OrderPolicySettings.findOne({ key: 'default' }).lean())
-    || { key: 'default', cancellationAllowedUntil: 'shipped', returnWindowDays: 7 };
+  return (
+    (await OrderPolicySettings.findOne({ key: 'default' }).lean()) || {
+      key: 'default',
+      cancellationAllowedUntil: 'shipped',
+      returnWindowDays: 7,
+    }
+  );
 }
 export async function saveOrderPolicies(data, adminId) {
   return OrderPolicySettings.findOneAndUpdate(
-    { key: 'default' }, { ...data, key: 'default', updatedBy: adminId },
+    { key: 'default' },
+    { ...data, key: 'default', updatedBy: adminId },
     { upsert: true, new: true, runValidators: true },
   );
 }
-export async function upsertInvoice(data, id) { return InvoiceSettings.findOneAndUpdate({ key: 'default' }, { ...data, key: 'default', updatedBy: id }, { upsert: true, new: true, runValidators: true }); }
+export async function upsertInvoice(data, id) {
+  return InvoiceSettings.findOneAndUpdate(
+    { key: 'default' },
+    { ...data, key: 'default', updatedBy: id },
+    { upsert: true, new: true, runValidators: true },
+  );
+}
 export async function saveCharge(data, chargeId) {
-  const duplicate = await ChargeSettings.findOne({ type: data.type, code: data.code, ...(chargeId ? { _id: { $ne: chargeId } } : {}) }).lean();
-  if (duplicate) throw new AppError(`A ${data.type} charge with code "${data.code}" already exists.`, { statusCode: 409, code: 'DUPLICATE_CHARGE_SETTING', details: { type: data.type, code: data.code } });
+  const duplicate = await ChargeSettings.findOne({
+    type: data.type,
+    code: data.code,
+    ...(chargeId ? { _id: { $ne: chargeId } } : {}),
+  }).lean();
+  if (duplicate)
+    throw new AppError(`A ${data.type} charge with code "${data.code}" already exists.`, {
+      statusCode: 409,
+      code: 'DUPLICATE_CHARGE_SETTING',
+      details: { type: data.type, code: data.code },
+    });
   if (chargeId) {
-    const updated = await ChargeSettings.findByIdAndUpdate(chargeId, data, { new: true, runValidators: true });
-    if (!updated) throw new AppError('The charge setting was not found.', { statusCode: 404, code: 'CHARGE_SETTING_NOT_FOUND' });
+    const updated = await ChargeSettings.findByIdAndUpdate(chargeId, data, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updated)
+      throw new AppError('The charge setting was not found.', {
+        statusCode: 404,
+        code: 'CHARGE_SETTING_NOT_FOUND',
+      });
     return updated;
   }
   return ChargeSettings.create(data);
 }
 export async function archiveCharge(id) {
-  const updated = await ChargeSettings.findByIdAndUpdate(id, { active: false, archivedAt: new Date() }, { new: true });
-  if (!updated) throw new AppError('The charge setting was not found.', { statusCode: 404, code: 'CHARGE_SETTING_NOT_FOUND' });
+  const updated = await ChargeSettings.findByIdAndUpdate(
+    id,
+    { active: false, archivedAt: new Date() },
+    { new: true },
+  );
+  if (!updated)
+    throw new AppError('The charge setting was not found.', {
+      statusCode: 404,
+      code: 'CHARGE_SETTING_NOT_FOUND',
+    });
   return updated;
 }

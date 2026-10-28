@@ -13,7 +13,9 @@ export async function getCurrentCart(req, res) {
 }
 
 export async function addItem(req, res) {
-  res.status(201).json({ success: true, data: await addCartItem(req.user, cartItemSchema.parse(req.body)) });
+  res
+    .status(201)
+    .json({ success: true, data: await addCartItem(req.user, cartItemSchema.parse(req.body)) });
 }
 
 export async function mergeCurrentCart(req, res) {

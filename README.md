@@ -83,11 +83,11 @@ Authentication endpoints are available under `/api/v1/auth`:
 
 Customer and merchant sign-in uses mobile OTP verification through 2Factor:
 
-| Method | Endpoint | Purpose |
-| ------ | -------- | ------- |
-| `POST` | `/auth/ecommerce/request-otp` | Send a customer or merchant OTP |
-| `POST` | `/auth/ecommerce/resend-otp` | Replace an active OTP and send a new one |
-| `POST` | `/auth/ecommerce/verify-otp` | Verify the OTP and issue JWT sessions |
+| Method | Endpoint                      | Purpose                                  |
+| ------ | ----------------------------- | ---------------------------------------- |
+| `POST` | `/auth/ecommerce/request-otp` | Send a customer or merchant OTP          |
+| `POST` | `/auth/ecommerce/resend-otp`  | Replace an active OTP and send a new one |
+| `POST` | `/auth/ecommerce/verify-otp`  | Verify the OTP and issue JWT sessions    |
 
 Set `TWO_FACTOR_API_KEY` and, when required by the 2Factor account,
 `TWO_FACTOR_TEMPLATE_NAME`. OTP challenges expire after
@@ -99,18 +99,18 @@ can send only `mobile`; new registrations can resend with `mobile`, `email`,
 
 Catalogue endpoints are available under `/api/v1/catalog`:
 
-| Method | Endpoint | Access |
-| ------ | -------- | ------ |
-| `GET` | `/catalog/categories` | Public |
-| `GET` | `/catalog/groups` | Public catalogue groups |
-| `GET` | `/catalog/products` | Public PLP with filters and pagination |
-| `GET` | `/catalog/products/filters` | Public dynamic filter options |
-| `GET` | `/catalog/products/<id-or-slug>` | Public PDP by product ID or SEO slug |
-| `GET` | `/catalog/admin/groups` | Admin group management |
-| `GET` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
-| `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin |
-| `GET` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |
-| `POST/PATCH/DELETE` | `/catalog/admin/products` and `/catalog/admin/products/<id>` | Admin |
+| Method              | Endpoint                                                         | Access                                 |
+| ------------------- | ---------------------------------------------------------------- | -------------------------------------- |
+| `GET`               | `/catalog/categories`                                            | Public                                 |
+| `GET`               | `/catalog/groups`                                                | Public catalogue groups                |
+| `GET`               | `/catalog/products`                                              | Public PLP with filters and pagination |
+| `GET`               | `/catalog/products/filters`                                      | Public dynamic filter options          |
+| `GET`               | `/catalog/products/<id-or-slug>`                                 | Public PDP by product ID or SEO slug   |
+| `GET`               | `/catalog/admin/groups`                                          | Admin group management                 |
+| `GET`               | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin                                  |
+| `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin                                  |
+| `GET`               | `/catalog/admin/products` and `/catalog/admin/products/<id>`     | Admin                                  |
+| `POST/PATCH/DELETE` | `/catalog/admin/products` and `/catalog/admin/products/<id>`     | Admin                                  |
 
 The public groups response contains database-managed top-level groups. Each
 category can reference a group through `groupId`, and the public category
@@ -122,14 +122,14 @@ New groups can be added without changing the API code.
 Authenticated carts are available under `/api/v1/cart` for customer and
 merchant accounts:
 
-| Method | Endpoint | Purpose |
-| ------ | -------- | ------- |
-| `GET` | `/cart` | Get the current cart |
-| `POST` | `/cart/merge` | Merge a guest cart after login |
-| `POST` | `/cart/items` | Add a product quantity |
-| `PATCH` | `/cart/items/<product-id>` | Replace a product quantity |
-| `DELETE` | `/cart/items/<product-id>` | Remove a product |
-| `DELETE` | `/cart` | Clear the cart |
+| Method   | Endpoint                   | Purpose                        |
+| -------- | -------------------------- | ------------------------------ |
+| `GET`    | `/cart`                    | Get the current cart           |
+| `POST`   | `/cart/merge`              | Merge a guest cart after login |
+| `POST`   | `/cart/items`              | Add a product quantity         |
+| `PATCH`  | `/cart/items/<product-id>` | Replace a product quantity     |
+| `DELETE` | `/cart/items/<product-id>` | Remove a product               |
+| `DELETE` | `/cart`                    | Clear the cart                 |
 
 Cart requests require `Authorization: Bearer <customer-or-merchant-token>`.
 Customer carts use the product price. Merchant carts use the matching bulk
@@ -145,13 +145,13 @@ clear its local guest cart after a successful response.
 
 Authenticated customers and merchants can manage one wishlist each:
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/wishlist` | Get wishlist products |
-| `POST` | `/wishlist/items` | Add an active product (`productId`) |
-| `POST` | `/wishlist/merge` | Merge guest wishlist product IDs after login |
-| `DELETE` | `/wishlist/items/:productId` | Remove a product |
-| `DELETE` | `/wishlist` | Clear the wishlist |
+| Method   | Endpoint                     | Description                                  |
+| -------- | ---------------------------- | -------------------------------------------- |
+| `GET`    | `/wishlist`                  | Get wishlist products                        |
+| `POST`   | `/wishlist/items`            | Add an active product (`productId`)          |
+| `POST`   | `/wishlist/merge`            | Merge guest wishlist product IDs after login |
+| `DELETE` | `/wishlist/items/:productId` | Remove a product                             |
+| `DELETE` | `/wishlist`                  | Clear the wishlist                           |
 
 Wishlist items do not have quantities or prices locked in. The response shows
 the product's current price, stock, and active status. Adding the same product
@@ -161,14 +161,14 @@ again is idempotent.
 
 Authenticated customers and merchants can manage Indian delivery addresses:
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/addresses` | List the user's addresses |
-| `POST` | `/addresses` | Create an address |
-| `GET` | `/addresses/:id` | Get one address |
-| `PATCH` | `/addresses/:id` | Update an address |
-| `PATCH` | `/addresses/:id/default` | Make an address the default |
-| `DELETE` | `/addresses/:id` | Delete an address |
+| Method   | Endpoint                 | Description                 |
+| -------- | ------------------------ | --------------------------- |
+| `GET`    | `/addresses`             | List the user's addresses   |
+| `POST`   | `/addresses`             | Create an address           |
+| `GET`    | `/addresses/:id`         | Get one address             |
+| `PATCH`  | `/addresses/:id`         | Update an address           |
+| `PATCH`  | `/addresses/:id/default` | Make an address the default |
+| `DELETE` | `/addresses/:id`         | Delete an address           |
 
 Address IDs are used for all address operations. The module validates Indian
 mobile numbers and six-digit PIN codes. The first address is automatically
@@ -179,15 +179,15 @@ remaining address.
 
 Checkout uses the authenticated cart and address IDs:
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/checkout/summary` | Revalidate cart, stock, and current prices |
-| `POST` | `/checkout/orders` | Create a COD or Razorpay order |
-| `GET` | `/checkout/orders` | List the user's orders |
-| `GET` | `/checkout/orders/:id` | Get one order |
-| `POST` | `/checkout/orders/:id/cancel` | Cancel an eligible order |
-| `POST` | `/checkout/payments/razorpay/verify` | Verify the client payment signature |
-| `POST` | `/checkout/payments/razorpay/webhook` | Receive Razorpay payment events |
+| Method | Endpoint                              | Description                                |
+| ------ | ------------------------------------- | ------------------------------------------ |
+| `GET`  | `/checkout/summary`                   | Revalidate cart, stock, and current prices |
+| `POST` | `/checkout/orders`                    | Create a COD or Razorpay order             |
+| `GET`  | `/checkout/orders`                    | List the user's orders                     |
+| `GET`  | `/checkout/orders/:id`                | Get one order                              |
+| `POST` | `/checkout/orders/:id/cancel`         | Cancel an eligible order                   |
+| `POST` | `/checkout/payments/razorpay/verify`  | Verify the client payment signature        |
+| `POST` | `/checkout/payments/razorpay/webhook` | Receive Razorpay payment events            |
 
 Checkout accepts `shippingAddressId` and an optional `billingAddressId`. The
 backend validates ownership, calculates totals from current product data,
@@ -204,10 +204,10 @@ calculated server-side.
 Admin refunds are available under `/api/v1/admin/orders` and require a captured
 Razorpay payment:
 
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| `POST` | `/admin/orders/:id/refunds` | Create a full or partial Razorpay refund |
-| `GET` | `/admin/orders/:id/refunds/:refundId` | Reconcile a refund with Razorpay |
+| Method | Endpoint                              | Purpose                                  |
+| ------ | ------------------------------------- | ---------------------------------------- |
+| `POST` | `/admin/orders/:id/refunds`           | Create a full or partial Razorpay refund |
+| `GET`  | `/admin/orders/:id/refunds/:refundId` | Reconcile a refund with Razorpay         |
 
 Refund creation requires an `Idempotency-Key` header and a server-validated
 body such as:
@@ -236,16 +236,16 @@ return-completed timeline entries.
 
 Admin order operations are protected by the admin access token:
 
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| GET | `/admin/orders` | Search, filter, sort and paginate orders |
-| GET | `/admin/orders/filters` | Status and charge filter metadata |
-| GET | `/admin/orders/:id` | Order detail, timeline and snapshots |
-| PATCH | `/admin/orders/:id/status` | Apply a valid order status transition |
-| POST/PATCH | `/admin/orders/:id/shipment` | Create or update courier shipment |
-| POST | `/admin/orders/:id/notes` | Add an internal order note |
-| POST | `/admin/orders/:id/cancel` | Cancel and optionally record refund data |
-| GET | `/admin/orders/:id/invoice` | Invoice and seller snapshot data |
+| Method     | Endpoint                     | Purpose                                  |
+| ---------- | ---------------------------- | ---------------------------------------- |
+| GET        | `/admin/orders`              | Search, filter, sort and paginate orders |
+| GET        | `/admin/orders/filters`      | Status and charge filter metadata        |
+| GET        | `/admin/orders/:id`          | Order detail, timeline and snapshots     |
+| PATCH      | `/admin/orders/:id/status`   | Apply a valid order status transition    |
+| POST/PATCH | `/admin/orders/:id/shipment` | Create or update courier shipment        |
+| POST       | `/admin/orders/:id/notes`    | Add an internal order note               |
+| POST       | `/admin/orders/:id/cancel`   | Cancel and optionally record refund data |
+| GET        | `/admin/orders/:id/invoice`  | Invoice and seller snapshot data         |
 
 Settings are managed at `/admin/settings`. `PUT /invoice` stores Indian seller
 and invoice fields (GSTIN, PAN, address, bank/signatory details and sequence).
@@ -298,12 +298,12 @@ section paths are `hero`, `our-story`, `techniques`, `journey`, `makers`,
 
 For every section, the following endpoints are available:
 
-| Method   | Endpoint                         | Access |
-| -------- | -------------------------------- | ------ |
-| `GET`    | `/home-content/<section>`        | Public |
-| `POST`   | `/home-content/<section>`        | Admin |
-| `PATCH`  | `/home-content/<section>`        | Admin |
-| `DELETE` | `/home-content/<section>`        | Admin |
+| Method   | Endpoint                  | Access |
+| -------- | ------------------------- | ------ |
+| `GET`    | `/home-content/<section>` | Public |
+| `POST`   | `/home-content/<section>` | Admin  |
+| `PATCH`  | `/home-content/<section>` | Admin  |
+| `DELETE` | `/home-content/<section>` | Admin  |
 
 Create or update a section with `multipart/form-data`. Send the JSON section
 data in a `content` field and attach one or more image files using any field

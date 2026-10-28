@@ -62,12 +62,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/health",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "health"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["health"]
             },
             "description": "Confirms that the API is running and reports MongoDB connectivity."
           },
@@ -123,13 +119,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/auth/login",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "login"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["auth", "login"]
                 },
                 "description": "Logs in the default admin and stores access and refresh tokens in collection variables."
               },
@@ -178,13 +169,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/auth/refresh",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "refresh"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["auth", "refresh"]
                 },
                 "description": "Rotates the refresh token and updates both admin token variables."
               },
@@ -229,13 +215,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/auth/logout",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "logout"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["auth", "logout"]
                 },
                 "description": "Revokes the current admin refresh token and clears stored auth variables."
               },
@@ -278,13 +259,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "hero"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -328,13 +304,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "hero"]
                 },
                 "description": "Admin request. Each carousel slide contains its own text, button, alt text, and image file."
               },
@@ -378,13 +349,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "hero"]
                 },
                 "description": "Admin request. Each carousel slide contains its own text, button, alt text, and image file."
               },
@@ -403,13 +369,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "hero"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -428,13 +389,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/our-story",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "our-story"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "our-story"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -463,13 +419,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/our-story",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "our-story"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "our-story"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -499,13 +450,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/our-story",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "our-story"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "our-story"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -525,13 +471,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/our-story",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "our-story"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "our-story"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -550,13 +491,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/techniques",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "techniques"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "techniques"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -630,13 +566,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/techniques",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "techniques"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "techniques"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -710,13 +641,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/techniques",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "techniques"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "techniques"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -735,13 +661,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/techniques",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "techniques"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "techniques"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -760,13 +681,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/journey",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "journey"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "journey"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -795,13 +711,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/journey",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "journey"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "journey"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -830,13 +741,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/journey",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "journey"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "journey"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -855,13 +761,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/journey",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "journey"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "journey"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -880,13 +781,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/makers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "makers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "makers"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -899,15 +795,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/makers/items/narsaiah-garu",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "makers",
-                    "items",
-                    "narsaiah-garu"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "makers", "items", "narsaiah-garu"]
                 }
               }
             },
@@ -959,13 +848,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/makers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "makers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "makers"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1019,13 +903,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/makers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "makers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "makers"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1044,13 +923,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/makers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "makers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "makers"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1069,13 +943,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/why-choose-us",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "why-choose-us"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "why-choose-us"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -1104,13 +973,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/why-choose-us",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "why-choose-us"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "why-choose-us"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1139,13 +1003,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/why-choose-us",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "why-choose-us"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "why-choose-us"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1164,13 +1023,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/why-choose-us",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "why-choose-us"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "why-choose-us"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1189,13 +1043,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/featured-collections",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "featured-collections"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "featured-collections"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -1274,13 +1123,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/featured-collections",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "featured-collections"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "featured-collections"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1359,13 +1203,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/featured-collections",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "featured-collections"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "featured-collections"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1384,13 +1223,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/featured-collections",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "featured-collections"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "featured-collections"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1409,13 +1243,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/government-initiatives",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "government-initiatives"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "government-initiatives"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -1449,13 +1278,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/government-initiatives",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "government-initiatives"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "government-initiatives"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1489,13 +1313,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/government-initiatives",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "government-initiatives"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "government-initiatives"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1514,13 +1333,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/government-initiatives",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "government-initiatives"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "government-initiatives"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1539,13 +1353,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/blog",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "blog"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "blog"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -1589,13 +1398,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/blog",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "blog"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "blog"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1639,13 +1443,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/blog",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "blog"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "blog"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1664,13 +1463,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/blog",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "blog"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "blog"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1689,13 +1483,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/news-events",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "news-events"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "news-events"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -1744,13 +1533,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/news-events",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "news-events"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "news-events"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1799,13 +1583,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/news-events",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "news-events"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "news-events"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1824,13 +1603,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/news-events",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "news-events"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "news-events"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1849,13 +1623,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/home-content/footer",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "footer"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "footer"]
                 },
                 "description": "Public request for homepage content."
               },
@@ -1884,13 +1653,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/footer",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "footer"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "footer"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1919,13 +1683,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/home-content/footer",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "footer"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "footer"]
                 },
                 "description": "Admin request. Content is prefilled from the homepage design. Select local image files for the file fields before sending."
               },
@@ -1944,13 +1703,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/home-content/footer",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "home-content",
-                    "footer"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "footer"]
                 },
                 "description": "Admin request. Send content as JSON in the content form-data field and attach images as file fields."
               },
@@ -1975,13 +1729,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/about-content/about-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "about-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "about-hero"]
                 },
                 "description": "Public request for About page content."
               },
@@ -2015,13 +1764,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/about-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "about-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "about-hero"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2055,13 +1799,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/about-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "about-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "about-hero"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2080,13 +1819,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/about-content/about-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "about-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "about-hero"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2105,13 +1839,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/about-content/who-we-are",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "who-we-are"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "who-we-are"]
                 },
                 "description": "Public request for About page content."
               },
@@ -2145,13 +1874,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/who-we-are",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "who-we-are"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "who-we-are"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2186,13 +1910,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/who-we-are",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "who-we-are"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "who-we-are"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2212,13 +1931,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/about-content/who-we-are",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "who-we-are"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "who-we-are"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2237,13 +1951,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/about-content/milestones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "milestones"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "milestones"]
                 },
                 "description": "Public request for About page content."
               },
@@ -2272,13 +1981,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/milestones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "milestones"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "milestones"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2307,13 +2011,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/milestones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "milestones"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "milestones"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2332,13 +2031,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/about-content/milestones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "milestones"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "milestones"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2357,13 +2051,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/about-content/vision",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "vision"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "vision"]
                 },
                 "description": "Public request for About page content."
               },
@@ -2397,13 +2086,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/vision",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "vision"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "vision"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2437,13 +2121,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/vision",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "vision"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "vision"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2462,13 +2141,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/about-content/vision",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "vision"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "vision"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2487,13 +2161,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/about-content/mission",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "mission"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "mission"]
                 },
                 "description": "Public request for About page content."
               },
@@ -2532,13 +2201,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/mission",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "mission"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "mission"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2577,13 +2241,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/mission",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "mission"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "mission"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2602,13 +2261,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/about-content/mission",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "mission"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "mission"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2627,13 +2281,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/about-content/purpose",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "purpose"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "purpose"]
                 },
                 "description": "Public request for About page content."
               },
@@ -2667,13 +2316,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/purpose",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "purpose"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "purpose"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2707,13 +2351,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/about-content/purpose",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "purpose"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "purpose"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2732,13 +2371,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/about-content/purpose",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "about-content",
-                    "purpose"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["about-content", "purpose"]
                 },
                 "description": "Admin request. Content is prefilled from the About page design. Select local image files before sending."
               },
@@ -2765,13 +2399,8 @@
                   "header": [],
                   "url": {
                     "raw": "{{base_url}}/scheme-content/schemes-hero",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "scheme-content",
-                      "schemes-hero"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["scheme-content", "schemes-hero"]
                   }
                 }
               }
@@ -2789,13 +2418,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/schemes-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "schemes-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "schemes-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -2827,13 +2451,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/schemes-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "schemes-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "schemes-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -2867,13 +2486,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/scheme-content/schemes-hero",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "scheme-content",
-                      "schemes-hero"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["scheme-content", "schemes-hero"]
                   }
                 }
               }
@@ -2893,13 +2507,8 @@
                   "header": [],
                   "url": {
                     "raw": "{{base_url}}/scheme-content/supporting-weavers",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "scheme-content",
-                      "supporting-weavers"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["scheme-content", "supporting-weavers"]
                   }
                 }
               }
@@ -2917,13 +2526,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/supporting-weavers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "supporting-weavers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "supporting-weavers"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -2955,13 +2559,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/supporting-weavers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "supporting-weavers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "supporting-weavers"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -2995,13 +2594,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/scheme-content/supporting-weavers",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "scheme-content",
-                      "supporting-weavers"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["scheme-content", "supporting-weavers"]
                   }
                 }
               }
@@ -3021,13 +2615,8 @@
                   "header": [],
                   "url": {
                     "raw": "{{base_url}}/scheme-content/current-schemes",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "scheme-content",
-                      "current-schemes"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["scheme-content", "current-schemes"]
                   }
                 }
               }
@@ -3039,15 +2628,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/current-schemes/items/chenetha-lakshmi-scheme",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "current-schemes",
-                    "items",
-                    "chenetha-lakshmi-scheme"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "current-schemes", "items", "chenetha-lakshmi-scheme"]
                 }
               }
             },
@@ -3064,13 +2646,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/current-schemes",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "current-schemes"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "current-schemes"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3108,13 +2685,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/scheme-content/current-schemes",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "scheme-content",
-                    "current-schemes"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["scheme-content", "current-schemes"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3154,13 +2726,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/scheme-content/current-schemes",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "scheme-content",
-                      "current-schemes"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["scheme-content", "current-schemes"]
                   }
                 }
               }
@@ -3184,13 +2751,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/heritage-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "heritage-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "heritage-hero"]
                 }
               }
             },
@@ -3207,13 +2769,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/heritage-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "heritage-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "heritage-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3245,13 +2802,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/heritage-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "heritage-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "heritage-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3283,13 +2835,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/heritage-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "heritage-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "heritage-hero"]
                 }
               }
             }
@@ -3306,13 +2853,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/chain-of-craft",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "chain-of-craft"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "chain-of-craft"]
                 }
               }
             },
@@ -3329,13 +2871,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/chain-of-craft",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "chain-of-craft"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "chain-of-craft"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3397,13 +2934,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/chain-of-craft",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "chain-of-craft"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "chain-of-craft"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3465,13 +2997,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/chain-of-craft",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "chain-of-craft"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "chain-of-craft"]
                 }
               }
             }
@@ -3488,13 +3015,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/numbers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "numbers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "numbers"]
                 }
               }
             },
@@ -3511,13 +3033,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/numbers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "numbers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "numbers"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3549,13 +3066,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/numbers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "numbers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "numbers"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3587,13 +3099,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/numbers",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "numbers"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "numbers"]
                 }
               }
             }
@@ -3610,13 +3117,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/sustainability",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "sustainability"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "sustainability"]
                 }
               }
             },
@@ -3633,13 +3135,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/sustainability",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "sustainability"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "sustainability"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3697,13 +3194,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/sustainability",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "sustainability"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "sustainability"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3761,13 +3253,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/sustainability",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "sustainability"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "sustainability"]
                 }
               }
             }
@@ -3784,13 +3271,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/mission-guides",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "mission-guides"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "mission-guides"]
                 }
               }
             },
@@ -3807,13 +3289,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/mission-guides",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "mission-guides"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "mission-guides"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3865,13 +3342,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/mission-guides",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "mission-guides"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "mission-guides"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -3923,13 +3395,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/mission-guides",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "mission-guides"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "mission-guides"]
                 }
               }
             }
@@ -3946,13 +3413,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/awards",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "awards"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "awards"]
                 }
               }
             },
@@ -3969,13 +3431,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/awards",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "awards"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "awards"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4017,13 +3474,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/awards",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "awards"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "awards"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4065,13 +3517,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/heritage-content/awards",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "heritage-content",
-                    "awards"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["heritage-content", "awards"]
                 }
               }
             }
@@ -4094,13 +3541,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/news-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "news-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "news-hero"]
                 }
               }
             },
@@ -4117,13 +3559,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/news-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "news-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "news-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4155,13 +3592,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/news-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "news-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "news-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4195,13 +3627,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/news-hero",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "news-hero"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "news-hero"]
                   }
                 }
               }
@@ -4219,13 +3646,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/latest-news",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "latest-news"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "latest-news"]
                 }
               }
             },
@@ -4242,13 +3664,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/latest-news",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "latest-news"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "latest-news"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4300,13 +3717,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/latest-news",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "latest-news"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "latest-news"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4360,13 +3772,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/latest-news",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "latest-news"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "latest-news"]
                   }
                 }
               }
@@ -4384,13 +3791,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/exhibitions",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "exhibitions"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "exhibitions"]
                 }
               }
             },
@@ -4407,13 +3809,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/exhibitions",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "exhibitions"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "exhibitions"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4450,13 +3847,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/exhibitions",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "exhibitions"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "exhibitions"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4495,13 +3887,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/exhibitions",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "exhibitions"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "exhibitions"]
                   }
                 }
               }
@@ -4519,13 +3906,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/events-calendar",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "events-calendar"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "events-calendar"]
                 }
               }
             },
@@ -4542,13 +3924,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/events-calendar",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "events-calendar"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "events-calendar"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4595,13 +3972,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/events-calendar",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "events-calendar"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "events-calendar"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4650,13 +4022,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/events-calendar",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "events-calendar"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "events-calendar"]
                   }
                 }
               }
@@ -4674,13 +4041,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/press-releases",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "press-releases"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "press-releases"]
                 }
               }
             },
@@ -4697,13 +4059,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/press-releases",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "press-releases"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "press-releases"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4750,13 +4107,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/press-releases",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "press-releases"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "press-releases"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4805,13 +4157,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/press-releases",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "press-releases"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "press-releases"]
                   }
                 }
               }
@@ -4829,13 +4176,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/threads-of-triumph",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "threads-of-triumph"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "threads-of-triumph"]
                 }
               }
             },
@@ -4846,15 +4188,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/threads-of-triumph/items/featured-weaver-1",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "threads-of-triumph",
-                    "items",
-                    "featured-weaver-1"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "threads-of-triumph", "items", "featured-weaver-1"]
                 }
               }
             },
@@ -4871,13 +4206,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/threads-of-triumph",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "threads-of-triumph"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "threads-of-triumph"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4924,13 +4254,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/threads-of-triumph",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "threads-of-triumph"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "threads-of-triumph"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -4979,13 +4304,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/threads-of-triumph",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "threads-of-triumph"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "threads-of-triumph"]
                   }
                 }
               }
@@ -5003,13 +4323,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/media-gallery",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "media-gallery"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "media-gallery"]
                 }
               }
             },
@@ -5020,15 +4335,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/news-content/media-gallery/items/exhibitions",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "media-gallery",
-                    "items",
-                    "exhibitions"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "media-gallery", "items", "exhibitions"]
                 }
               }
             },
@@ -5045,13 +4353,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/media-gallery",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "media-gallery"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "media-gallery"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5139,13 +4442,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/news-content/media-gallery",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "news-content",
-                    "media-gallery"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["news-content", "media-gallery"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5235,13 +4533,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/news-content/media-gallery",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "news-content",
-                      "media-gallery"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["news-content", "media-gallery"]
                   }
                 }
               }
@@ -5265,13 +4558,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/contact-content/contact-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "contact-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "contact-hero"]
                 }
               }
             },
@@ -5288,13 +4576,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/contact-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "contact-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "contact-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5326,13 +4609,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/contact-hero",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "contact-hero"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "contact-hero"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5366,13 +4644,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/contact-content/contact-hero",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "contact-content",
-                      "contact-hero"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["contact-content", "contact-hero"]
                   }
                 }
               }
@@ -5390,13 +4663,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/contact-content/regional-map",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "regional-map"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "regional-map"]
                 }
               }
             },
@@ -5407,15 +4675,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/contact-content/regional-map/items/hyderabad-head-office",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "regional-map",
-                    "items",
-                    "hyderabad-head-office"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "regional-map", "items", "hyderabad-head-office"]
                 }
               }
             },
@@ -5432,13 +4693,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/regional-map",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "regional-map"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "regional-map"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5483,13 +4739,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/regional-map",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "regional-map"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "regional-map"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5536,13 +4787,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/contact-content/regional-map",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "contact-content",
-                      "regional-map"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["contact-content", "regional-map"]
                   }
                 }
               }
@@ -5560,13 +4806,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/contact-content/contact-form",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "contact-form"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "contact-form"]
                 }
               }
             },
@@ -5583,13 +4824,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/contact-form",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "contact-form"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "contact-form"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5621,13 +4857,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/contact-form",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "contact-form"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "contact-form"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5661,13 +4892,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/contact-content/contact-form",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "contact-content",
-                      "contact-form"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["contact-content", "contact-form"]
                   }
                 }
               }
@@ -5685,13 +4911,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/contact-content/faq",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "faq"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "faq"]
                 }
               }
             },
@@ -5708,13 +4929,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/faq",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "faq"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "faq"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5741,13 +4957,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-content/faq",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-content",
-                    "faq"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-content", "faq"]
                 },
                 "body": {
                   "mode": "formdata",
@@ -5776,13 +4987,8 @@
                   ],
                   "url": {
                     "raw": "{{base_url}}/contact-content/faq",
-                    "host": [
-                      "{{base_url}}"
-                    ],
-                    "path": [
-                      "contact-content",
-                      "faq"
-                    ]
+                    "host": ["{{base_url}}"],
+                    "path": ["contact-content", "faq"]
                   }
                 }
               }
@@ -5814,12 +5020,8 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/contact-inquiries",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-inquiries"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-inquiries"]
                 }
               },
               "description": "Public contact form submission. No admin token is required."
@@ -5837,12 +5039,8 @@
                 ],
                 "url": {
                   "raw": "{{base_url}}/contact-inquiries",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "contact-inquiries"
-                  ]
+                  "host": ["{{base_url}}"],
+                  "path": ["contact-inquiries"]
                 }
               },
               "description": "Admin-only list of submitted contact messages. Optional filter: ?status=new,read,or resolved."
@@ -5878,13 +5076,8 @@
             },
             "url": {
               "raw": "{{base_url}}/media/videos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "media",
-                "videos"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["media", "videos"]
             }
           },
           "description": "Upload one MP4, WebM, MOV, AVI, or MPEG video using the video field."
@@ -5915,13 +5108,8 @@
             },
             "url": {
               "raw": "{{base_url}}/media/videos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "media",
-                "videos"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["media", "videos"]
             }
           },
           "description": "Delete a previously uploaded video using the key returned by Upload Video."

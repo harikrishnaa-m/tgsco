@@ -25,11 +25,39 @@ router.get('/settings/metadata', c.metadata);
 router.put('/settings/invoice', c.saveInvoice);
 router.put('/settings/order-policies', c.saveOrderPolicies);
 router.post('/settings/charges', c.saveCharge);
-router.post('/settings/shipping', (req, res, next) => { req.params.type = 'shipping'; next(); }, c.saveCharge);
-router.post('/settings/packing', (req, res, next) => { req.params.type = 'packing'; next(); }, c.saveCharge);
+router.post(
+  '/settings/shipping',
+  (req, res, next) => {
+    req.params.type = 'shipping';
+    next();
+  },
+  c.saveCharge,
+);
+router.post(
+  '/settings/packing',
+  (req, res, next) => {
+    req.params.type = 'packing';
+    next();
+  },
+  c.saveCharge,
+);
 router.patch('/settings/charges/:id', c.saveCharge);
-router.patch('/settings/shipping/:id', (req, res, next) => { req.params.type = 'shipping'; next(); }, c.saveCharge);
-router.patch('/settings/packing/:id', (req, res, next) => { req.params.type = 'packing'; next(); }, c.saveCharge);
+router.patch(
+  '/settings/shipping/:id',
+  (req, res, next) => {
+    req.params.type = 'shipping';
+    next();
+  },
+  c.saveCharge,
+);
+router.patch(
+  '/settings/packing/:id',
+  (req, res, next) => {
+    req.params.type = 'packing';
+    next();
+  },
+  c.saveCharge,
+);
 router.delete('/settings/charges/:id', c.archiveCharge);
 router.delete('/settings/shipping/:id', c.archiveCharge);
 router.delete('/settings/packing/:id', c.archiveCharge);

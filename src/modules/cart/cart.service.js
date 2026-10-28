@@ -48,7 +48,11 @@ export async function getCart(user) {
 
 export async function addCartItem(user, { productId, quantity }) {
   const product = await CatalogProduct.findOne({ _id: productId, active: true }).lean();
-  if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  if (!product)
+    throw new AppError('The product was not found.', {
+      statusCode: 404,
+      code: 'PRODUCT_NOT_FOUND',
+    });
 
   const cart = await getOrCreateCart(user.sub);
   const item = cart.items.find((entry) => entry.product?._id.toString() === productId);
@@ -144,9 +148,16 @@ export async function mergeCart(user, { items }) {
 
 export async function updateCartItem(user, productId, quantity) {
   const product = await CatalogProduct.findOne({ _id: productId, active: true }).lean();
-  if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  if (!product)
+    throw new AppError('The product was not found.', {
+      statusCode: 404,
+      code: 'PRODUCT_NOT_FOUND',
+    });
   if (quantity > product.stockQuantity) {
-    throw new AppError('The requested quantity exceeds available stock.', { statusCode: 409, code: 'INSUFFICIENT_STOCK' });
+    throw new AppError('The requested quantity exceeds available stock.', {
+      statusCode: 409,
+      code: 'INSUFFICIENT_STOCK',
+    });
   }
   if (user.role === 'merchant' && getUnitPrice(product, user.role, quantity) === undefined) {
     throw new AppError('Merchants can only purchase products in configured bulk quantities.', {
@@ -156,7 +167,11 @@ export async function updateCartItem(user, productId, quantity) {
   }
   const cart = await getOrCreateCart(user.sub);
   const item = cart.items.find((entry) => entry.product?._id.toString() === productId);
-  if (!item) throw new AppError('The product is not in the cart.', { statusCode: 404, code: 'CART_ITEM_NOT_FOUND' });
+  if (!item)
+    throw new AppError('The product is not in the cart.', {
+      statusCode: 404,
+      code: 'CART_ITEM_NOT_FOUND',
+    });
   item.quantity = quantity;
   await cart.save();
   const populated = await Cart.findById(cart._id).populate('items.product');
@@ -168,7 +183,10 @@ export async function removeCartItem(user, productId) {
   const originalLength = cart.items.length;
   cart.items = cart.items.filter((item) => item.product?._id.toString() !== productId);
   if (cart.items.length === originalLength) {
-    throw new AppError('The product is not in the cart.', { statusCode: 404, code: 'CART_ITEM_NOT_FOUND' });
+    throw new AppError('The product is not in the cart.', {
+      statusCode: 404,
+      code: 'CART_ITEM_NOT_FOUND',
+    });
   }
   await cart.save();
   const populated = await Cart.findById(cart._id).populate('items.product');

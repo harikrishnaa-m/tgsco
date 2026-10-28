@@ -681,3 +681,48 @@ Allowed return transitions are:
 automatic Razorpay path) or `refunded` (legacy/manual records), and
 `refunded -> completed`. All other transitions are rejected. A processed
 linked refund adds `Refund processed` and `Return completed` timeline entries.
+
+## Profile and password
+
+Customer and merchant accounts use these authenticated endpoints:
+
+| Method  | Path                       | Purpose                           |
+| ------- | -------------------------- | --------------------------------- |
+| `GET`   | `/api/v1/profile`          | Get the current profile           |
+| `PATCH` | `/api/v1/profile`          | Update name, email, and/or mobile |
+| `PATCH` | `/api/v1/profile/password` | Change the password               |
+
+Profile updates require `currentPassword`, even when changing only email or
+mobile:
+
+```json
+{
+  "currentPassword": "CurrentPassword123!",
+  "name": "Updated Customer Name",
+  "email": "updated@example.com",
+  "mobile": "+919876543299"
+}
+```
+
+At least one of `name`, `email`, or `mobile` must be supplied. Email addresses
+are normalized to lowercase, mobile numbers use the supported international
+format, and email/mobile values must be unique across all accounts.
+
+Password changes use:
+
+```json
+{
+  "currentPassword": "CurrentPassword123!",
+  "newPassword": "NewPassword123!",
+  "confirmNewPassword": "NewPassword123!"
+}
+```
+
+The current password must match, the new password must contain at least eight
+characters, and the confirmation must match. A successful password change
+revokes refresh tokens; the user should sign in again on other devices.
+Password hashes are never returned.
+
+Typical errors are `CURRENT_PASSWORD_INVALID` (`401`),
+`EMAIL_ALREADY_IN_USE` or `MOBILE_ALREADY_IN_USE` (`409`),
+`PASSWORD_NOT_SET` (`409`), and `INVALID_PROFILE_REQUEST` (`400`).

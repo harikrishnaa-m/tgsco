@@ -21,7 +21,15 @@ function parseContent(req) {
         code: 'INVALID_CATALOG_FORM_DATA',
       });
     }
-    for (const field of ['price', 'originalPrice', 'discountPercent', 'stockQuantity', 'sortOrder']) {
+    for (const field of [
+      'price',
+      'originalPrice',
+      'discountPercent',
+      'stockQuantity',
+      'lowStockThreshold',
+      'reorderQuantity',
+      'sortOrder',
+    ]) {
       if (content[field] !== undefined) content[field] = Number(content[field]);
     }
     if (content.active !== undefined) content.active = content.active === 'true';
@@ -85,7 +93,11 @@ export async function getGroup(id, includeInactive = false) {
     _id: id,
     ...(includeInactive ? {} : { active: true }),
   }).lean();
-  if (!group) throw new AppError('The catalogue group was not found.', { statusCode: 404, code: 'CATALOG_GROUP_NOT_FOUND' });
+  if (!group)
+    throw new AppError('The catalogue group was not found.', {
+      statusCode: 404,
+      code: 'CATALOG_GROUP_NOT_FOUND',
+    });
   return group;
 }
 
@@ -103,7 +115,9 @@ export async function listCategories(type, groupId) {
         pipeline: [
           {
             $match: {
-              $expr: { $and: [{ $eq: ['$categorySlug', '$$categorySlug'] }, { $eq: ['$active', true] }] },
+              $expr: {
+                $and: [{ $eq: ['$categorySlug', '$$categorySlug'] }, { $eq: ['$active', true] }],
+              },
             },
           },
           { $count: 'count' },
@@ -147,7 +161,11 @@ export async function saveCategory(content, files = [], id) {
 
 export async function getCategory(id) {
   const category = await CatalogCategory.findById(id).lean();
-  if (!category) throw new AppError('The category was not found.', { statusCode: 404, code: 'CATEGORY_NOT_FOUND' });
+  if (!category)
+    throw new AppError('The category was not found.', {
+      statusCode: 404,
+      code: 'CATEGORY_NOT_FOUND',
+    });
   return category;
 }
 
@@ -191,7 +209,11 @@ export async function removeGroup(id) {
 
 export async function removeCategory(id) {
   const deleted = await CatalogCategory.findByIdAndDelete(id);
-  if (!deleted) throw new AppError('The category was not found.', { statusCode: 404, code: 'CATEGORY_NOT_FOUND' });
+  if (!deleted)
+    throw new AppError('The category was not found.', {
+      statusCode: 404,
+      code: 'CATEGORY_NOT_FOUND',
+    });
 }
 
 export async function listProducts(query) {
@@ -206,10 +228,7 @@ export async function listProducts(query) {
   if (query.categoryId || query.categoryIds?.length) {
     const categoryIds = query.categoryIds?.length ? query.categoryIds : [query.categoryId];
     taxonomyFilters.push({
-      $or: [
-        { category: { $in: categoryIds } },
-        { categories: { $in: categoryIds } },
-      ],
+      $or: [{ category: { $in: categoryIds } }, { categories: { $in: categoryIds } }],
     });
   }
   if (query.type) {
@@ -246,7 +265,15 @@ export async function listProducts(query) {
     CatalogProduct.find(filter).sort(sort).skip(skip).limit(query.limit).lean(),
     CatalogProduct.countDocuments(filter),
   ]);
-  return { items, pagination: { page: query.page, limit: query.limit, total, pages: Math.ceil(total / query.limit) } };
+  return {
+    items,
+    pagination: {
+      page: query.page,
+      limit: query.limit,
+      total,
+      pages: Math.ceil(total / query.limit),
+    },
+  };
 }
 
 export async function getProductFilterOptions(query) {
@@ -261,10 +288,7 @@ export async function getProductFilterOptions(query) {
     const categoryIds = query.categoryIds?.length ? query.categoryIds : [query.categoryId];
     const objectIds = categoryIds.map((id) => new mongoose.Types.ObjectId(id));
     taxonomyFilters.push({
-      $or: [
-        { category: { $in: objectIds } },
-        { categories: { $in: objectIds } },
-      ],
+      $or: [{ category: { $in: objectIds } }, { categories: { $in: objectIds } }],
     });
   }
   if (query.type) {
@@ -302,7 +326,11 @@ export async function getProductFilterOptions(query) {
 
 export async function getProduct(slug) {
   const product = await CatalogProduct.findOne({ slug, active: true }).lean();
-  if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  if (!product)
+    throw new AppError('The product was not found.', {
+      statusCode: 404,
+      code: 'PRODUCT_NOT_FOUND',
+    });
   return product;
 }
 
@@ -311,13 +339,21 @@ export async function getPublicProduct(identifier) {
     ? { _id: identifier, active: true }
     : { slug: identifier, active: true };
   const product = await CatalogProduct.findOne(filter).lean();
-  if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  if (!product)
+    throw new AppError('The product was not found.', {
+      statusCode: 404,
+      code: 'PRODUCT_NOT_FOUND',
+    });
   return product;
 }
 
 export async function getAdminProduct(id) {
   const product = await CatalogProduct.findById(id).populate('categories').lean();
-  if (!product) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  if (!product)
+    throw new AppError('The product was not found.', {
+      statusCode: 404,
+      code: 'PRODUCT_NOT_FOUND',
+    });
   return product;
 }
 
@@ -342,7 +378,10 @@ export async function saveProduct(content, files, id) {
       active: true,
     }).lean();
   }
-  if (!categories.length || (savedContent.categoryIds && categories.length !== savedContent.categoryIds.length)) {
+  if (
+    !categories.length ||
+    (savedContent.categoryIds && categories.length !== savedContent.categoryIds.length)
+  ) {
     throw new AppError('One or more product categories were not found.', {
       statusCode: 400,
       code: 'CATEGORY_NOT_FOUND',
@@ -375,5 +414,9 @@ export async function saveProduct(content, files, id) {
 
 export async function removeProduct(id) {
   const deleted = await CatalogProduct.findByIdAndDelete(id);
-  if (!deleted) throw new AppError('The product was not found.', { statusCode: 404, code: 'PRODUCT_NOT_FOUND' });
+  if (!deleted)
+    throw new AppError('The product was not found.', {
+      statusCode: 404,
+      code: 'PRODUCT_NOT_FOUND',
+    });
 }

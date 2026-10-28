@@ -15,5 +15,4 @@ const catalogCategorySchema = new mongoose.Schema(
 );
 
 export const CatalogCategory =
-  mongoose.models.CatalogCategory ||
-  mongoose.model('CatalogCategory', catalogCategorySchema);
+  mongoose.models.CatalogCategory || mongoose.model('CatalogCategory', catalogCategorySchema);

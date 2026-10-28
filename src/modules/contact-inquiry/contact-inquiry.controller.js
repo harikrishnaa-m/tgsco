@@ -1,8 +1,5 @@
 import { AppError } from '../../errors/app-error.js';
-import {
-  createContactInquiry,
-  listContactInquiries,
-} from './contact-inquiry.service.js';
+import { createContactInquiry, listContactInquiries } from './contact-inquiry.service.js';
 import { contactInquirySchema } from './contact-inquiry.validation.js';
 
 export async function create(req, res) {

@@ -24,9 +24,15 @@ app.use(
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 100,
+    limit: 1000,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
+    skip: (req) => req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS',
+    message: {
+      success: false,
+      message: 'Too many requests. Please wait a moment and try again.',
+    },
+    statusCode: 429,
   }),
 );
 app.use(pinoHttp({ logger }));

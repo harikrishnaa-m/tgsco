@@ -78,6 +78,18 @@ export async function updateOrderStatus(id, status, message, adminId) {
       },
     });
   order.orderStatus = status;
+  if (
+    status === 'delivered' &&
+    order.paymentMethod === 'cod' &&
+    order.paymentStatus === 'pending'
+  ) {
+    order.paymentStatus = 'captured';
+    order.timeline.push({
+      type: 'payment',
+      message: 'Cash on Delivery payment marked as collected on delivery',
+      by: adminId,
+    });
+  }
   order.timeline.push({
     type: 'status',
     message: message || `Order status changed to ${status}`,

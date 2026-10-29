@@ -133,6 +133,9 @@ describe('checkout, COD refunds, and returns', () => {
     expect((await CatalogProduct.findById(product._id)).reservedQuantity).toBe(1);
 
     await moveOrderToDelivered(order._id);
+    const deliveredCodOrder = await Order.findById(order._id);
+    expect(deliveredCodOrder.orderStatus).toBe('delivered');
+    expect(deliveredCodOrder.paymentStatus).toBe('captured');
 
     const methodResponse = await request(app)
       .post('/api/v1/refund-methods')

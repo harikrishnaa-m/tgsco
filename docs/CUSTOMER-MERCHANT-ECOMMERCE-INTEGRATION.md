@@ -586,6 +586,9 @@ Revalidation conflicts return `409 CHECKOUT_REVALIDATION_FAILED` with warnings.
 
 COD orders are immediately `orderStatus: "confirmed"` and
 `paymentStatus: "pending"`; no `payment` property is returned.
+When an admin marks a COD order `delivered`, the backend marks
+`paymentStatus: "captured"` to record COD collection. Return eligibility still
+depends on the order being delivered and within the configured return window.
 
 ### Razorpay response and timing
 

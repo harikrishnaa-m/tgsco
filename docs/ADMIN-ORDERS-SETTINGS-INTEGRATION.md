@@ -980,3 +980,320 @@ The API rejects any adjustment that would make available stock negative or
 below active reservations with `409 NEGATIVE_AVAILABLE_STOCK`. Concurrent
 stock changes are protected with an optimistic stock check and return
 `409 INVENTORY_CONCURRENT_UPDATE` when the product changed during processing.
+
+### Authorization and response envelope
+
+Every inventory route requires an authenticated admin access token:
+
+```http
+Authorization: Bearer <admin_access_token>
+```
+
+Successful requests use this envelope:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+Read endpoints return HTTP `200`. Stock-changing endpoints return HTTP `201`
+when the movement is created. IDs are serialized as strings and dates as
+ISO-8601 strings.
+
+### Endpoint request and response contracts
+
+#### `GET /api/v1/admin/inventory`
+
+Optional query parameters:
+
+| Field | Type | Default | Allowed values / constraints |
+| --- | --- | --- | --- |
+| `search` | string | — | Trimmed; maximum 100 characters; searches product name, SKU, and barcode |
+| `status` | string | — | `in_stock`, `low_stock`, or `out_of_stock` |
+| `active` | string | `true` | `true`, `false`, or `all` |
+| `sort` | string | `newest` | `newest`, `oldest`, `name`, `stock-asc`, or `stock-desc` |
+| `page` | integer | `1` | Greater than zero |
+| `limit` | integer | `20` | From 1 through 100 |
+
+`data` is a paginated inventory result:
+
+```json
+{
+  "items": [
+    {
+      "productId": "66f100000000000000000001",
+      "sku": "TGS-SAREE-001",
+      "name": "Pochampally Ikat Saree",
+      "barcode": null,
+      "active": true,
+      "stockQuantity": 100,
+      "reservedQuantity": 10,
+      "availableQuantity": 90,
+      "lowStockThreshold": 10,
+      "reorderQuantity": 50,
+      "status": "in_stock"
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "limit": 20,
+  "pages": 1
+}
+```
+
+An empty result has `items: []`, `total: 0`, and `pages: 0`.
+
+#### `GET /api/v1/admin/inventory/summary`
+
+Accepts no query parameters. The totals cover all catalogue products, including
+inactive products:
+
+```json
+{
+  "products": 120,
+  "totalStock": 5000,
+  "totalReserved": 35,
+  "totalAvailable": 4965,
+  "lowStock": 8,
+  "outOfStock": 3
+}
+```
+
+#### `GET /api/v1/admin/inventory/filters`
+
+Accepts no query parameters. Returns the filter values supported by the list
+and movement-history endpoints:
+
+```json
+{
+  "statuses": ["in_stock", "low_stock", "out_of_stock"],
+  "movementTypes": [
+    "restock",
+    "adjustment",
+    "damage",
+    "return",
+    "physical_count",
+    "reservation",
+    "reservation_release",
+    "sale"
+  ],
+  "active": ["true", "false", "all"],
+  "sorts": ["newest", "oldest", "name", "stock-asc", "stock-desc"]
+}
+```
+
+#### `GET /api/v1/admin/inventory/reservations`
+
+Accepts an optional `productId` query parameter to filter the active
+reservations by product ID. This endpoint currently returns all matching
+reservation rows as an array; it does not paginate them.
+
+```json
+[
+  {
+    "orderId": "66f200000000000000000001",
+    "orderNumber": "TGS-1790000000000-1234",
+    "productId": "66f100000000000000000001",
+    "quantity": 2,
+    "orderStatus": "pending_payment",
+    "paymentStatus": "created",
+    "customer": {
+      "_id": "66f300000000000000000001",
+      "name": "Customer Name",
+      "email": "customer@example.com",
+      "mobile": "9876543210"
+    },
+    "createdAt": "2026-10-28T05:00:00.000Z"
+  }
+]
+```
+
+The customer fields depend on what is stored on the order's user account.
+When no active reservations match, `data` is an empty array.
+
+#### `GET /api/v1/admin/inventory/:productId`
+
+Requires a 24-character hexadecimal MongoDB product ID. Returns one inventory
+item using the same object shape as each entry in the list response.
+
+```json
+{
+  "success": true,
+  "data": {
+    "productId": "66f100000000000000000001",
+    "sku": "TGS-SAREE-001",
+    "name": "Pochampally Ikat Saree",
+    "barcode": null,
+    "active": true,
+    "stockQuantity": 100,
+    "reservedQuantity": 10,
+    "availableQuantity": 90,
+    "lowStockThreshold": 10,
+    "reorderQuantity": 50,
+    "status": "in_stock"
+  }
+}
+```
+
+#### `GET /api/v1/admin/inventory/:productId/movements`
+
+Requires a valid product ID. Optional query parameters:
+
+| Field | Type | Default | Allowed values / constraints |
+| --- | --- | --- | --- |
+| `movementType` | string | — | One of the movement types listed by `/filters` |
+| `from` | date/time | — | Parseable date; inclusive lower bound |
+| `to` | date/time | — | Parseable date; inclusive upper bound |
+| `page` | integer | `1` | Greater than zero |
+| `limit` | integer | `20` | From 1 through 100 |
+
+When both dates are supplied, `from` must be earlier than or equal to `to`.
+Returns:
+
+```json
+{
+  "items": [
+    {
+      "_id": "66f400000000000000000001",
+      "product": "66f100000000000000000001",
+      "sku": "TGS-SAREE-001",
+      "productName": "Pochampally Ikat Saree",
+      "movementType": "restock",
+      "quantity": 50,
+      "quantityDelta": 50,
+      "reservedDelta": 0,
+      "stockBefore": 50,
+      "stockAfter": 100,
+      "reservedBefore": 10,
+      "reservedAfter": 10,
+      "reason": "Supplier delivery received",
+      "note": "Quality checked",
+      "referenceType": "purchase_order",
+      "referenceId": "PO-2026-001",
+      "supplierName": "Supplier Name",
+      "supplierInvoiceNumber": "INV-2026-001",
+      "unitCost": 450,
+      "receivedAt": "2026-10-28T05:00:00.000Z",
+      "performedBy": "66f300000000000000000002",
+      "createdAt": "2026-10-28T05:00:00.000Z",
+      "updatedAt": "2026-10-28T05:00:00.000Z",
+      "__v": 0
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "limit": 20,
+  "pages": 1
+}
+```
+
+Optional movement properties are absent when they were not recorded. No
+matching movements produce `items: []`, `total: 0`, and `pages: 0`.
+
+#### Stock-changing endpoints
+
+These endpoints all require a valid product ID and the JSON request bodies
+documented above:
+
+```text
+POST /api/v1/admin/inventory/:productId/adjust
+POST /api/v1/admin/inventory/:productId/restock
+POST /api/v1/admin/inventory/:productId/damage
+POST /api/v1/admin/inventory/:productId/return
+POST /api/v1/admin/inventory/:productId/reconcile
+```
+
+On success, each returns HTTP `201`. `data.inventory` is the updated inventory
+object described for the product-detail endpoint. `data.movement` is the
+created movement-ledger record:
+
+```json
+{
+  "inventory": {
+    "productId": "66f100000000000000000001",
+    "sku": "TGS-SAREE-001",
+    "name": "Pochampally Ikat Saree",
+    "barcode": null,
+    "active": true,
+    "stockQuantity": 150,
+    "reservedQuantity": 10,
+    "availableQuantity": 140,
+    "lowStockThreshold": 10,
+    "reorderQuantity": 50,
+    "status": "in_stock"
+  },
+  "movement": {
+    "_id": "66f400000000000000000002",
+    "product": "66f100000000000000000001",
+    "sku": "TGS-SAREE-001",
+    "productName": "Pochampally Ikat Saree",
+    "movementType": "restock",
+    "quantity": 50,
+    "quantityDelta": 50,
+    "reservedDelta": 0,
+    "stockBefore": 100,
+    "stockAfter": 150,
+    "reservedBefore": 10,
+    "reservedAfter": 10,
+    "reason": "Supplier delivery received",
+    "note": "Quality checked",
+    "referenceId": "PO-2026-001",
+    "supplierName": "Supplier Name",
+    "supplierInvoiceNumber": "INV-2026-001",
+    "unitCost": 450,
+    "receivedAt": "2026-10-28T05:00:00.000Z",
+    "performedBy": "66f300000000000000000002",
+    "createdAt": "2026-10-28T05:00:00.000Z",
+    "updatedAt": "2026-10-28T05:00:00.000Z",
+    "__v": 0
+  }
+}
+```
+
+The returned movement's type is respectively `adjustment`, `restock`,
+`damage`, `return`, or `physical_count`. `quantityDelta` is positive for stock
+added and negative for stock removed; `quantity` is its absolute value.
+`stockBefore`/`stockAfter` and `reservedBefore`/`reservedAfter` are the
+quantities around that stock change. For return-to-stock, the optional
+`returnId` is recorded as `referenceType: "return"` and `referenceId`.
+Reconciliation calculates its movement delta from `physicalQuantity -
+stockBefore`; the input-only `physicalQuantity` is not a movement field.
+
+### Error responses
+
+Errors use this envelope (the `details` property is included when applicable):
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "NEGATIVE_AVAILABLE_STOCK",
+    "message": "The adjustment cannot reduce available stock below zero or below active reservations.",
+    "details": {
+      "stockQuantity": 100,
+      "reservedQuantity": 10,
+      "requestedDelta": -95
+    }
+  },
+  "requestId": "request-id"
+}
+```
+
+Inventory-specific and request-related errors:
+
+| HTTP | Code | When it occurs |
+| --- | --- | --- |
+| `400` | `INVALID_INVENTORY_FILTERS` | Invalid inventory-list query parameter |
+| `400` | `INVALID_INVENTORY_REQUEST` | Invalid product ID, movement query, or stock-change body |
+| `401` | `AUTHENTICATION_REQUIRED`, `TOKEN_EXPIRED`, or `INVALID_TOKEN` | Missing, expired, or invalid admin authentication |
+| `403` | `ADMIN_ACCESS_REQUIRED` | Authenticated account does not have the admin role |
+| `404` | `INVENTORY_PRODUCT_NOT_FOUND` | Product ID is valid but no catalogue product exists |
+| `409` | `NEGATIVE_AVAILABLE_STOCK` | Stock change would put stock below active reservations |
+| `409` | `INVENTORY_CONCURRENT_UPDATE` | Product stock changed during a stock operation; retry after refreshing |
+| `409` | `INVENTORY_ALREADY_RECONCILED` | Physical quantity equals current system stock |
+
+Validation errors return `details` as an array of `{ "field", "message" }`
+entries. Authentication errors use the same response envelope as the rest of
+the API.

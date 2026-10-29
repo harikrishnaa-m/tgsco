@@ -7,7 +7,12 @@ import { env } from '../../config/env.js';
 import { AppError } from '../../errors/app-error.js';
 import { RefreshToken } from '../../models/refresh-token.model.js';
 import { OtpChallenge } from '../../models/otp-challenge.model.js';
+import { SocialLoginHandoff } from '../../models/social-login-handoff.model.js';
+import { SocialOAuthState } from '../../models/social-oauth-state.model.js';
 import { User } from '../../models/user.model.js';
+
+const socialOAuthStateTtlMs = 10 * 60 * 1000;
+const socialHandoffCodeTtlMs = 2 * 60 * 1000;
 
 function invalidCredentialsError() {
   return new AppError('The email or password is incorrect.', {
@@ -18,6 +23,40 @@ function invalidCredentialsError() {
 
 function hashRefreshToken(token) {
   return createHash('sha256').update(token).digest('hex');
+}
+
+function hashOpaqueCode(code) {
+  return createHash('sha256').update(code).digest('hex');
+}
+
+function assertSocialProvider(provider) {
+  if (!['google', 'facebook'].includes(provider)) {
+    throw new AppError('This social sign-in provider is not supported.', {
+      statusCode: 404,
+      code: 'SOCIAL_PROVIDER_NOT_SUPPORTED',
+    });
+  }
+}
+
+export function getFrontendSocialCallbackUrl() {
+  if (!env.FRONTEND_AUTH_CALLBACK_URL) {
+    throw new AppError('The frontend social sign-in callback is not configured.', {
+      statusCode: 503,
+      code: 'SOCIAL_CALLBACK_NOT_CONFIGURED',
+    });
+  }
+
+  const callbackUrl = new URL(env.FRONTEND_AUTH_CALLBACK_URL);
+  if (
+    !['http:', 'https:'].includes(callbackUrl.protocol) ||
+    (env.NODE_ENV === 'production' && callbackUrl.protocol !== 'https:')
+  ) {
+    throw new AppError('The frontend social sign-in callback URL is invalid.', {
+      statusCode: 503,
+      code: 'SOCIAL_CALLBACK_NOT_CONFIGURED',
+    });
+  }
+  return callbackUrl;
 }
 
 function hashOtp(code) {
@@ -267,13 +306,8 @@ export async function createGuestSession() {
   return { accessToken, accessTokenExpiresIn: '24h', user: { role: 'guest' } };
 }
 
-export function getSocialAuthorizationUrl(provider, role) {
-  if (!['google', 'facebook'].includes(provider)) {
-    throw new AppError('This social sign-in provider is not supported.', {
-      statusCode: 404,
-      code: 'SOCIAL_PROVIDER_NOT_SUPPORTED',
-    });
-  }
+function getSocialAuthorizationUrl(provider, state) {
+  assertSocialProvider(provider);
   if (provider === 'google') {
     if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_REDIRECT_URI) {
       throw new AppError('Google sign-in is not configured.', {
@@ -288,7 +322,7 @@ export function getSocialAuthorizationUrl(provider, role) {
       scope: 'openid email profile',
       access_type: 'offline',
     });
-    if (role) params.set('state', role);
+    params.set('state', state);
     return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
   }
   if (!env.FACEBOOK_APP_ID || !env.FACEBOOK_REDIRECT_URI) {
@@ -307,17 +341,42 @@ export function getSocialAuthorizationUrl(provider, role) {
   } else {
     params.set('scope', 'public_profile,email');
   }
-  if (role) params.set('state', role);
+  params.set('state', state);
   return `https://www.facebook.com/v20.0/dialog/oauth?${params.toString()}`;
 }
 
-export async function loginWithSocial(provider, code, role, rememberMe) {
-  if (!['google', 'facebook'].includes(provider)) {
-    throw new AppError('This social sign-in provider is not supported.', {
-      statusCode: 404,
-      code: 'SOCIAL_PROVIDER_NOT_SUPPORTED',
+export async function beginSocialAuthorization(provider, role, rememberMe) {
+  getFrontendSocialCallbackUrl();
+  const state = randomBytes(32).toString('base64url');
+  const authorizationUrl = getSocialAuthorizationUrl(provider, state);
+  await SocialOAuthState.create({
+    stateHash: hashOpaqueCode(state),
+    provider,
+    role,
+    rememberMe,
+    expiresAt: new Date(Date.now() + socialOAuthStateTtlMs),
+  });
+  return authorizationUrl;
+}
+
+export async function consumeSocialOAuthState(provider, state) {
+  assertSocialProvider(provider);
+  const oauthState = await SocialOAuthState.findOneAndDelete({
+    provider,
+    stateHash: hashOpaqueCode(state),
+    expiresAt: { $gt: new Date() },
+  });
+  if (!oauthState) {
+    throw new AppError('The social sign-in request is invalid or has expired.', {
+      statusCode: 401,
+      code: 'INVALID_SOCIAL_OAUTH_STATE',
     });
   }
+  return { role: oauthState.role, rememberMe: oauthState.rememberMe };
+}
+
+export async function loginWithSocial(provider, code, role) {
+  assertSocialProvider(provider);
   let email;
   let name;
   let providerId;
@@ -402,15 +461,94 @@ export async function loginWithSocial(provider, code, role, rememberMe) {
       existingUser.facebookId = providerId;
       await existingUser.save();
     }
-    return createUserSession(existingUser, rememberMe);
+    return { user: existingUser };
   }
 
+  return {
+    registration: {
+      provider,
+      providerId,
+      email: email?.toLowerCase(),
+      name,
+    },
+  };
+}
+
+export async function createSocialLoginHandoff(result, rememberMe) {
+  const code = randomBytes(32).toString('base64url');
+  const handoff = {
+    codeHash: hashOpaqueCode(code),
+    rememberMe,
+    expiresAt: new Date(Date.now() + socialHandoffCodeTtlMs),
+  };
+
+  if (result.user) {
+    handoff.user = result.user._id;
+  } else if (result.registration) {
+    handoff.registration = result.registration;
+  } else {
+    throw new AppError('The social sign-in result could not be handed to the frontend.', {
+      statusCode: 500,
+      code: 'SOCIAL_HANDOFF_INVALID',
+    });
+  }
+
+  await SocialLoginHandoff.create(handoff);
+  return code;
+}
+
+export async function exchangeSocialLoginHandoff(code) {
+  const handoff = await SocialLoginHandoff.findOneAndUpdate(
+    {
+      codeHash: hashOpaqueCode(code),
+      usedAt: null,
+      expiresAt: { $gt: new Date() },
+    },
+    { $set: { usedAt: new Date() } },
+    { new: true },
+  );
+  if (!handoff) {
+    throw new AppError('The social sign-in code is invalid, expired, or already used.', {
+      statusCode: 401,
+      code: 'INVALID_SOCIAL_AUTH_CODE',
+    });
+  }
+
+  if (handoff.user) {
+    const user = await User.findById(handoff.user);
+    if (!user || !['customer', 'merchant'].includes(user.role)) {
+      throw new AppError('The social sign-in account is no longer available.', {
+        statusCode: 401,
+        code: 'SOCIAL_ACCOUNT_UNAVAILABLE',
+      });
+    }
+    return createUserSession(user, handoff.rememberMe);
+  }
+
+  const registration = handoff.registration;
+  if (!registration) {
+    throw new AppError('The social sign-in code has no associated account.', {
+      statusCode: 401,
+      code: 'INVALID_SOCIAL_AUTH_CODE',
+    });
+  }
   const registrationToken = jwt.sign(
-    { type: 'social-registration', provider, providerId, email: email?.toLowerCase(), name },
+    {
+      type: 'social-registration',
+      provider: registration.provider,
+      providerId: registration.providerId,
+      email: registration.email,
+      name: registration.name,
+    },
     env.ACCESS_TOKEN_SECRET,
     { expiresIn: '15m' },
   );
-  return { registrationRequired: true, registrationToken, email, name };
+  return {
+    registrationRequired: true,
+    registrationToken,
+    email: registration.email,
+    name: registration.name,
+  };
 }
 
 export async function loginAdmin(email, password) {

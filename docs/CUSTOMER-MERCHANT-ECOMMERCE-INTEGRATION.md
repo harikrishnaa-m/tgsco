@@ -1,10 +1,10 @@
 # Customer and Merchant E-commerce Integration
 
-This is the frontend contract for the currently implemented cart, wishlist,
-address, checkout, payment, and order APIs. The API is mounted at
-`/api/v1`; examples below show the complete path. Authentication and Product
-Catalogue are deliberately not documented here. Every endpoint in this
-document requires an access token unless explicitly marked **public**.
+This is the frontend contract for the currently implemented authentication,
+cart, wishlist, address, checkout, payment, and order APIs. The API is mounted
+at `/api/v1`; examples below show the complete path. Product Catalogue is
+deliberately not documented here. Every endpoint in this document requires an
+access token unless explicitly marked **public**.
 
 For administrator order, shipment, charge, invoice, and refund operations see
 [ADMIN-ORDERS-SETTINGS-INTEGRATION.md](./ADMIN-ORDERS-SETTINGS-INTEGRATION.md).
@@ -43,9 +43,180 @@ are optional):
 Common statuses are `400` malformed/invalid input, `401` missing/expired
 token, `403` wrong account type, `404` resource not owned or not found,
 `409` stock/state/conflict, `429` rate limit, `502` payment-provider failure,
-and `503` missing provider/configuration. The server applies a 100-request
-per-15-minute rate limit. There is no pagination query parameter currently:
-cart, wishlist, addresses, and order list return complete arrays.
+and `503` missing provider/configuration. The server applies a 1,000-request
+per-15-minute limit to non-GET/HEAD/OPTIONS requests; GET, HEAD, and OPTIONS
+are exempt. There is no pagination query parameter currently: cart, wishlist,
+addresses, and order list return complete arrays.
+
+## Authentication
+
+Authentication endpoints are under `/api/v1/auth`. Customer/merchant
+password login uses `POST /ecommerce/password-login`; OTP registration/login
+uses `/ecommerce/request-otp`, `/ecommerce/verify-otp`, and
+`/ecommerce/select-role`. Password login accepts an email or mobile in
+`identifier`; the account's stored role determines whether the session is for
+a customer or merchant.
+
+### Google and Facebook SPA callback handoff
+
+The SPA starts provider login by navigating the browser to one of these public
+URLs; they redirect to the provider and should not be called with `fetch`:
+
+```text
+GET /api/v1/auth/ecommerce/google
+GET /api/v1/auth/ecommerce/facebook
+```
+
+Configure `FRONTEND_AUTH_CALLBACK_URL` on the backend to the SPA route that
+renders the shared login component, for example:
+
+```text
+FRONTEND_AUTH_CALLBACK_URL=https://shop.example.com/login
+```
+
+Also allow the SPA origin in `CORS_ORIGIN`. Keep provider client secrets only
+on the backend. The Google/Facebook redirect URI must remain the backend
+callback URL configured in `GOOGLE_REDIRECT_URI` or
+`FACEBOOK_REDIRECT_URI`, respectively.
+
+After provider authentication, the backend validates and consumes its
+provider-bound, short-lived OAuth state, then redirects to
+`FRONTEND_AUTH_CALLBACK_URL` with only a short-lived, single-use `code`:
+
+```text
+https://shop.example.com/login?code=<one-time-code>
+```
+
+Access and refresh tokens are never put in that redirect URL. The handoff
+code is stored hashed on the backend, expires after two minutes, and is
+atomically consumed on redemption. The OAuth state expires after ten minutes
+and is also single-use. The callback redirect includes `Cache-Control:
+no-store` and `Referrer-Policy: no-referrer`.
+
+The SPA exchanges the code with:
+
+```http
+POST /api/v1/auth/ecommerce/social/exchange
+Content-Type: application/json
+```
+
+Request:
+
+```json
+{
+  "code": "<one-time-code>"
+}
+```
+
+For an existing customer or merchant, the exchange response is the standard
+session response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "<access-token>",
+    "refreshToken": "<refresh-token>",
+    "accessTokenExpiresIn": "24h",
+    "refreshTokenExpiresAt": "2026-11-28T05:00:00.000Z",
+    "user": {
+      "id": "66f300000000000000000001",
+      "email": "customer@example.com",
+      "mobile": "+919876543210",
+      "name": "Customer Name",
+      "role": "customer"
+    }
+  }
+}
+```
+
+The frontend should pass `data` to the same session/login handler used by
+password login. Use `data.user.role` for routing and role-specific UI.
+
+For a new social account, the exchange preserves the existing registration
+flow and returns `registrationRequired: true` with a `registrationToken`:
+
+```json
+{
+  "success": true,
+  "data": {
+    "registrationRequired": true,
+    "registrationToken": "<registration-token>",
+    "email": "customer@example.com",
+    "name": "Customer Name"
+  }
+}
+```
+
+Keep the registration token in frontend state, ask the user to select
+`customer` or `merchant`, then call `POST /api/v1/auth/ecommerce/select-role`:
+
+```json
+{
+  "registrationToken": "<registration-token>",
+  "role": "customer"
+}
+```
+
+That request returns the normal session response. The registration token is
+short-lived and is not an access or refresh token.
+
+Example callback handling in the shared React login page:
+
+```js
+useEffect(() => {
+  const callbackUrl = new URL(window.location.href);
+  const code = callbackUrl.searchParams.get('code');
+  const authError = callbackUrl.searchParams.get('error');
+
+  if (!code && !authError) return;
+
+  callbackUrl.searchParams.delete('code');
+  callbackUrl.searchParams.delete('error');
+  window.history.replaceState({}, document.title, callbackUrl.toString());
+
+  if (authError) {
+    setLoginError('Social sign-in was cancelled or could not be completed.');
+    return;
+  }
+
+  fetch(`${API_BASE}/auth/ecommerce/social/exchange`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code }),
+  })
+    .then(async (response) => {
+      const body = await response.json();
+      if (!response.ok) throw new Error(body.error?.message || 'Social sign-in failed.');
+      return body.data;
+    })
+    .then((data) => {
+      if (data.registrationRequired) {
+        setPendingSocialRegistration({
+          registrationToken: data.registrationToken,
+          email: data.email,
+          name: data.name,
+        });
+        return;
+      }
+
+      handleLogin(data);
+    })
+    .catch((error) => setLoginError(error.message));
+}, []);
+```
+
+`handleLogin(data)` should be the common session handler used by all login
+methods. It receives `accessToken`, `refreshToken`, expiry information, and
+`user`, including `user.role`. For registration, submit the selected role
+with the saved `registrationToken`; then pass the returned session to
+`handleLogin`.
+
+The callback can also contain `error=SOCIAL_AUTH_CANCELLED` if the user
+cancels provider consent. Invalid, expired, or replayed handoff codes return
+`401 INVALID_SOCIAL_AUTH_CODE`; the frontend should start the sign-in flow
+again. The callback URL contains only the one-time handoff code or a
+non-sensitive error code—never session tokens.
 
 ## Cancellation and returns
 

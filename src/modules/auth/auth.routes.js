@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {
   guestLogin,
+  exchangeSocialCode,
   login,
   logout,
   passwordLogin,
@@ -25,6 +26,7 @@ router.post('/ecommerce/verify-otp', verifyOtp);
 router.post('/ecommerce/select-role', selectRole);
 router.post('/ecommerce/password-login', passwordLogin);
 router.post('/ecommerce/guest', guestLogin);
+router.post('/ecommerce/social/exchange', exchangeSocialCode);
 router.get('/ecommerce/:provider', socialRedirect);
 router.get('/ecommerce/:provider/callback', socialCallback);
 

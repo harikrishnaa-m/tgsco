@@ -43,12 +43,30 @@ export const roleSelectionSchema = z.object({
   email: z.string().trim().email('Please provide a valid email address.').optional(),
 });
 
-export const socialLoginSchema = z.object({
-  code: z.string().trim().min(1),
-  role: z.enum(['customer', 'merchant']).optional(),
-  rememberMe: z.boolean().default(false),
-});
-
 export const socialStartSchema = z.object({
   role: z.enum(['customer', 'merchant']).optional(),
+  rememberMe: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((value) => value === 'true'),
+});
+
+export const socialCallbackSchema = z
+  .object({
+    code: z.string().trim().min(1).max(2048).optional(),
+    state: z.string().regex(/^[A-Za-z0-9_-]{43}$/),
+    error: z.string().optional(),
+  })
+  .superRefine((value, context) => {
+    if (!value.code && !value.error) {
+      context.addIssue({
+        code: 'custom',
+        path: ['code'],
+        message: 'The provider callback must include a code or an error.',
+      });
+    }
+  });
+
+export const socialExchangeSchema = z.object({
+  code: z.string().regex(/^[A-Za-z0-9_-]{43}$/),
 });

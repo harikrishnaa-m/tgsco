@@ -28,6 +28,7 @@ const envSchema = z.object({
   FACEBOOK_APP_SECRET: z.string().optional(),
   FACEBOOK_CONFIG_ID: z.string().optional(),
   FACEBOOK_REDIRECT_URI: z.string().url().optional(),
+  FRONTEND_AUTH_CALLBACK_URL: z.string().url().optional(),
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),

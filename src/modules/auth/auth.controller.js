@@ -4,14 +4,20 @@ import {
   refreshTokenSchema,
   requestOtpSchema,
   roleSelectionSchema,
-  socialLoginSchema,
+  socialCallbackSchema,
+  socialExchangeSchema,
   socialStartSchema,
   verifyOtpSchema,
 } from './auth.validation.js';
+import { AppError } from '../../errors/app-error.js';
 import {
+  beginSocialAuthorization,
   createGuestSession,
+  createSocialLoginHandoff,
   completeUserRegistration,
-  getSocialAuthorizationUrl,
+  consumeSocialOAuthState,
+  exchangeSocialLoginHandoff,
+  getFrontendSocialCallbackUrl,
   loginAdmin,
   loginUserWithPassword,
   logoutAdmin,
@@ -75,12 +81,37 @@ export async function guestLogin(req, res) {
 }
 
 export async function socialRedirect(req, res) {
-  const { role } = socialStartSchema.parse(req.query);
-  res.redirect(getSocialAuthorizationUrl(req.params.provider, role));
+  const { role, rememberMe } = socialStartSchema.parse(req.query);
+  res.redirect(await beginSocialAuthorization(req.params.provider, role, rememberMe));
 }
 
 export async function socialCallback(req, res) {
-  const data = socialLoginSchema.parse(req.query);
-  const result = await loginWithSocial(req.params.provider, data.code, data.role, data.rememberMe);
-  res.status(200).json({ success: true, data: result });
+  const data = socialCallbackSchema.parse(req.query);
+  const oauthState = await consumeSocialOAuthState(req.params.provider, data.state);
+  const callbackUrl = getFrontendSocialCallbackUrl();
+
+  if (data.error) {
+    callbackUrl.searchParams.set('error', 'SOCIAL_AUTH_CANCELLED');
+  } else {
+    if (!data.code) {
+      throw new AppError('The social provider callback did not include an authorization code.', {
+        statusCode: 400,
+        code: 'SOCIAL_AUTH_CODE_MISSING',
+      });
+    }
+    const result = await loginWithSocial(req.params.provider, data.code, oauthState.role);
+    const code = await createSocialLoginHandoff(result, oauthState.rememberMe);
+    callbackUrl.searchParams.set('code', code);
+  }
+
+  res.set('Cache-Control', 'no-store');
+  res.set('Pragma', 'no-cache');
+  res.set('Referrer-Policy', 'no-referrer');
+  res.redirect(303, callbackUrl.toString());
+}
+
+export async function exchangeSocialCode(req, res) {
+  const { code } = socialExchangeSchema.parse(req.body);
+  const data = await exchangeSocialLoginHandoff(code);
+  res.status(200).json({ success: true, data });
 }

@@ -26,6 +26,10 @@
       "value": ""
     },
     {
+      "key": "social_auth_code",
+      "value": ""
+    },
+    {
       "key": "category_id",
       "value": ""
     },
@@ -2527,6 +2531,48 @@
                 "header": [],
                 "url": "{{base_url}}/api/v1/auth/ecommerce/facebook"
               }
+            },
+            {
+              "name": "Exchange Social Sign-In Code",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/auth/ecommerce/social/exchange",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"{{social_auth_code}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "  const data = pm.response.json().data;",
+                      "  if (data.registrationRequired) {",
+                      "    pm.collectionVariables.set('registration_token', data.registrationToken);",
+                      "  } else {",
+                      "    pm.collectionVariables.set(`${data.user.role}_token`, data.accessToken);",
+                      "    pm.collectionVariables.set('refresh_token', data.refreshToken);",
+                      "  }",
+                      "  pm.collectionVariables.unset('social_auth_code');",
+                      "}"
+                    ]
+                  }
+                }
+              ]
             }
           ]
         },
@@ -3754,6 +3800,48 @@
                 "header": [],
                 "url": "{{base_url}}/api/v1/auth/ecommerce/facebook"
               }
+            },
+            {
+              "name": "Exchange Social Sign-In Code",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/auth/ecommerce/social/exchange",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"{{social_auth_code}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "  const data = pm.response.json().data;",
+                      "  if (data.registrationRequired) {",
+                      "    pm.collectionVariables.set('registration_token', data.registrationToken);",
+                      "  } else {",
+                      "    pm.collectionVariables.set(`${data.user.role}_token`, data.accessToken);",
+                      "    pm.collectionVariables.set('refresh_token', data.refreshToken);",
+                      "  }",
+                      "  pm.collectionVariables.unset('social_auth_code');",
+                      "}"
+                    ]
+                  }
+                }
+              ]
             }
           ]
         },

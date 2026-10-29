@@ -1,9 +1,11 @@
+import crypto from 'node:crypto';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 
 import app from '../src/app.js';
+import { env } from '../src/config/env.js';
 import { disconnectDatabase } from '../src/database/connect.js';
 import { ensureDefaultAdmin } from '../src/database/seed-admin.js';
 import { createUserSession } from '../src/modules/auth/auth.service.js';
@@ -14,6 +16,10 @@ import { Order } from '../src/models/order.model.js';
 import { RefundMethod } from '../src/models/refund-method.model.js';
 import { Return } from '../src/models/return.model.js';
 import { User } from '../src/models/user.model.js';
+import {
+  handleRazorpayWebhook,
+  verifyRazorpayPayment,
+} from '../src/modules/checkout/checkout.service.js';
 
 let mongoServer;
 let customer;
@@ -191,6 +197,128 @@ describe('checkout, COD refunds, and returns', () => {
       status: 'processed',
       method: 'upi',
       reference: 'UPI-TEST-123',
+    });
+  });
+
+  describe('Razorpay payment confirmation', () => {
+    it('confirms a captured payment from its webhook without frontend verification', async () => {
+      const previousWebhookSecret = env.RAZORPAY_WEBHOOK_SECRET;
+      const previousKeySecret = env.RAZORPAY_KEY_SECRET;
+      env.RAZORPAY_WEBHOOK_SECRET = 'test-razorpay-webhook-secret';
+
+      try {
+        await CatalogProduct.updateOne({ _id: product._id }, { $set: { reservedQuantity: 1 } });
+        const order = await Order.create({
+          orderNumber: `TGS-WEBHOOK-${new mongoose.Types.ObjectId()}`,
+          user: customer._id,
+          items: [
+            {
+              productId: product._id,
+              sku: product.sku,
+              name: product.name,
+              slug: product.slug,
+              quantity: 1,
+              unitPrice: 1000,
+              lineTotal: 1000,
+              currency: 'INR',
+            },
+          ],
+          shippingAddress: {
+            addressId: address._id,
+            recipientName: address.recipientName,
+            mobile: address.mobile,
+            addressLine1: address.addressLine1,
+            locality: address.locality,
+            city: address.city,
+            state: address.state,
+            postalCode: address.postalCode,
+            country: address.country,
+          },
+          billingAddress: {
+            addressId: address._id,
+            recipientName: address.recipientName,
+            mobile: address.mobile,
+            addressLine1: address.addressLine1,
+            locality: address.locality,
+            city: address.city,
+            state: address.state,
+            postalCode: address.postalCode,
+            country: address.country,
+          },
+          subtotal: 1000,
+          grandTotal: 1000,
+          currency: 'INR',
+          paymentMethod: 'razorpay',
+          orderStatus: 'pending_payment',
+          paymentStatus: 'created',
+          razorpayOrderId: 'order_webhook_without_verify',
+          reservations: [{ productId: product._id, quantity: 1, status: 'active' }],
+        });
+
+        const rawBody = Buffer.from(
+          JSON.stringify({
+            entity: 'event',
+            event: 'payment.captured',
+            payload: {
+              payment: {
+                entity: {
+                  id: 'pay_webhook_without_verify',
+                  order_id: order.razorpayOrderId,
+                  status: 'captured',
+                  amount: 100000,
+                  currency: 'INR',
+                },
+              },
+            },
+          }),
+        );
+        const signature = crypto
+          .createHmac('sha256', env.RAZORPAY_WEBHOOK_SECRET)
+          .update(rawBody)
+          .digest('hex');
+
+        await handleRazorpayWebhook(rawBody, signature);
+
+        const confirmedOrder = await Order.findById(order._id);
+        const updatedProduct = await CatalogProduct.findById(product._id);
+        expect(confirmedOrder.paymentStatus).toBe('captured');
+        expect(confirmedOrder.orderStatus).toBe('confirmed');
+        expect(confirmedOrder.razorpayPaymentId).toBe('pay_webhook_without_verify');
+        expect(confirmedOrder.reservations[0].status).toBe('consumed');
+        expect(confirmedOrder.processedWebhookEvents).toHaveLength(1);
+        expect(confirmedOrder.processedWebhookEvents[0]).toMatch(/^[a-f\d]{64}$/);
+        expect(updatedProduct.stockQuantity).toBe(4);
+        expect(updatedProduct.reservedQuantity).toBe(0);
+
+        await handleRazorpayWebhook(rawBody, signature);
+        const productAfterDuplicate = await CatalogProduct.findById(product._id);
+        expect(productAfterDuplicate.stockQuantity).toBe(4);
+        expect(productAfterDuplicate.reservedQuantity).toBe(0);
+
+        env.RAZORPAY_KEY_SECRET = 'test-razorpay-key-secret';
+        const razorpayOrderId = order.razorpayOrderId;
+        const razorpayPaymentId = 'pay_webhook_without_verify';
+        const razorpaySignature = crypto
+          .createHmac('sha256', env.RAZORPAY_KEY_SECRET)
+          .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+          .digest('hex');
+        await verifyRazorpayPayment(
+          { sub: customer._id.toString() },
+          {
+            orderId: order._id.toString(),
+            razorpayOrderId,
+            razorpayPaymentId,
+            razorpaySignature,
+          },
+        );
+
+        const orderAfterVerification = await Order.findById(order._id);
+        expect(orderAfterVerification.paymentStatus).toBe('captured');
+        expect(orderAfterVerification.orderStatus).toBe('confirmed');
+      } finally {
+        env.RAZORPAY_WEBHOOK_SECRET = previousWebhookSecret;
+        env.RAZORPAY_KEY_SECRET = previousKeySecret;
+      }
     });
   });
 

@@ -638,8 +638,10 @@ The server checks ownership, that the Razorpay order matches, and the HMAC
 SHA-256 signature over `razorpayOrderId|razorpayPaymentId`. Invalid signatures
 return `400 INVALID_PAYMENT_SIGNATURE`; a mismatch/not-owned order is
 `404 ORDER_NOT_FOUND`. Successful verification stores the payment ID and
-returns the full order with `paymentStatus: "authorized"`. The authoritative
-capture transition is still the verified Razorpay webhook.
+returns the full order. Verification is a supplementary client-side
+confirmation step; it is not required for the payment webhook to update the
+order. It can mark a `created` payment as `authorized`, but it never downgrades
+an order that is already `captured`, `failed`, or `refunded`.
 
 **Public provider endpoint:** Razorpay calls
 `POST /api/v1/checkout/payments/razorpay/webhook`; it has no bearer token.
@@ -652,15 +654,23 @@ Unknown orders are acknowledged with `received: true`.
 
 Handled customer-visible events:
 
+- `payment.authorized` stores the payment ID and marks a still-`created`
+  payment `authorized`. This does not confirm the order or consume stock.
 - `payment.captured` and `order.paid` consume reservations (decrementing
   stock), set `paymentStatus: captured`, `orderStatus: confirmed`, save the
   payment ID, and clear the cart.
 - `payment.failed` releases reservations and sets `paymentStatus: failed` and
   `orderStatus: cancelled`.
 - `refund.created`, `refund.processed`, `refund.failed`, `refund.updated`, and
-  `refund.speed_changed` update the order's refund fields.
+  `refund.speed_changed` update the order's refund fields. This is the
+  provider-side status update for Razorpay refunds initiated by cancellation,
+  return processing, or admin action. A processed full refund updates payment
+  and order status to `refunded`; a linked return is completed when its refund
+  is processed.
 
-Webhook event IDs are persisted, so duplicate deliveries are safely ignored.
+Webhook event IDs are persisted for deduplication. If a webhook payload has no
+event ID, the backend uses a SHA-256 hash of its raw body as the deduplication
+key. Duplicate deliveries are safely ignored.
 Expired `created`/`authorized` Razorpay reservations are released by the
 server's periodic job and the order becomes `failed`/`cancelled`.
 

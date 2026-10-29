@@ -421,7 +421,7 @@ export async function verifyRazorpayPayment(user, input) {
     });
   }
   order.razorpayPaymentId = input.razorpayPaymentId;
-  order.paymentStatus = 'authorized';
+  if (order.paymentStatus === 'created') order.paymentStatus = 'authorized';
   await order.save();
   return toOrderResponse(order);
 }
@@ -695,6 +695,10 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     },
     'Razorpay webhook event parsed',
   );
+  const eventKey =
+    typeof event.id === 'string' && event.id
+      ? event.id
+      : crypto.createHash('sha256').update(rawBody).digest('hex');
   const entity = event.payload?.payment?.entity || event.payload?.order?.entity;
   const refundEntity = event.payload?.refund?.entity;
   const razorpayOrderId = entity?.order_id || entity?.id;
@@ -706,7 +710,7 @@ export async function handleRazorpayWebhook(rawBody, signature) {
       {
         webhook: 'razorpay',
         stage: 'order_not_found',
-        eventId: event.id,
+        eventId: eventKey,
         eventType: event.event,
         razorpayOrderId,
         razorpayPaymentId: refundEntity?.payment_id,
@@ -716,12 +720,12 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     );
     return { received: true };
   }
-  if (order.processedWebhookEvents.includes(event.id)) {
+  if (order.processedWebhookEvents.includes(eventKey)) {
     logger.info(
       {
         webhook: 'razorpay',
         stage: 'duplicate',
-        eventId: event.id,
+        eventId: eventKey,
         eventType: event.event,
         orderId: order._id,
       },
@@ -733,7 +737,7 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     {
       webhook: 'razorpay',
       stage: 'processing',
-      eventId: event.id,
+      eventId: eventKey,
       eventType: event.event,
       orderId: order._id,
       orderNumber: order.orderNumber,
@@ -743,13 +747,17 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     },
     'Processing Razorpay webhook event',
   );
-  if (['payment.captured', 'order.paid'].includes(event.event)) {
+  if (event.event === 'payment.authorized') {
+    const payment = event.payload?.payment?.entity;
+    if (payment?.id) order.razorpayPaymentId = payment.id;
+    if (order.paymentStatus === 'created') order.paymentStatus = 'authorized';
+  } else if (['payment.captured', 'order.paid'].includes(event.event)) {
     await consumeReservations(order);
     order.paymentStatus = 'captured';
     order.orderStatus = 'confirmed';
     order.razorpayPaymentId = order.razorpayPaymentId || event.payload?.payment?.entity?.id;
     await Cart.updateOne({ user: order.user }, { $set: { items: [] } });
-  } else if (event.event === 'payment.failed') {
+  } else if (event.event === 'payment.failed' && order.paymentStatus !== 'captured') {
     await releaseReservations(order.reservations);
     order.reservations.forEach((reservation) => {
       reservation.status = 'released';
@@ -776,13 +784,13 @@ export async function handleRazorpayWebhook(rawBody, signature) {
           : 'created',
     );
   }
-  order.processedWebhookEvents.push(event.id);
+  order.processedWebhookEvents.push(eventKey);
   await order.save();
   logger.info(
     {
       webhook: 'razorpay',
       stage: 'processed',
-      eventId: event.id,
+      eventId: eventKey,
       eventType: event.event,
       orderId: order._id,
       orderNumber: order.orderNumber,

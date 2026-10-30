@@ -981,6 +981,17 @@ below active reservations with `409 NEGATIVE_AVAILABLE_STOCK`. Concurrent
 stock changes are protected with an optimistic stock check and return
 `409 INVENTORY_CONCURRENT_UPDATE` when the product changed during processing.
 
+## Admin in-app notifications
+
+Admins use the shared authenticated notification inbox at `/api/v1/notifications`
+for new orders, customer/merchant return requests and cancellations, failed or
+expired payments, failed Razorpay refunds, new contact inquiries, and
+low/out-of-stock or replenished inventory alerts. The endpoints, query
+parameters, response fields, and frontend usage are documented in the
+[Customer and Merchant E-commerce Integration](./CUSTOMER-MERCHANT-ECOMMERCE-INTEGRATION.md#in-app-notifications)
+guide because the same inbox API serves all three roles. Admin tokens are
+accepted; each admin sees only notifications addressed to that admin account.
+
 ### Authorization and response envelope
 
 Every inventory route requires an authenticated admin access token:
@@ -1008,14 +1019,14 @@ ISO-8601 strings.
 
 Optional query parameters:
 
-| Field | Type | Default | Allowed values / constraints |
-| --- | --- | --- | --- |
-| `search` | string | — | Trimmed; maximum 100 characters; searches product name, SKU, and barcode |
-| `status` | string | — | `in_stock`, `low_stock`, or `out_of_stock` |
-| `active` | string | `true` | `true`, `false`, or `all` |
-| `sort` | string | `newest` | `newest`, `oldest`, `name`, `stock-asc`, or `stock-desc` |
-| `page` | integer | `1` | Greater than zero |
-| `limit` | integer | `20` | From 1 through 100 |
+| Field    | Type    | Default  | Allowed values / constraints                                             |
+| -------- | ------- | -------- | ------------------------------------------------------------------------ |
+| `search` | string  | —        | Trimmed; maximum 100 characters; searches product name, SKU, and barcode |
+| `status` | string  | —        | `in_stock`, `low_stock`, or `out_of_stock`                               |
+| `active` | string  | `true`   | `true`, `false`, or `all`                                                |
+| `sort`   | string  | `newest` | `newest`, `oldest`, `name`, `stock-asc`, or `stock-desc`                 |
+| `page`   | integer | `1`      | Greater than zero                                                        |
+| `limit`  | integer | `20`     | From 1 through 100                                                       |
 
 `data` is a paginated inventory result:
 
@@ -1141,13 +1152,13 @@ item using the same object shape as each entry in the list response.
 
 Requires a valid product ID. Optional query parameters:
 
-| Field | Type | Default | Allowed values / constraints |
-| --- | --- | --- | --- |
-| `movementType` | string | — | One of the movement types listed by `/filters` |
-| `from` | date/time | — | Parseable date; inclusive lower bound |
-| `to` | date/time | — | Parseable date; inclusive upper bound |
-| `page` | integer | `1` | Greater than zero |
-| `limit` | integer | `20` | From 1 through 100 |
+| Field          | Type      | Default | Allowed values / constraints                   |
+| -------------- | --------- | ------- | ---------------------------------------------- |
+| `movementType` | string    | —       | One of the movement types listed by `/filters` |
+| `from`         | date/time | —       | Parseable date; inclusive lower bound          |
+| `to`           | date/time | —       | Parseable date; inclusive upper bound          |
+| `page`         | integer   | `1`     | Greater than zero                              |
+| `limit`        | integer   | `20`    | From 1 through 100                             |
 
 When both dates are supplied, `from` must be earlier than or equal to `to`.
 Returns:
@@ -1283,16 +1294,16 @@ Errors use this envelope (the `details` property is included when applicable):
 
 Inventory-specific and request-related errors:
 
-| HTTP | Code | When it occurs |
-| --- | --- | --- |
-| `400` | `INVALID_INVENTORY_FILTERS` | Invalid inventory-list query parameter |
-| `400` | `INVALID_INVENTORY_REQUEST` | Invalid product ID, movement query, or stock-change body |
-| `401` | `AUTHENTICATION_REQUIRED`, `TOKEN_EXPIRED`, or `INVALID_TOKEN` | Missing, expired, or invalid admin authentication |
-| `403` | `ADMIN_ACCESS_REQUIRED` | Authenticated account does not have the admin role |
-| `404` | `INVENTORY_PRODUCT_NOT_FOUND` | Product ID is valid but no catalogue product exists |
-| `409` | `NEGATIVE_AVAILABLE_STOCK` | Stock change would put stock below active reservations |
-| `409` | `INVENTORY_CONCURRENT_UPDATE` | Product stock changed during a stock operation; retry after refreshing |
-| `409` | `INVENTORY_ALREADY_RECONCILED` | Physical quantity equals current system stock |
+| HTTP  | Code                                                           | When it occurs                                                         |
+| ----- | -------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `400` | `INVALID_INVENTORY_FILTERS`                                    | Invalid inventory-list query parameter                                 |
+| `400` | `INVALID_INVENTORY_REQUEST`                                    | Invalid product ID, movement query, or stock-change body               |
+| `401` | `AUTHENTICATION_REQUIRED`, `TOKEN_EXPIRED`, or `INVALID_TOKEN` | Missing, expired, or invalid admin authentication                      |
+| `403` | `ADMIN_ACCESS_REQUIRED`                                        | Authenticated account does not have the admin role                     |
+| `404` | `INVENTORY_PRODUCT_NOT_FOUND`                                  | Product ID is valid but no catalogue product exists                    |
+| `409` | `NEGATIVE_AVAILABLE_STOCK`                                     | Stock change would put stock below active reservations                 |
+| `409` | `INVENTORY_CONCURRENT_UPDATE`                                  | Product stock changed during a stock operation; retry after refreshing |
+| `409` | `INVENTORY_ALREADY_RECONCILED`                                 | Physical quantity equals current system stock                          |
 
 Validation errors return `details` as an array of `{ "field", "message" }`
 entries. Authentication errors use the same response envelope as the rest of

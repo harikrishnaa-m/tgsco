@@ -6,25 +6,28 @@ import multer from 'multer';
 import { env } from '../../config/env.js';
 import { AppError } from '../../errors/app-error.js';
 
-export const homeImageUpload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    files: 20,
-  },
-  fileFilter: (req, file, callback) => {
-    if (!file.mimetype.startsWith('image/')) {
-      callback(
-        new AppError('Only image files can be uploaded for homepage content.', {
-          statusCode: 400,
-          code: 'INVALID_IMAGE_TYPE',
-        }),
-      );
-      return;
-    }
+function createImageUpload(maxFiles) {
+  return multer({
+    storage: multer.memoryStorage(),
+    limits: { files: maxFiles },
+    fileFilter: (req, file, callback) => {
+      if (!file.mimetype.startsWith('image/')) {
+        callback(
+          new AppError('Only image files can be uploaded for homepage content.', {
+            statusCode: 400,
+            code: 'INVALID_IMAGE_TYPE',
+          }),
+        );
+        return;
+      }
 
-    callback(null, true);
-  },
-});
+      callback(null, true);
+    },
+  });
+}
+
+export const homeImageUpload = createImageUpload(20);
+export const regionalMapImageUpload = createImageUpload(100);
 
 function getSpacesClient() {
   const required = [
@@ -66,26 +69,33 @@ export async function uploadHomeImages(section, files = [], folder = 'home') {
   }
 
   const client = getSpacesClient();
-  return Promise.all(
-    files.map(async (file) => {
-      const key = `${folder}/${section}/${randomUUID()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+  const uploaded = [];
+  for (let index = 0; index < files.length; index += 5) {
+    const batch = files.slice(index, index + 5);
+    uploaded.push(
+      ...(await Promise.all(
+        batch.map(async (file) => {
+          const key = `${folder}/${section}/${randomUUID()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
 
-      await client.send(
-        new PutObjectCommand({
-          Bucket: env.DO_SPACES_BUCKET,
-          Key: key,
-          Body: file.buffer,
-          ContentType: file.mimetype,
-          ACL: 'public-read',
-          CacheControl: 'public, max-age=31536000, immutable',
+          await client.send(
+            new PutObjectCommand({
+              Bucket: env.DO_SPACES_BUCKET,
+              Key: key,
+              Body: file.buffer,
+              ContentType: file.mimetype,
+              ACL: 'public-read',
+              CacheControl: 'public, max-age=31536000, immutable',
+            }),
+          );
+
+          return {
+            field: file.fieldname,
+            key,
+            url: publicUrl(key),
+          };
         }),
-      );
-
-      return {
-        field: file.fieldname,
-        key,
-        url: publicUrl(key),
-      };
-    }),
-  );
+      )),
+    );
+  }
+  return uploaded;
 }

@@ -471,8 +471,12 @@ Contact page sections use the same public-read and admin-write lifecycle under
 The regional map section stores districts in `content.regions`. Every district
 has a `regionId` made from its lowercase district name with spaces replaced by
 hyphens (for example, `bhadradri-kothagudem`), plus one or more locations. Each
-location contains its title, image URL, address, phone, email, timing, and
-directions URL. The public frontend request is:
+location requires an `id`, `title`, numeric `lat` and `lng` (latitude from -90
+to 90; longitude from -180 to 180), image URL, address, phone, email, timing,
+and directions URL. Map coordinates should identify the actual office; sample
+Postman locations are explicitly dummy district-center pins and must be
+replaced with verified branch coordinates and details before production use.
+The public frontend request is:
 
 ```text
 GET /contact-content/regional-map
@@ -494,6 +498,14 @@ GET /contact-content/regional-map/items/<slug>
 
 The Postman collection's `07 Contact Content` folder contains the screen
 content, FAQ entries, contact fields, office carousel items, and image fields.
+The Regional Map Create/Update requests include two sample offices for each
+of Telangana's 33 districts. Their placeholder images, contact information,
+addresses, and coordinates are illustrative only. Those requests use
+`multipart/form-data`: provide the `content` field plus one file for each
+`regions[i].locations[j].image` field. Regional map uploads accept up to 100
+images per request and store uploaded files in the configured DigitalOcean
+Spaces bucket. Replace sample office data and coordinates with verified
+details before production.
 
 Contact form submissions use a separate resource:
 

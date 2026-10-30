@@ -2,6 +2,7 @@ import { AppError } from '../../errors/app-error.js';
 import { CatalogProduct } from '../../models/catalog-product.model.js';
 import { InventoryMovement } from '../../models/inventory-movement.model.js';
 import { Order } from '../../models/order.model.js';
+import { notifyAdmins } from '../notifications/notifications.service.js';
 
 const statusExpression = {
   $switch: {
@@ -185,6 +186,8 @@ async function changeStock(productId, input, adminId, movementType, quantityDelt
   const product = await findProduct(productId);
   const stockBefore = product.stockQuantity;
   const reservedBefore = product.reservedQuantity || 0;
+  const threshold = product.lowStockThreshold ?? 5;
+  const availableBefore = stockBefore - reservedBefore;
   const stockAfter = stockBefore + quantityDelta;
   if (stockAfter < reservedBefore) {
     throw new AppError(
@@ -226,6 +229,47 @@ async function changeStock(productId, input, adminId, movementType, quantityDelt
     ...input,
     ...extra,
   });
+  const availableAfter = stockAfter - reservedBefore;
+  const wasLow = availableBefore > 0 && availableBefore <= threshold;
+  const isLow = availableAfter > 0 && availableAfter <= threshold;
+  if (availableAfter <= 0 && availableBefore > 0) {
+    await notifyAdmins({
+      type: 'inventory.out_of_stock',
+      title: 'Product out of stock',
+      message: `${updated.name} (${updated.sku}) is now out of stock.`,
+      data: {
+        productId: updated._id.toString(),
+        sku: updated.sku,
+        availableQuantity: availableAfter,
+      },
+      eventKey: `inventory-out:${movement._id}`,
+    });
+  } else if (isLow && !wasLow) {
+    await notifyAdmins({
+      type: 'inventory.low_stock',
+      title: 'Low stock alert',
+      message: `${updated.name} (${updated.sku}) is at or below its low-stock threshold.`,
+      data: {
+        productId: updated._id.toString(),
+        sku: updated.sku,
+        availableQuantity: availableAfter,
+        lowStockThreshold: threshold,
+      },
+      eventKey: `inventory-low:${movement._id}`,
+    });
+  } else if (availableBefore <= threshold && availableAfter > threshold) {
+    await notifyAdmins({
+      type: 'inventory.restocked',
+      title: 'Stock replenished',
+      message: `${updated.name} (${updated.sku}) is above its low-stock threshold again.`,
+      data: {
+        productId: updated._id.toString(),
+        sku: updated.sku,
+        availableQuantity: availableAfter,
+      },
+      eventKey: `inventory-restocked:${movement._id}`,
+    });
+  }
   return { inventory: formatInventory(updated), movement };
 }
 

@@ -5,6 +5,8 @@ import { sectionContentSchema } from '../home-content/home-content.validation.js
 const regionalMapLocationSchema = z.object({
   id: z.string().trim().min(1),
   title: z.string().trim().min(1),
+  lat: z.number().min(-90).max(90),
+  lng: z.number().min(-180).max(180),
   image: z.string().trim().min(1),
   address: z.string().trim().min(1),
   phone: z.string().trim().min(1),

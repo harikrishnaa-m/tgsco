@@ -10,6 +10,7 @@ import {
   reconcileRazorpayRefund,
   releaseReservations,
 } from '../checkout/checkout.service.js';
+import { notifyOrderOwner } from '../notifications/notifications.service.js';
 
 const transitions = {
   pending_payment: ['confirmed', 'cancelled'],
@@ -96,6 +97,18 @@ export async function updateOrderStatus(id, status, message, adminId) {
     by: adminId,
   });
   await order.save();
+  await notifyOrderOwner(order, {
+    type: 'order.status_changed',
+    title: 'Order status updated',
+    message: `Order ${order.orderNumber} is now ${status.replaceAll('_', ' ')}.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      orderStatus: order.orderStatus,
+      paymentStatus: order.paymentStatus,
+    },
+    eventKey: `order-status:${order._id}:${status}`,
+  });
   return order;
 }
 export async function saveShipment(id, data, adminId) {
@@ -164,6 +177,19 @@ export async function cancelAdminOrder(id, reason, refund, adminId) {
     order.refund = { ...refund, status: 'manual_pending', amount: refund.amount };
   order.timeline.push({ type: 'cancellation', message: reason, by: adminId });
   await order.save();
+  await notifyOrderOwner(order, {
+    type: 'order.cancelled',
+    title: 'Order cancelled',
+    message: `Order ${order.orderNumber} was cancelled by the store.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      orderStatus: order.orderStatus,
+      paymentStatus: order.paymentStatus,
+      refundStatus: order.refund?.status,
+    },
+    eventKey: `order-cancelled:${order._id}`,
+  });
   return order;
 }
 export async function invoiceData(id) {

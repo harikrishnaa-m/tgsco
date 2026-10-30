@@ -4674,9 +4674,9 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/contact-content/regional-map/items/hyderabad-head-office",
+                  "raw": "{{base_url}}/contact-content/regional-map/items/sample-hyderabad-office-01",
                   "host": ["{{base_url}}"],
-                  "path": ["contact-content", "regional-map", "items", "hyderabad-head-office"]
+                  "path": ["contact-content", "regional-map", "items", "sample-hyderabad-office-01"]
                 }
               }
             },
@@ -4701,30 +4701,212 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"regions[0].locations[0].image\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"regions[1].locations[0].image\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"regions[2].locations[0].image\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
-                      "type": "text"
+                      "value": "{\"eyebrow\":\"Regional Map - SAMPLE DATA ONLY\",\"regions\":[{\"regionId\":\"adilabad\",\"regionName\":\"Adilabad\",\"locations\":[{\"id\":\"sample-adilabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Adilabad\",\"lat\":19.6641,\"lng\":78.532,\"image\":\"regions[0].locations[0].image\",\"address\":\"Sample Office 1, near Adilabad, Adilabad, Telangana (dummy address)\",\"phone\":\"+91 90000 01001\",\"email\":\"sample-office-1.adilabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=19.6641,78.532\"}]},{\"regionId\":\"bhadradri-kothagudem\",\"regionName\":\"Bhadradri Kothagudem\",\"locations\":[{\"id\":\"sample-bhadradri-kothagudem-office-01\",\"title\":\"TGSCO Sample Office 1 - Bhadradri Kothagudem\",\"lat\":17.556,\"lng\":80.619,\"image\":\"regions[1].locations[0].image\",\"address\":\"Sample Office 1, near Kothagudem, Bhadradri Kothagudem, Telangana (dummy address)\",\"phone\":\"+91 90000 02001\",\"email\":\"sample-office-1.bhadradri-kothagudem@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.556,80.619\"}]},{\"regionId\":\"hanumakonda\",\"regionName\":\"Hanumakonda\",\"locations\":[{\"id\":\"sample-hanumakonda-office-01\",\"title\":\"TGSCO Sample Office 1 - Hanumakonda\",\"lat\":18.003,\"lng\":79.567,\"image\":\"regions[2].locations[0].image\",\"address\":\"Sample Office 1, near Hanumakonda, Hanumakonda, Telangana (dummy address)\",\"phone\":\"+91 90000 03001\",\"email\":\"sample-office-1.hanumakonda@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.003,79.567\"}]},{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"sample-hyderabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Hyderabad\",\"lat\":17.385,\"lng\":78.4867,\"image\":\"regions[3].locations[0].image\",\"address\":\"Sample Office 1, near Hyderabad, Hyderabad, Telangana (dummy address)\",\"phone\":\"+91 90000 04001\",\"email\":\"sample-office-1.hyderabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.385,78.4867\"}]},{\"regionId\":\"jagtial\",\"regionName\":\"Jagtial\",\"locations\":[{\"id\":\"sample-jagtial-office-01\",\"title\":\"TGSCO Sample Office 1 - Jagtial\",\"lat\":18.794,\"lng\":78.916,\"image\":\"regions[4].locations[0].image\",\"address\":\"Sample Office 1, near Jagtial, Jagtial, Telangana (dummy address)\",\"phone\":\"+91 90000 05001\",\"email\":\"sample-office-1.jagtial@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.794,78.916\"}]},{\"regionId\":\"jangaon\",\"regionName\":\"Jangaon\",\"locations\":[{\"id\":\"sample-jangaon-office-01\",\"title\":\"TGSCO Sample Office 1 - Jangaon\",\"lat\":17.726,\"lng\":79.152,\"image\":\"regions[5].locations[0].image\",\"address\":\"Sample Office 1, near Jangaon, Jangaon, Telangana (dummy address)\",\"phone\":\"+91 90000 06001\",\"email\":\"sample-office-1.jangaon@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.726,79.152\"}]},{\"regionId\":\"jayashankar-bhupalpally\",\"regionName\":\"Jayashankar Bhupalpally\",\"locations\":[{\"id\":\"sample-jayashankar-bhupalpally-office-01\",\"title\":\"TGSCO Sample Office 1 - Jayashankar Bhupalpally\",\"lat\":18.438,\"lng\":79.866,\"image\":\"regions[6].locations[0].image\",\"address\":\"Sample Office 1, near Bhupalpally, Jayashankar Bhupalpally, Telangana (dummy address)\",\"phone\":\"+91 90000 07001\",\"email\":\"sample-office-1.jayashankar-bhupalpally@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.438,79.866\"}]},{\"regionId\":\"jogulamba-gadwal\",\"regionName\":\"Jogulamba Gadwal\",\"locations\":[{\"id\":\"sample-jogulamba-gadwal-office-01\",\"title\":\"TGSCO Sample Office 1 - Jogulamba Gadwal\",\"lat\":16.23,\"lng\":77.805,\"image\":\"regions[7].locations[0].image\",\"address\":\"Sample Office 1, near Gadwal, Jogulamba Gadwal, Telangana (dummy address)\",\"phone\":\"+91 90000 08001\",\"email\":\"sample-office-1.jogulamba-gadwal@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.23,77.805\"}]},{\"regionId\":\"kamareddy\",\"regionName\":\"Kamareddy\",\"locations\":[{\"id\":\"sample-kamareddy-office-01\",\"title\":\"TGSCO Sample Office 1 - Kamareddy\",\"lat\":18.32,\"lng\":78.337,\"image\":\"regions[8].locations[0].image\",\"address\":\"Sample Office 1, near Kamareddy, Kamareddy, Telangana (dummy address)\",\"phone\":\"+91 90000 09001\",\"email\":\"sample-office-1.kamareddy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.32,78.337\"}]},{\"regionId\":\"karimnagar\",\"regionName\":\"Karimnagar\",\"locations\":[{\"id\":\"sample-karimnagar-office-01\",\"title\":\"TGSCO Sample Office 1 - Karimnagar\",\"lat\":18.438,\"lng\":79.128,\"image\":\"regions[9].locations[0].image\",\"address\":\"Sample Office 1, near Karimnagar, Karimnagar, Telangana (dummy address)\",\"phone\":\"+91 90000 10001\",\"email\":\"sample-office-1.karimnagar@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.438,79.128\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"sample-khammam-office-01\",\"title\":\"TGSCO Sample Office 1 - Khammam\",\"lat\":17.247,\"lng\":80.151,\"image\":\"regions[10].locations[0].image\",\"address\":\"Sample Office 1, near Khammam, Khammam, Telangana (dummy address)\",\"phone\":\"+91 90000 11001\",\"email\":\"sample-office-1.khammam@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.247,80.151\"}]},{\"regionId\":\"kumuram-bheem-asifabad\",\"regionName\":\"Kumuram Bheem Asifabad\",\"locations\":[{\"id\":\"sample-kumuram-bheem-asifabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Kumuram Bheem Asifabad\",\"lat\":19.358,\"lng\":79.292,\"image\":\"regions[11].locations[0].image\",\"address\":\"Sample Office 1, near Asifabad, Kumuram Bheem Asifabad, Telangana (dummy address)\",\"phone\":\"+91 90000 12001\",\"email\":\"sample-office-1.kumuram-bheem-asifabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=19.358,79.292\"}]},{\"regionId\":\"mahabubabad\",\"regionName\":\"Mahabubabad\",\"locations\":[{\"id\":\"sample-mahabubabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Mahabubabad\",\"lat\":17.597,\"lng\":80.003,\"image\":\"regions[12].locations[0].image\",\"address\":\"Sample Office 1, near Mahabubabad, Mahabubabad, Telangana (dummy address)\",\"phone\":\"+91 90000 13001\",\"email\":\"sample-office-1.mahabubabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.597,80.003\"}]},{\"regionId\":\"mahabubnagar\",\"regionName\":\"Mahabubnagar\",\"locations\":[{\"id\":\"sample-mahabubnagar-office-01\",\"title\":\"TGSCO Sample Office 1 - Mahabubnagar\",\"lat\":16.737,\"lng\":77.985,\"image\":\"regions[13].locations[0].image\",\"address\":\"Sample Office 1, near Mahabubnagar, Mahabubnagar, Telangana (dummy address)\",\"phone\":\"+91 90000 14001\",\"email\":\"sample-office-1.mahabubnagar@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.737,77.985\"}]},{\"regionId\":\"mancherial\",\"regionName\":\"Mancherial\",\"locations\":[{\"id\":\"sample-mancherial-office-01\",\"title\":\"TGSCO Sample Office 1 - Mancherial\",\"lat\":18.875,\"lng\":79.459,\"image\":\"regions[14].locations[0].image\",\"address\":\"Sample Office 1, near Mancherial, Mancherial, Telangana (dummy address)\",\"phone\":\"+91 90000 15001\",\"email\":\"sample-office-1.mancherial@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.875,79.459\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"sample-medak-office-01\",\"title\":\"TGSCO Sample Office 1 - Medak\",\"lat\":18.045,\"lng\":78.26,\"image\":\"regions[15].locations[0].image\",\"address\":\"Sample Office 1, near Medak, Medak, Telangana (dummy address)\",\"phone\":\"+91 90000 16001\",\"email\":\"sample-office-1.medak@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.045,78.26\"}]},{\"regionId\":\"medchal-malkajgiri\",\"regionName\":\"Medchal-Malkajgiri\",\"locations\":[{\"id\":\"sample-medchal-malkajgiri-office-01\",\"title\":\"TGSCO Sample Office 1 - Medchal-Malkajgiri\",\"lat\":17.5939,\"lng\":78.5742,\"image\":\"regions[16].locations[0].image\",\"address\":\"Sample Office 1, near Shamirpet, Medchal-Malkajgiri, Telangana (dummy address)\",\"phone\":\"+91 90000 17001\",\"email\":\"sample-office-1.medchal-malkajgiri@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.5939,78.5742\"}]},{\"regionId\":\"mulugu\",\"regionName\":\"Mulugu\",\"locations\":[{\"id\":\"sample-mulugu-office-01\",\"title\":\"TGSCO Sample Office 1 - Mulugu\",\"lat\":18.192,\"lng\":79.943,\"image\":\"regions[17].locations[0].image\",\"address\":\"Sample Office 1, near Mulugu, Mulugu, Telangana (dummy address)\",\"phone\":\"+91 90000 18001\",\"email\":\"sample-office-1.mulugu@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.192,79.943\"}]},{\"regionId\":\"nagarkurnool\",\"regionName\":\"Nagarkurnool\",\"locations\":[{\"id\":\"sample-nagarkurnool-office-01\",\"title\":\"TGSCO Sample Office 1 - Nagarkurnool\",\"lat\":16.483,\"lng\":78.324,\"image\":\"regions[18].locations[0].image\",\"address\":\"Sample Office 1, near Nagarkurnool, Nagarkurnool, Telangana (dummy address)\",\"phone\":\"+91 90000 19001\",\"email\":\"sample-office-1.nagarkurnool@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.483,78.324\"}]},{\"regionId\":\"nalgonda\",\"regionName\":\"Nalgonda\",\"locations\":[{\"id\":\"sample-nalgonda-office-01\",\"title\":\"TGSCO Sample Office 1 - Nalgonda\",\"lat\":17.057,\"lng\":79.269,\"image\":\"regions[19].locations[0].image\",\"address\":\"Sample Office 1, near Nalgonda, Nalgonda, Telangana (dummy address)\",\"phone\":\"+91 90000 20001\",\"email\":\"sample-office-1.nalgonda@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.057,79.269\"}]},{\"regionId\":\"narayanpet\",\"regionName\":\"Narayanpet\",\"locations\":[{\"id\":\"sample-narayanpet-office-01\",\"title\":\"TGSCO Sample Office 1 - Narayanpet\",\"lat\":16.745,\"lng\":77.495,\"image\":\"regions[20].locations[0].image\",\"address\":\"Sample Office 1, near Narayanpet, Narayanpet, Telangana (dummy address)\",\"phone\":\"+91 90000 21001\",\"email\":\"sample-office-1.narayanpet@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.745,77.495\"}]},{\"regionId\":\"nirmal\",\"regionName\":\"Nirmal\",\"locations\":[{\"id\":\"sample-nirmal-office-01\",\"title\":\"TGSCO Sample Office 1 - Nirmal\",\"lat\":19.096,\"lng\":78.344,\"image\":\"regions[21].locations[0].image\",\"address\":\"Sample Office 1, near Nirmal, Nirmal, Telangana (dummy address)\",\"phone\":\"+91 90000 22001\",\"email\":\"sample-office-1.nirmal@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=19.096,78.344\"}]},{\"regionId\":\"nizamabad\",\"regionName\":\"Nizamabad\",\"locations\":[{\"id\":\"sample-nizamabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Nizamabad\",\"lat\":18.672,\"lng\":78.094,\"image\":\"regions[22].locations[0].image\",\"address\":\"Sample Office 1, near Nizamabad, Nizamabad, Telangana (dummy address)\",\"phone\":\"+91 90000 23001\",\"email\":\"sample-office-1.nizamabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.672,78.094\"}]},{\"regionId\":\"peddapalli\",\"regionName\":\"Peddapalli\",\"locations\":[{\"id\":\"sample-peddapalli-office-01\",\"title\":\"TGSCO Sample Office 1 - Peddapalli\",\"lat\":18.613,\"lng\":79.374,\"image\":\"regions[23].locations[0].image\",\"address\":\"Sample Office 1, near Peddapalli, Peddapalli, Telangana (dummy address)\",\"phone\":\"+91 90000 24001\",\"email\":\"sample-office-1.peddapalli@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.613,79.374\"}]},{\"regionId\":\"rajanna-sircilla\",\"regionName\":\"Rajanna Sircilla\",\"locations\":[{\"id\":\"sample-rajanna-sircilla-office-01\",\"title\":\"TGSCO Sample Office 1 - Rajanna Sircilla\",\"lat\":18.388,\"lng\":78.812,\"image\":\"regions[24].locations[0].image\",\"address\":\"Sample Office 1, near Sircilla, Rajanna Sircilla, Telangana (dummy address)\",\"phone\":\"+91 90000 25001\",\"email\":\"sample-office-1.rajanna-sircilla@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.388,78.812\"}]},{\"regionId\":\"rangareddy\",\"regionName\":\"Rangareddy\",\"locations\":[{\"id\":\"sample-rangareddy-office-01\",\"title\":\"TGSCO Sample Office 1 - Rangareddy\",\"lat\":17.211,\"lng\":78.653,\"image\":\"regions[25].locations[0].image\",\"address\":\"Sample Office 1, near Ibrahimpatnam, Rangareddy, Telangana (dummy address)\",\"phone\":\"+91 90000 26001\",\"email\":\"sample-office-1.rangareddy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.211,78.653\"}]},{\"regionId\":\"sangareddy\",\"regionName\":\"Sangareddy\",\"locations\":[{\"id\":\"sample-sangareddy-office-01\",\"title\":\"TGSCO Sample Office 1 - Sangareddy\",\"lat\":17.624,\"lng\":78.088,\"image\":\"regions[26].locations[0].image\",\"address\":\"Sample Office 1, near Sangareddy, Sangareddy, Telangana (dummy address)\",\"phone\":\"+91 90000 27001\",\"email\":\"sample-office-1.sangareddy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.624,78.088\"}]},{\"regionId\":\"siddipet\",\"regionName\":\"Siddipet\",\"locations\":[{\"id\":\"sample-siddipet-office-01\",\"title\":\"TGSCO Sample Office 1 - Siddipet\",\"lat\":18.101,\"lng\":78.852,\"image\":\"regions[27].locations[0].image\",\"address\":\"Sample Office 1, near Siddipet, Siddipet, Telangana (dummy address)\",\"phone\":\"+91 90000 28001\",\"email\":\"sample-office-1.siddipet@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.101,78.852\"}]},{\"regionId\":\"suryapet\",\"regionName\":\"Suryapet\",\"locations\":[{\"id\":\"sample-suryapet-office-01\",\"title\":\"TGSCO Sample Office 1 - Suryapet\",\"lat\":17.14,\"lng\":79.623,\"image\":\"regions[28].locations[0].image\",\"address\":\"Sample Office 1, near Suryapet, Suryapet, Telangana (dummy address)\",\"phone\":\"+91 90000 29001\",\"email\":\"sample-office-1.suryapet@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.14,79.623\"}]},{\"regionId\":\"vikarabad\",\"regionName\":\"Vikarabad\",\"locations\":[{\"id\":\"sample-vikarabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Vikarabad\",\"lat\":17.338,\"lng\":77.904,\"image\":\"regions[29].locations[0].image\",\"address\":\"Sample Office 1, near Vikarabad, Vikarabad, Telangana (dummy address)\",\"phone\":\"+91 90000 30001\",\"email\":\"sample-office-1.vikarabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.338,77.904\"}]},{\"regionId\":\"wanaparthy\",\"regionName\":\"Wanaparthy\",\"locations\":[{\"id\":\"sample-wanaparthy-office-01\",\"title\":\"TGSCO Sample Office 1 - Wanaparthy\",\"lat\":16.362,\"lng\":78.062,\"image\":\"regions[30].locations[0].image\",\"address\":\"Sample Office 1, near Wanaparthy, Wanaparthy, Telangana (dummy address)\",\"phone\":\"+91 90000 31001\",\"email\":\"sample-office-1.wanaparthy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.362,78.062\"}]},{\"regionId\":\"warangal\",\"regionName\":\"Warangal\",\"locations\":[{\"id\":\"sample-warangal-office-01\",\"title\":\"TGSCO Sample Office 1 - Warangal\",\"lat\":17.978,\"lng\":79.594,\"image\":\"regions[31].locations[0].image\",\"address\":\"Sample Office 1, near Warangal, Warangal, Telangana (dummy address)\",\"phone\":\"+91 90000 32001\",\"email\":\"sample-office-1.warangal@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.978,79.594\"}]},{\"regionId\":\"yadadri-bhuvanagiri\",\"regionName\":\"Yadadri Bhuvanagiri\",\"locations\":[{\"id\":\"sample-yadadri-bhuvanagiri-office-01\",\"title\":\"TGSCO Sample Office 1 - Yadadri Bhuvanagiri\",\"lat\":17.515,\"lng\":78.885,\"image\":\"regions[32].locations[0].image\",\"address\":\"Sample Office 1, near Bhongir, Yadadri Bhuvanagiri, Telangana (dummy address)\",\"phone\":\"+91 90000 33001\",\"email\":\"sample-office-1.yadadri-bhuvanagiri@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.515,78.885\"}]}]}",
+                      "type": "text",
+                      "description": "Regional map content JSON; each image value references a matching file field below."
                     },
                     {
                       "key": "regions[0].locations[0].image",
                       "type": "file",
                       "src": null,
-                      "description": "Select the Hyderabad office image."
+                      "description": "Select image for Adilabad office."
                     },
                     {
                       "key": "regions[1].locations[0].image",
                       "type": "file",
                       "src": null,
-                      "description": "Select the Khammam office image."
+                      "description": "Select image for Bhadradri Kothagudem office."
                     },
                     {
                       "key": "regions[2].locations[0].image",
                       "type": "file",
                       "src": null,
-                      "description": "Select the Medak office image."
+                      "description": "Select image for Hanumakonda office."
+                    },
+                    {
+                      "key": "regions[3].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Hyderabad office."
+                    },
+                    {
+                      "key": "regions[4].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jagtial office."
+                    },
+                    {
+                      "key": "regions[5].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jangaon office."
+                    },
+                    {
+                      "key": "regions[6].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jayashankar Bhupalpally office."
+                    },
+                    {
+                      "key": "regions[7].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jogulamba Gadwal office."
+                    },
+                    {
+                      "key": "regions[8].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Kamareddy office."
+                    },
+                    {
+                      "key": "regions[9].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Karimnagar office."
+                    },
+                    {
+                      "key": "regions[10].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Khammam office."
+                    },
+                    {
+                      "key": "regions[11].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Kumuram Bheem Asifabad office."
+                    },
+                    {
+                      "key": "regions[12].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mahabubabad office."
+                    },
+                    {
+                      "key": "regions[13].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mahabubnagar office."
+                    },
+                    {
+                      "key": "regions[14].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mancherial office."
+                    },
+                    {
+                      "key": "regions[15].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Medak office."
+                    },
+                    {
+                      "key": "regions[16].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Medchal-Malkajgiri office."
+                    },
+                    {
+                      "key": "regions[17].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mulugu office."
+                    },
+                    {
+                      "key": "regions[18].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nagarkurnool office."
+                    },
+                    {
+                      "key": "regions[19].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nalgonda office."
+                    },
+                    {
+                      "key": "regions[20].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Narayanpet office."
+                    },
+                    {
+                      "key": "regions[21].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nirmal office."
+                    },
+                    {
+                      "key": "regions[22].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nizamabad office."
+                    },
+                    {
+                      "key": "regions[23].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Peddapalli office."
+                    },
+                    {
+                      "key": "regions[24].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Rajanna Sircilla office."
+                    },
+                    {
+                      "key": "regions[25].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Rangareddy office."
+                    },
+                    {
+                      "key": "regions[26].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Sangareddy office."
+                    },
+                    {
+                      "key": "regions[27].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Siddipet office."
+                    },
+                    {
+                      "key": "regions[28].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Suryapet office."
+                    },
+                    {
+                      "key": "regions[29].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Vikarabad office."
+                    },
+                    {
+                      "key": "regions[30].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Wanaparthy office."
+                    },
+                    {
+                      "key": "regions[31].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Warangal office."
+                    },
+                    {
+                      "key": "regions[32].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Yadadri Bhuvanagiri office."
                     }
                   ]
                 }
-              }
+              },
+              "description": "Multipart form-data upload: one sample office and one image file field for each of Telangana?s 33 districts. Sample office details and approximate district-center coordinates are illustrative; replace with verified data before production."
             },
             {
               "name": "Update Section",
@@ -4747,30 +4929,212 @@
                   "formdata": [
                     {
                       "key": "content",
-                      "value": "{\"eyebrow\":\"Regional Map\",\"regions\":[{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"loc-hyd\",\"title\":\"TGSCO Head Office, Hyderabad\",\"image\":\"regions[0].locations[0].image\",\"address\":\"Nampally, Hyderabad, Telangana 500001\",\"phone\":\"+91 40 2323 XXXX\",\"email\":\"info@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"loc-khammam\",\"title\":\"TGSCO Regional Office, Khammam\",\"image\":\"regions[1].locations[0].image\",\"address\":\"Regional Office, Khammam, Telangana 507001\",\"phone\":\"+91 40 2323 1111\",\"email\":\"khammam@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"loc-medak\",\"title\":\"TGSCO Regional Office, Medak\",\"image\":\"regions[2].locations[0].image\",\"address\":\"Main Road, Medak, Telangana 502110\",\"phone\":\"+91 40 2323 2222\",\"email\":\"medak@tgsco.telangana.gov.in\",\"timing\":\"Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://maps.google.com/...\"}]}]}",
-                      "type": "text"
+                      "value": "{\"eyebrow\":\"Regional Map - SAMPLE DATA ONLY\",\"regions\":[{\"regionId\":\"adilabad\",\"regionName\":\"Adilabad\",\"locations\":[{\"id\":\"sample-adilabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Adilabad\",\"lat\":19.6641,\"lng\":78.532,\"image\":\"regions[0].locations[0].image\",\"address\":\"Sample Office 1, near Adilabad, Adilabad, Telangana (dummy address)\",\"phone\":\"+91 90000 01001\",\"email\":\"sample-office-1.adilabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=19.6641,78.532\"}]},{\"regionId\":\"bhadradri-kothagudem\",\"regionName\":\"Bhadradri Kothagudem\",\"locations\":[{\"id\":\"sample-bhadradri-kothagudem-office-01\",\"title\":\"TGSCO Sample Office 1 - Bhadradri Kothagudem\",\"lat\":17.556,\"lng\":80.619,\"image\":\"regions[1].locations[0].image\",\"address\":\"Sample Office 1, near Kothagudem, Bhadradri Kothagudem, Telangana (dummy address)\",\"phone\":\"+91 90000 02001\",\"email\":\"sample-office-1.bhadradri-kothagudem@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.556,80.619\"}]},{\"regionId\":\"hanumakonda\",\"regionName\":\"Hanumakonda\",\"locations\":[{\"id\":\"sample-hanumakonda-office-01\",\"title\":\"TGSCO Sample Office 1 - Hanumakonda\",\"lat\":18.003,\"lng\":79.567,\"image\":\"regions[2].locations[0].image\",\"address\":\"Sample Office 1, near Hanumakonda, Hanumakonda, Telangana (dummy address)\",\"phone\":\"+91 90000 03001\",\"email\":\"sample-office-1.hanumakonda@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.003,79.567\"}]},{\"regionId\":\"hyderabad\",\"regionName\":\"Hyderabad\",\"locations\":[{\"id\":\"sample-hyderabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Hyderabad\",\"lat\":17.385,\"lng\":78.4867,\"image\":\"regions[3].locations[0].image\",\"address\":\"Sample Office 1, near Hyderabad, Hyderabad, Telangana (dummy address)\",\"phone\":\"+91 90000 04001\",\"email\":\"sample-office-1.hyderabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.385,78.4867\"}]},{\"regionId\":\"jagtial\",\"regionName\":\"Jagtial\",\"locations\":[{\"id\":\"sample-jagtial-office-01\",\"title\":\"TGSCO Sample Office 1 - Jagtial\",\"lat\":18.794,\"lng\":78.916,\"image\":\"regions[4].locations[0].image\",\"address\":\"Sample Office 1, near Jagtial, Jagtial, Telangana (dummy address)\",\"phone\":\"+91 90000 05001\",\"email\":\"sample-office-1.jagtial@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.794,78.916\"}]},{\"regionId\":\"jangaon\",\"regionName\":\"Jangaon\",\"locations\":[{\"id\":\"sample-jangaon-office-01\",\"title\":\"TGSCO Sample Office 1 - Jangaon\",\"lat\":17.726,\"lng\":79.152,\"image\":\"regions[5].locations[0].image\",\"address\":\"Sample Office 1, near Jangaon, Jangaon, Telangana (dummy address)\",\"phone\":\"+91 90000 06001\",\"email\":\"sample-office-1.jangaon@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.726,79.152\"}]},{\"regionId\":\"jayashankar-bhupalpally\",\"regionName\":\"Jayashankar Bhupalpally\",\"locations\":[{\"id\":\"sample-jayashankar-bhupalpally-office-01\",\"title\":\"TGSCO Sample Office 1 - Jayashankar Bhupalpally\",\"lat\":18.438,\"lng\":79.866,\"image\":\"regions[6].locations[0].image\",\"address\":\"Sample Office 1, near Bhupalpally, Jayashankar Bhupalpally, Telangana (dummy address)\",\"phone\":\"+91 90000 07001\",\"email\":\"sample-office-1.jayashankar-bhupalpally@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.438,79.866\"}]},{\"regionId\":\"jogulamba-gadwal\",\"regionName\":\"Jogulamba Gadwal\",\"locations\":[{\"id\":\"sample-jogulamba-gadwal-office-01\",\"title\":\"TGSCO Sample Office 1 - Jogulamba Gadwal\",\"lat\":16.23,\"lng\":77.805,\"image\":\"regions[7].locations[0].image\",\"address\":\"Sample Office 1, near Gadwal, Jogulamba Gadwal, Telangana (dummy address)\",\"phone\":\"+91 90000 08001\",\"email\":\"sample-office-1.jogulamba-gadwal@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.23,77.805\"}]},{\"regionId\":\"kamareddy\",\"regionName\":\"Kamareddy\",\"locations\":[{\"id\":\"sample-kamareddy-office-01\",\"title\":\"TGSCO Sample Office 1 - Kamareddy\",\"lat\":18.32,\"lng\":78.337,\"image\":\"regions[8].locations[0].image\",\"address\":\"Sample Office 1, near Kamareddy, Kamareddy, Telangana (dummy address)\",\"phone\":\"+91 90000 09001\",\"email\":\"sample-office-1.kamareddy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.32,78.337\"}]},{\"regionId\":\"karimnagar\",\"regionName\":\"Karimnagar\",\"locations\":[{\"id\":\"sample-karimnagar-office-01\",\"title\":\"TGSCO Sample Office 1 - Karimnagar\",\"lat\":18.438,\"lng\":79.128,\"image\":\"regions[9].locations[0].image\",\"address\":\"Sample Office 1, near Karimnagar, Karimnagar, Telangana (dummy address)\",\"phone\":\"+91 90000 10001\",\"email\":\"sample-office-1.karimnagar@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.438,79.128\"}]},{\"regionId\":\"khammam\",\"regionName\":\"Khammam\",\"locations\":[{\"id\":\"sample-khammam-office-01\",\"title\":\"TGSCO Sample Office 1 - Khammam\",\"lat\":17.247,\"lng\":80.151,\"image\":\"regions[10].locations[0].image\",\"address\":\"Sample Office 1, near Khammam, Khammam, Telangana (dummy address)\",\"phone\":\"+91 90000 11001\",\"email\":\"sample-office-1.khammam@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.247,80.151\"}]},{\"regionId\":\"kumuram-bheem-asifabad\",\"regionName\":\"Kumuram Bheem Asifabad\",\"locations\":[{\"id\":\"sample-kumuram-bheem-asifabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Kumuram Bheem Asifabad\",\"lat\":19.358,\"lng\":79.292,\"image\":\"regions[11].locations[0].image\",\"address\":\"Sample Office 1, near Asifabad, Kumuram Bheem Asifabad, Telangana (dummy address)\",\"phone\":\"+91 90000 12001\",\"email\":\"sample-office-1.kumuram-bheem-asifabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=19.358,79.292\"}]},{\"regionId\":\"mahabubabad\",\"regionName\":\"Mahabubabad\",\"locations\":[{\"id\":\"sample-mahabubabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Mahabubabad\",\"lat\":17.597,\"lng\":80.003,\"image\":\"regions[12].locations[0].image\",\"address\":\"Sample Office 1, near Mahabubabad, Mahabubabad, Telangana (dummy address)\",\"phone\":\"+91 90000 13001\",\"email\":\"sample-office-1.mahabubabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.597,80.003\"}]},{\"regionId\":\"mahabubnagar\",\"regionName\":\"Mahabubnagar\",\"locations\":[{\"id\":\"sample-mahabubnagar-office-01\",\"title\":\"TGSCO Sample Office 1 - Mahabubnagar\",\"lat\":16.737,\"lng\":77.985,\"image\":\"regions[13].locations[0].image\",\"address\":\"Sample Office 1, near Mahabubnagar, Mahabubnagar, Telangana (dummy address)\",\"phone\":\"+91 90000 14001\",\"email\":\"sample-office-1.mahabubnagar@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.737,77.985\"}]},{\"regionId\":\"mancherial\",\"regionName\":\"Mancherial\",\"locations\":[{\"id\":\"sample-mancherial-office-01\",\"title\":\"TGSCO Sample Office 1 - Mancherial\",\"lat\":18.875,\"lng\":79.459,\"image\":\"regions[14].locations[0].image\",\"address\":\"Sample Office 1, near Mancherial, Mancherial, Telangana (dummy address)\",\"phone\":\"+91 90000 15001\",\"email\":\"sample-office-1.mancherial@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.875,79.459\"}]},{\"regionId\":\"medak\",\"regionName\":\"Medak\",\"locations\":[{\"id\":\"sample-medak-office-01\",\"title\":\"TGSCO Sample Office 1 - Medak\",\"lat\":18.045,\"lng\":78.26,\"image\":\"regions[15].locations[0].image\",\"address\":\"Sample Office 1, near Medak, Medak, Telangana (dummy address)\",\"phone\":\"+91 90000 16001\",\"email\":\"sample-office-1.medak@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.045,78.26\"}]},{\"regionId\":\"medchal-malkajgiri\",\"regionName\":\"Medchal-Malkajgiri\",\"locations\":[{\"id\":\"sample-medchal-malkajgiri-office-01\",\"title\":\"TGSCO Sample Office 1 - Medchal-Malkajgiri\",\"lat\":17.5939,\"lng\":78.5742,\"image\":\"regions[16].locations[0].image\",\"address\":\"Sample Office 1, near Shamirpet, Medchal-Malkajgiri, Telangana (dummy address)\",\"phone\":\"+91 90000 17001\",\"email\":\"sample-office-1.medchal-malkajgiri@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.5939,78.5742\"}]},{\"regionId\":\"mulugu\",\"regionName\":\"Mulugu\",\"locations\":[{\"id\":\"sample-mulugu-office-01\",\"title\":\"TGSCO Sample Office 1 - Mulugu\",\"lat\":18.192,\"lng\":79.943,\"image\":\"regions[17].locations[0].image\",\"address\":\"Sample Office 1, near Mulugu, Mulugu, Telangana (dummy address)\",\"phone\":\"+91 90000 18001\",\"email\":\"sample-office-1.mulugu@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.192,79.943\"}]},{\"regionId\":\"nagarkurnool\",\"regionName\":\"Nagarkurnool\",\"locations\":[{\"id\":\"sample-nagarkurnool-office-01\",\"title\":\"TGSCO Sample Office 1 - Nagarkurnool\",\"lat\":16.483,\"lng\":78.324,\"image\":\"regions[18].locations[0].image\",\"address\":\"Sample Office 1, near Nagarkurnool, Nagarkurnool, Telangana (dummy address)\",\"phone\":\"+91 90000 19001\",\"email\":\"sample-office-1.nagarkurnool@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.483,78.324\"}]},{\"regionId\":\"nalgonda\",\"regionName\":\"Nalgonda\",\"locations\":[{\"id\":\"sample-nalgonda-office-01\",\"title\":\"TGSCO Sample Office 1 - Nalgonda\",\"lat\":17.057,\"lng\":79.269,\"image\":\"regions[19].locations[0].image\",\"address\":\"Sample Office 1, near Nalgonda, Nalgonda, Telangana (dummy address)\",\"phone\":\"+91 90000 20001\",\"email\":\"sample-office-1.nalgonda@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.057,79.269\"}]},{\"regionId\":\"narayanpet\",\"regionName\":\"Narayanpet\",\"locations\":[{\"id\":\"sample-narayanpet-office-01\",\"title\":\"TGSCO Sample Office 1 - Narayanpet\",\"lat\":16.745,\"lng\":77.495,\"image\":\"regions[20].locations[0].image\",\"address\":\"Sample Office 1, near Narayanpet, Narayanpet, Telangana (dummy address)\",\"phone\":\"+91 90000 21001\",\"email\":\"sample-office-1.narayanpet@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.745,77.495\"}]},{\"regionId\":\"nirmal\",\"regionName\":\"Nirmal\",\"locations\":[{\"id\":\"sample-nirmal-office-01\",\"title\":\"TGSCO Sample Office 1 - Nirmal\",\"lat\":19.096,\"lng\":78.344,\"image\":\"regions[21].locations[0].image\",\"address\":\"Sample Office 1, near Nirmal, Nirmal, Telangana (dummy address)\",\"phone\":\"+91 90000 22001\",\"email\":\"sample-office-1.nirmal@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=19.096,78.344\"}]},{\"regionId\":\"nizamabad\",\"regionName\":\"Nizamabad\",\"locations\":[{\"id\":\"sample-nizamabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Nizamabad\",\"lat\":18.672,\"lng\":78.094,\"image\":\"regions[22].locations[0].image\",\"address\":\"Sample Office 1, near Nizamabad, Nizamabad, Telangana (dummy address)\",\"phone\":\"+91 90000 23001\",\"email\":\"sample-office-1.nizamabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.672,78.094\"}]},{\"regionId\":\"peddapalli\",\"regionName\":\"Peddapalli\",\"locations\":[{\"id\":\"sample-peddapalli-office-01\",\"title\":\"TGSCO Sample Office 1 - Peddapalli\",\"lat\":18.613,\"lng\":79.374,\"image\":\"regions[23].locations[0].image\",\"address\":\"Sample Office 1, near Peddapalli, Peddapalli, Telangana (dummy address)\",\"phone\":\"+91 90000 24001\",\"email\":\"sample-office-1.peddapalli@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.613,79.374\"}]},{\"regionId\":\"rajanna-sircilla\",\"regionName\":\"Rajanna Sircilla\",\"locations\":[{\"id\":\"sample-rajanna-sircilla-office-01\",\"title\":\"TGSCO Sample Office 1 - Rajanna Sircilla\",\"lat\":18.388,\"lng\":78.812,\"image\":\"regions[24].locations[0].image\",\"address\":\"Sample Office 1, near Sircilla, Rajanna Sircilla, Telangana (dummy address)\",\"phone\":\"+91 90000 25001\",\"email\":\"sample-office-1.rajanna-sircilla@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.388,78.812\"}]},{\"regionId\":\"rangareddy\",\"regionName\":\"Rangareddy\",\"locations\":[{\"id\":\"sample-rangareddy-office-01\",\"title\":\"TGSCO Sample Office 1 - Rangareddy\",\"lat\":17.211,\"lng\":78.653,\"image\":\"regions[25].locations[0].image\",\"address\":\"Sample Office 1, near Ibrahimpatnam, Rangareddy, Telangana (dummy address)\",\"phone\":\"+91 90000 26001\",\"email\":\"sample-office-1.rangareddy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.211,78.653\"}]},{\"regionId\":\"sangareddy\",\"regionName\":\"Sangareddy\",\"locations\":[{\"id\":\"sample-sangareddy-office-01\",\"title\":\"TGSCO Sample Office 1 - Sangareddy\",\"lat\":17.624,\"lng\":78.088,\"image\":\"regions[26].locations[0].image\",\"address\":\"Sample Office 1, near Sangareddy, Sangareddy, Telangana (dummy address)\",\"phone\":\"+91 90000 27001\",\"email\":\"sample-office-1.sangareddy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.624,78.088\"}]},{\"regionId\":\"siddipet\",\"regionName\":\"Siddipet\",\"locations\":[{\"id\":\"sample-siddipet-office-01\",\"title\":\"TGSCO Sample Office 1 - Siddipet\",\"lat\":18.101,\"lng\":78.852,\"image\":\"regions[27].locations[0].image\",\"address\":\"Sample Office 1, near Siddipet, Siddipet, Telangana (dummy address)\",\"phone\":\"+91 90000 28001\",\"email\":\"sample-office-1.siddipet@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=18.101,78.852\"}]},{\"regionId\":\"suryapet\",\"regionName\":\"Suryapet\",\"locations\":[{\"id\":\"sample-suryapet-office-01\",\"title\":\"TGSCO Sample Office 1 - Suryapet\",\"lat\":17.14,\"lng\":79.623,\"image\":\"regions[28].locations[0].image\",\"address\":\"Sample Office 1, near Suryapet, Suryapet, Telangana (dummy address)\",\"phone\":\"+91 90000 29001\",\"email\":\"sample-office-1.suryapet@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.14,79.623\"}]},{\"regionId\":\"vikarabad\",\"regionName\":\"Vikarabad\",\"locations\":[{\"id\":\"sample-vikarabad-office-01\",\"title\":\"TGSCO Sample Office 1 - Vikarabad\",\"lat\":17.338,\"lng\":77.904,\"image\":\"regions[29].locations[0].image\",\"address\":\"Sample Office 1, near Vikarabad, Vikarabad, Telangana (dummy address)\",\"phone\":\"+91 90000 30001\",\"email\":\"sample-office-1.vikarabad@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.338,77.904\"}]},{\"regionId\":\"wanaparthy\",\"regionName\":\"Wanaparthy\",\"locations\":[{\"id\":\"sample-wanaparthy-office-01\",\"title\":\"TGSCO Sample Office 1 - Wanaparthy\",\"lat\":16.362,\"lng\":78.062,\"image\":\"regions[30].locations[0].image\",\"address\":\"Sample Office 1, near Wanaparthy, Wanaparthy, Telangana (dummy address)\",\"phone\":\"+91 90000 31001\",\"email\":\"sample-office-1.wanaparthy@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=16.362,78.062\"}]},{\"regionId\":\"warangal\",\"regionName\":\"Warangal\",\"locations\":[{\"id\":\"sample-warangal-office-01\",\"title\":\"TGSCO Sample Office 1 - Warangal\",\"lat\":17.978,\"lng\":79.594,\"image\":\"regions[31].locations[0].image\",\"address\":\"Sample Office 1, near Warangal, Warangal, Telangana (dummy address)\",\"phone\":\"+91 90000 32001\",\"email\":\"sample-office-1.warangal@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.978,79.594\"}]},{\"regionId\":\"yadadri-bhuvanagiri\",\"regionName\":\"Yadadri Bhuvanagiri\",\"locations\":[{\"id\":\"sample-yadadri-bhuvanagiri-office-01\",\"title\":\"TGSCO Sample Office 1 - Yadadri Bhuvanagiri\",\"lat\":17.515,\"lng\":78.885,\"image\":\"regions[32].locations[0].image\",\"address\":\"Sample Office 1, near Bhongir, Yadadri Bhuvanagiri, Telangana (dummy address)\",\"phone\":\"+91 90000 33001\",\"email\":\"sample-office-1.yadadri-bhuvanagiri@tgsco.example\",\"timing\":\"Sample hours: Mon-Sat, 10:00 AM - 6:00 PM\",\"directionUrl\":\"https://www.google.com/maps/search/?api=1&query=17.515,78.885\"}]}]}",
+                      "type": "text",
+                      "description": "Regional map content JSON; each image value references a matching file field below."
                     },
                     {
                       "key": "regions[0].locations[0].image",
                       "type": "file",
                       "src": null,
-                      "description": "Select the Hyderabad office image."
+                      "description": "Select image for Adilabad office."
                     },
                     {
                       "key": "regions[1].locations[0].image",
                       "type": "file",
                       "src": null,
-                      "description": "Select the Khammam office image."
+                      "description": "Select image for Bhadradri Kothagudem office."
                     },
                     {
                       "key": "regions[2].locations[0].image",
                       "type": "file",
                       "src": null,
-                      "description": "Select the Medak office image."
+                      "description": "Select image for Hanumakonda office."
+                    },
+                    {
+                      "key": "regions[3].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Hyderabad office."
+                    },
+                    {
+                      "key": "regions[4].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jagtial office."
+                    },
+                    {
+                      "key": "regions[5].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jangaon office."
+                    },
+                    {
+                      "key": "regions[6].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jayashankar Bhupalpally office."
+                    },
+                    {
+                      "key": "regions[7].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Jogulamba Gadwal office."
+                    },
+                    {
+                      "key": "regions[8].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Kamareddy office."
+                    },
+                    {
+                      "key": "regions[9].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Karimnagar office."
+                    },
+                    {
+                      "key": "regions[10].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Khammam office."
+                    },
+                    {
+                      "key": "regions[11].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Kumuram Bheem Asifabad office."
+                    },
+                    {
+                      "key": "regions[12].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mahabubabad office."
+                    },
+                    {
+                      "key": "regions[13].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mahabubnagar office."
+                    },
+                    {
+                      "key": "regions[14].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mancherial office."
+                    },
+                    {
+                      "key": "regions[15].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Medak office."
+                    },
+                    {
+                      "key": "regions[16].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Medchal-Malkajgiri office."
+                    },
+                    {
+                      "key": "regions[17].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Mulugu office."
+                    },
+                    {
+                      "key": "regions[18].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nagarkurnool office."
+                    },
+                    {
+                      "key": "regions[19].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nalgonda office."
+                    },
+                    {
+                      "key": "regions[20].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Narayanpet office."
+                    },
+                    {
+                      "key": "regions[21].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nirmal office."
+                    },
+                    {
+                      "key": "regions[22].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Nizamabad office."
+                    },
+                    {
+                      "key": "regions[23].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Peddapalli office."
+                    },
+                    {
+                      "key": "regions[24].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Rajanna Sircilla office."
+                    },
+                    {
+                      "key": "regions[25].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Rangareddy office."
+                    },
+                    {
+                      "key": "regions[26].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Sangareddy office."
+                    },
+                    {
+                      "key": "regions[27].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Siddipet office."
+                    },
+                    {
+                      "key": "regions[28].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Suryapet office."
+                    },
+                    {
+                      "key": "regions[29].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Vikarabad office."
+                    },
+                    {
+                      "key": "regions[30].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Wanaparthy office."
+                    },
+                    {
+                      "key": "regions[31].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Warangal office."
+                    },
+                    {
+                      "key": "regions[32].locations[0].image",
+                      "type": "file",
+                      "src": null,
+                      "description": "Select image for Yadadri Bhuvanagiri office."
                     }
                   ]
                 }
-              }
+              },
+              "description": "Multipart form-data upload: one sample office and one image file field for each of Telangana?s 33 districts. Sample office details and approximate district-center coordinates are illustrative; replace with verified data before production."
             },
             {
               "name": "Delete Section",

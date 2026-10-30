@@ -5,6 +5,7 @@ import { RefundMethod } from '../../models/refund-method.model.js';
 import { OrderPolicySettings } from '../../models/settings.model.js';
 import { AppError } from '../../errors/app-error.js';
 import { initiateRazorpayRefund } from '../checkout/checkout.service.js';
+import { notifyAdmins, notifyOrderOwner } from '../notifications/notifications.service.js';
 
 export const RETURN_STATUSES = [
   'requested',
@@ -250,6 +251,19 @@ export async function createReturn(user, orderId, input) {
   order.returnStatus = 'requested';
   order.timeline.push({ type: 'return', message: 'Return requested', by: user.sub });
   await order.save();
+  const notification = {
+    type: 'return.requested',
+    title: 'Return requested',
+    message: `A return was requested for order ${order.orderNumber}.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      returnId: result._id.toString(),
+      status: result.status,
+    },
+    eventKey: `return-requested:${result._id}`,
+  };
+  await Promise.all([notifyOrderOwner(order, notification), notifyAdmins(notification)]);
   return result;
 }
 const response = (item) =>
@@ -323,11 +337,24 @@ export async function cancelReturn(user, id, reason) {
   if (!item)
     throw new AppError('The return was not found.', { statusCode: 404, code: 'RETURN_NOT_FOUND' });
   transition(item, 'cancelled');
+  item.status = 'cancelled';
   item.cancelledAt = new Date();
   item.cancellationReason = reason;
   addTimeline(item, `Return cancelled by customer: ${reason}`, user.sub);
   await item.save();
-  await Order.findByIdAndUpdate(item.order, { $set: { returnStatus: 'cancelled' } });
+  const order = await Order.findByIdAndUpdate(
+    item.order,
+    { $set: { returnStatus: 'cancelled' } },
+    { new: true },
+  );
+  const notification = {
+    type: 'return.cancelled',
+    title: 'Return request cancelled',
+    message: `The return request for order ${order.orderNumber} was cancelled.`,
+    data: { orderId: order._id.toString(), returnId: item._id.toString(), status: item.status },
+    eventKey: `return-cancelled:${item._id}`,
+  };
+  await Promise.all([notifyOrderOwner(order, notification), notifyAdmins(notification)]);
   return item;
 }
 function transition(item, next) {
@@ -456,7 +483,24 @@ export async function updateReturn(id, input, adminId) {
     };
   }
   await item.save();
-  await Order.findByIdAndUpdate(item.order, { $set: { returnStatus: item.status } });
+  const updatedOrder = await Order.findByIdAndUpdate(
+    item.order,
+    { $set: { returnStatus: item.status } },
+    { new: true },
+  );
+  await notifyOrderOwner(updatedOrder, {
+    type: `return.${item.status}`,
+    title: 'Return status updated',
+    message: `Your return for order ${updatedOrder.orderNumber} is ${item.status.replaceAll('_', ' ')}.`,
+    data: {
+      orderId: updatedOrder._id.toString(),
+      orderNumber: updatedOrder.orderNumber,
+      returnId: item._id.toString(),
+      status: item.status,
+      refundStatus: item.refund?.status,
+    },
+    eventKey: `return-status:${item._id}:${item.status}`,
+  });
   return item;
 }
 export async function syncRefund(refund) {

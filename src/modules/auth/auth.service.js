@@ -10,6 +10,7 @@ import { OtpChallenge } from '../../models/otp-challenge.model.js';
 import { SocialLoginHandoff } from '../../models/social-login-handoff.model.js';
 import { SocialOAuthState } from '../../models/social-oauth-state.model.js';
 import { User } from '../../models/user.model.js';
+import { notifyUser } from '../notifications/notifications.service.js';
 
 const socialOAuthStateTtlMs = 10 * 60 * 1000;
 const socialHandoffCodeTtlMs = 2 * 60 * 1000;
@@ -232,6 +233,13 @@ export async function completeUserRegistration({ registrationToken, role, email 
         name: payload.name,
         isVerified: true,
       });
+      await notifyUser(user._id, user.role, {
+        type: 'account.created',
+        title: 'Account created',
+        message: 'Your TGSCO account is ready to use.',
+        data: { userId: user._id.toString(), role: user.role },
+        eventKey: `account-created:${user._id}`,
+      });
       return createUserSession(user);
     }
     throw new AppError('The registration session is invalid.', {
@@ -274,6 +282,13 @@ export async function completeUserRegistration({ registrationToken, role, email 
     name: challenge.name,
     passwordHash: challenge.passwordHash,
     isVerified: true,
+  });
+  await notifyUser(user._id, user.role, {
+    type: 'account.created',
+    title: 'Account created',
+    message: 'Your TGSCO account is ready to use.',
+    data: { userId: user._id.toString(), role: user.role },
+    eventKey: `account-created:${user._id}`,
   });
   challenge.role = role;
   await challenge.save();

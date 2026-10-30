@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { AppError } from '../../errors/app-error.js';
 import { RefreshToken } from '../../models/refresh-token.model.js';
 import { User } from '../../models/user.model.js';
+import { notifyUser } from '../notifications/notifications.service.js';
 
 const profileFields = 'email mobile name role isVerified createdAt updatedAt';
 
@@ -89,6 +90,7 @@ export async function updateProfile(user, input) {
 
   const email = input.email?.toLowerCase();
   await assertUniqueContact(account._id, email, input.mobile);
+  const updatedFields = ['email', 'mobile', 'name'].filter((field) => input[field] !== undefined);
   if (email !== undefined) account.email = email;
   if (input.mobile !== undefined) account.mobile = input.mobile;
   if (input.name !== undefined) account.name = input.name;
@@ -108,6 +110,13 @@ export async function updateProfile(user, input) {
     }
     throw error;
   }
+  await notifyUser(account._id, account.role, {
+    type: 'account.profile_updated',
+    title: 'Profile updated',
+    message: 'Your account profile details were updated.',
+    data: { updatedFields },
+    eventKey: `profile-updated:${account._id}:${account.updatedAt.toISOString()}`,
+  });
   return formatProfile(account);
 }
 
@@ -117,6 +126,13 @@ export async function updatePassword(user, input) {
   account.passwordHash = await bcrypt.hash(input.newPassword, 12);
   await account.save();
   await RefreshToken.deleteMany({ user: account._id });
+  await notifyUser(account._id, account.role, {
+    type: 'account.password_changed',
+    title: 'Password changed',
+    message: 'Your account password was changed. If you did not do this, contact support.',
+    data: {},
+    eventKey: `password-changed:${account._id}:${account.updatedAt.toISOString()}`,
+  });
   return {
     message: 'Password updated successfully. Please sign in again on other devices.',
     profile: formatProfile(account),

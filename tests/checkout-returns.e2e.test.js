@@ -13,6 +13,7 @@ import { Address } from '../src/models/address.model.js';
 import { Cart } from '../src/models/cart.model.js';
 import { CatalogProduct } from '../src/models/catalog-product.model.js';
 import { Order } from '../src/models/order.model.js';
+import { Notification } from '../src/models/notification.model.js';
 import { RefundMethod } from '../src/models/refund-method.model.js';
 import { Return } from '../src/models/return.model.js';
 import { User } from '../src/models/user.model.js';
@@ -131,11 +132,29 @@ describe('checkout, COD refunds, and returns', () => {
     expect(order.paymentMethod).toBe('cod');
     expect(order.orderStatus).toBe('confirmed');
     expect((await CatalogProduct.findById(product._id)).reservedQuantity).toBe(1);
+    expect(
+      await Notification.exists({
+        recipient: customer._id,
+        eventKey: `order-created:${order._id}`,
+      }),
+    ).toBeTruthy();
+    expect(
+      await Notification.exists({
+        recipientRole: 'admin',
+        eventKey: `order-created:${order._id}`,
+      }),
+    ).toBeTruthy();
 
     await moveOrderToDelivered(order._id);
     const deliveredCodOrder = await Order.findById(order._id);
     expect(deliveredCodOrder.orderStatus).toBe('delivered');
     expect(deliveredCodOrder.paymentStatus).toBe('captured');
+    expect(
+      await Notification.exists({
+        recipient: customer._id,
+        eventKey: `order-status:${order._id}:delivered`,
+      }),
+    ).toBeTruthy();
 
     const methodResponse = await request(app)
       .post('/api/v1/refund-methods')
@@ -163,6 +182,18 @@ describe('checkout, COD refunds, and returns', () => {
     expect(returnResponse.body.data.refundMethod.method).toBe('upi');
 
     const returnId = returnResponse.body.data._id;
+    expect(
+      await Notification.exists({
+        recipient: customer._id,
+        eventKey: `return-requested:${returnId}`,
+      }),
+    ).toBeTruthy();
+    expect(
+      await Notification.exists({
+        recipientRole: 'admin',
+        eventKey: `return-requested:${returnId}`,
+      }),
+    ).toBeTruthy();
     for (const status of [
       'approved',
       'pickup_pending',
@@ -351,5 +382,42 @@ describe('checkout, COD refunds, and returns', () => {
     expect(cancelResponse.status).toBe(200);
     expect(cancelResponse.body.data.orderStatus).toBe('cancelled');
     expect((await CatalogProduct.findById(product._id)).reservedQuantity).toBe(0);
+  });
+
+  it('persists cancelled status when a customer cancels a return request', async () => {
+    const order = await createCodOrder();
+    await moveOrderToDelivered(order._id);
+
+    const methodResponse = await request(app)
+      .post('/api/v1/refund-methods')
+      .set('Authorization', `Bearer ${customerToken}`)
+      .send({
+        method: 'upi',
+        upiId: 'testcustomer@upi',
+        confirmUpiId: 'testcustomer@upi',
+      });
+    expect(methodResponse.status).toBe(201);
+
+    const returnResponse = await request(app)
+      .post(`/api/v1/orders/${order._id}/returns`)
+      .set('Authorization', `Bearer ${customerToken}`)
+      .send({
+        items: [{ productId: product._id.toString(), quantity: 1 }],
+        reason: 'damaged',
+        pickupAddressId: address._id.toString(),
+        refundMethodId: methodResponse.body.data._id,
+      });
+    expect(returnResponse.status).toBe(201);
+
+    const cancellationResponse = await request(app)
+      .post(`/api/v1/returns/${returnResponse.body.data._id}/cancel`)
+      .set('Authorization', `Bearer ${customerToken}`)
+      .send({ reason: 'Customer cancellation request' });
+    const storedReturn = await Return.findById(returnResponse.body.data._id);
+
+    expect(cancellationResponse.status).toBe(200);
+    expect(cancellationResponse.body.data.status).toBe('cancelled');
+    expect(storedReturn.status).toBe('cancelled');
+    expect(storedReturn.cancelledAt).toBeTruthy();
   });
 });

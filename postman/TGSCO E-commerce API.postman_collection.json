@@ -136,6 +136,10 @@
     {
       "key": "inventory_product_id",
       "value": ""
+    },
+    {
+      "key": "notification_id",
+      "value": ""
     }
   ],
   "item": [
@@ -2351,6 +2355,126 @@
               }
             }
           ]
+        },
+        {
+          "name": "Notifications",
+          "description": "Persistent in-app notification inbox. Each role sees only notifications addressed to its own account.",
+          "item": [
+            {
+              "name": "List notifications",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications?status=all&page=1&limit=20",
+                "description": "Optional filters: status=all|unread|read, type=<exact type>, page, limit (1-100)."
+              }
+            },
+            {
+              "name": "Get unread notification count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/unread-count",
+                "description": "Returns { data: { unread } } for the authenticated account."
+              }
+            },
+            {
+              "name": "Mark notification as read",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/{{notification_id}}/read",
+                "description": "Marks this account-owned notification read."
+              }
+            },
+            {
+              "name": "Mark all notifications as read",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/read-all",
+                "description": "Marks every unread notification for this account as read."
+              }
+            },
+            {
+              "name": "Delete notification",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/{{notification_id}}",
+                "description": "Deletes this account-owned notification."
+              }
+            },
+            {
+              "name": "Delete all read notifications",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/read",
+                "description": "Deletes read notifications for this account only."
+              }
+            }
+          ]
         }
       ]
     },
@@ -3620,6 +3744,126 @@
               }
             }
           ]
+        },
+        {
+          "name": "Notifications",
+          "description": "Persistent in-app notification inbox. Each role sees only notifications addressed to its own account.",
+          "item": [
+            {
+              "name": "List notifications",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications?status=all&page=1&limit=20",
+                "description": "Optional filters: status=all|unread|read, type=<exact type>, page, limit (1-100)."
+              }
+            },
+            {
+              "name": "Get unread notification count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/unread-count",
+                "description": "Returns { data: { unread } } for the authenticated account."
+              }
+            },
+            {
+              "name": "Mark notification as read",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/{{notification_id}}/read",
+                "description": "Marks this account-owned notification read."
+              }
+            },
+            {
+              "name": "Mark all notifications as read",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/read-all",
+                "description": "Marks every unread notification for this account as read."
+              }
+            },
+            {
+              "name": "Delete notification",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/{{notification_id}}",
+                "description": "Deletes this account-owned notification."
+              }
+            },
+            {
+              "name": "Delete all read notifications",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/read",
+                "description": "Deletes read notifications for this account only."
+              }
+            }
+          ]
         }
       ]
     },
@@ -4886,6 +5130,126 @@
                     }
                   }
                 }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Notifications",
+          "description": "Persistent in-app notification inbox. Each role sees only notifications addressed to its own account.",
+          "item": [
+            {
+              "name": "List notifications",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications?status=all&page=1&limit=20",
+                "description": "Optional filters: status=all|unread|read, type=<exact type>, page, limit (1-100)."
+              }
+            },
+            {
+              "name": "Get unread notification count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/unread-count",
+                "description": "Returns { data: { unread } } for the authenticated account."
+              }
+            },
+            {
+              "name": "Mark notification as read",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/{{notification_id}}/read",
+                "description": "Marks this account-owned notification read."
+              }
+            },
+            {
+              "name": "Mark all notifications as read",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/read-all",
+                "description": "Marks every unread notification for this account as read."
+              }
+            },
+            {
+              "name": "Delete notification",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/{{notification_id}}",
+                "description": "Deletes this account-owned notification."
+              }
+            },
+            {
+              "name": "Delete all read notifications",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{merchant_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/notifications/read",
+                "description": "Deletes read notifications for this account only."
               }
             }
           ]

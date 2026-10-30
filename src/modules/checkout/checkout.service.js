@@ -14,6 +14,7 @@ import {
 } from '../../models/settings.model.js';
 import { AppError } from '../../errors/app-error.js';
 import { getMerchantBulkTier, getUnitPrice } from '../catalog/catalog-pricing.js';
+import { notifyAdmins, notifyOrderOwner } from '../notifications/notifications.service.js';
 
 function snapshotAddress(address) {
   const value = address.toObject ? address.toObject() : address;
@@ -379,27 +380,52 @@ export async function createOrder(user, input, idempotencyKey) {
         : undefined,
     reservations,
   });
+  let payment;
   try {
     await order.save();
     if (input.paymentMethod === 'cod') {
       await Cart.updateOne({ user: user.sub }, { $set: { items: [] } });
-      return toOrderResponse(order);
+    } else {
+      const razorpayOrder = await createRazorpayOrder(order);
+      order.razorpayOrderId = razorpayOrder.id;
+      await order.save();
+      await Cart.updateOne({ user: user.sub }, { $set: { items: [] } });
+      payment = {
+        keyId: env.RAZORPAY_KEY_ID,
+        orderId: razorpayOrder.id,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+      };
     }
-    const razorpayOrder = await createRazorpayOrder(order);
-    order.razorpayOrderId = razorpayOrder.id;
-    await order.save();
-    await Cart.updateOne({ user: user.sub }, { $set: { items: [] } });
-    return toOrderResponse(order, {
-      keyId: env.RAZORPAY_KEY_ID,
-      orderId: razorpayOrder.id,
-      amount: razorpayOrder.amount,
-      currency: razorpayOrder.currency,
-    });
   } catch (error) {
     await releaseReservations(reservations);
     await Order.deleteOne({ _id: order._id });
     throw error;
   }
+
+  const notification = {
+    type: 'order.created',
+    title: 'Order placed',
+    message: `Order ${order.orderNumber} has been placed successfully.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      orderStatus: order.orderStatus,
+      paymentStatus: order.paymentStatus,
+      grandTotal: order.grandTotal,
+      currency: order.currency,
+    },
+    eventKey: `order-created:${order._id}`,
+  };
+  await Promise.all([
+    notifyOrderOwner(order, notification),
+    notifyAdmins({
+      ...notification,
+      title: 'New order received',
+      message: `New order ${order.orderNumber} was placed.`,
+    }),
+  ]);
+  return toOrderResponse(order, payment);
 }
 
 export async function verifyRazorpayPayment(user, input) {
@@ -421,8 +447,18 @@ export async function verifyRazorpayPayment(user, input) {
     });
   }
   order.razorpayPaymentId = input.razorpayPaymentId;
-  if (order.paymentStatus === 'created') order.paymentStatus = 'authorized';
+  const paymentAuthorized = order.paymentStatus === 'created';
+  if (paymentAuthorized) order.paymentStatus = 'authorized';
   await order.save();
+  if (paymentAuthorized) {
+    await notifyOrderOwner(order, {
+      type: 'payment.authorized',
+      title: 'Payment authorized',
+      message: `Payment for order ${order.orderNumber} is being confirmed.`,
+      data: { orderId: order._id.toString(), orderNumber: order.orderNumber },
+      eventKey: `payment-authorized:${order._id}`,
+    });
+  }
   return toOrderResponse(order);
 }
 
@@ -576,6 +612,19 @@ export async function initiateRazorpayRefund(order, input, idempotencyKey) {
   latest.notes = input.notes || {};
   latest.idempotencyKey = idempotencyKey;
   await order.save();
+  await notifyOrderOwner(order, {
+    type: 'payment.refund_updated',
+    title: 'Refund initiated',
+    message: `A refund for order ${order.orderNumber} has been initiated.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      refundId: latest.refundId,
+      amount: latest.amount,
+      status: latest.status,
+    },
+    eventKey: `refund-initiated:${latest.refundId || idempotencyKey}`,
+  });
   return latest;
 }
 
@@ -621,7 +670,21 @@ export async function reconcileRazorpayRefund(order, refundId) {
   }
   await updateRefundFromProvider(order, entity, entity.status || local.status);
   await order.save();
-  return order.refunds.find((refund) => refund.refundId === refundId);
+  const refund = order.refunds.find((item) => item.refundId === refundId);
+  await notifyOrderOwner(order, {
+    type: `payment.refund_${refund.status}`,
+    title: 'Refund status updated',
+    message: `The refund for order ${order.orderNumber} is ${refund.status}.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      refundId,
+      amount: refund.amount,
+      status: refund.status,
+    },
+    eventKey: `refund-status:${refundId}:${refund.status}`,
+  });
+  return refund;
 }
 
 export async function handleRazorpayWebhook(rawBody, signature) {
@@ -747,6 +810,7 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     },
     'Processing Razorpay webhook event',
   );
+  const previousPaymentStatus = order.paymentStatus;
   if (event.event === 'payment.authorized') {
     const payment = event.payload?.payment?.entity;
     if (payment?.id) order.razorpayPaymentId = payment.id;
@@ -757,7 +821,10 @@ export async function handleRazorpayWebhook(rawBody, signature) {
     order.orderStatus = 'confirmed';
     order.razorpayPaymentId = order.razorpayPaymentId || event.payload?.payment?.entity?.id;
     await Cart.updateOne({ user: order.user }, { $set: { items: [] } });
-  } else if (event.event === 'payment.failed' && order.paymentStatus !== 'captured') {
+  } else if (
+    event.event === 'payment.failed' &&
+    !['captured', 'refunded'].includes(order.paymentStatus)
+  ) {
     await releaseReservations(order.reservations);
     order.reservations.forEach((reservation) => {
       reservation.status = 'released';
@@ -786,6 +853,88 @@ export async function handleRazorpayWebhook(rawBody, signature) {
   }
   order.processedWebhookEvents.push(eventKey);
   await order.save();
+  if (event.event === 'payment.authorized' && previousPaymentStatus === 'created') {
+    await notifyOrderOwner(order, {
+      type: 'payment.authorized',
+      title: 'Payment authorized',
+      message: `Payment for order ${order.orderNumber} is being confirmed.`,
+      data: { orderId: order._id.toString(), orderNumber: order.orderNumber },
+      eventKey: `payment-authorized:${order._id}`,
+    });
+  } else if (
+    ['payment.captured', 'order.paid'].includes(event.event) &&
+    previousPaymentStatus !== 'captured'
+  ) {
+    const notification = {
+      type: 'payment.captured',
+      title: 'Payment successful',
+      message: `Payment for order ${order.orderNumber} was successful.`,
+      data: {
+        orderId: order._id.toString(),
+        orderNumber: order.orderNumber,
+        paymentStatus: order.paymentStatus,
+        orderStatus: order.orderStatus,
+      },
+      eventKey: `payment-captured:${order._id}`,
+    };
+    await notifyOrderOwner(order, notification);
+  } else if (
+    event.event === 'payment.failed' &&
+    order.paymentStatus === 'failed' &&
+    previousPaymentStatus !== 'failed'
+  ) {
+    const notification = {
+      type: 'payment.failed',
+      title: 'Payment failed',
+      message: `Payment for order ${order.orderNumber} failed. You can try placing the order again.`,
+      data: { orderId: order._id.toString(), orderNumber: order.orderNumber },
+      eventKey: `payment-failed:${order._id}`,
+    };
+    await Promise.all([notifyOrderOwner(order, notification), notifyAdmins(notification)]);
+  }
+  if (
+    refundEntity &&
+    [
+      'refund.created',
+      'refund.processed',
+      'refund.failed',
+      'refund.updated',
+      'refund.speed_changed',
+    ].includes(event.event)
+  ) {
+    const refund = order.refunds.find((item) => item.refundId === refundEntity.id);
+    if (refund) {
+      const notification = {
+        type: `payment.refund_${refund.status}`,
+        title: refund.status === 'failed' ? 'Refund failed' : 'Refund status updated',
+        message: `The refund for order ${order.orderNumber} is ${refund.status}.`,
+        data: {
+          orderId: order._id.toString(),
+          orderNumber: order.orderNumber,
+          refundId: refund.refundId,
+          amount: refund.amount,
+          status: refund.status,
+        },
+        eventKey: `refund-status:${refund.refundId}:${refund.status}`,
+      };
+      await notifyOrderOwner(order, notification);
+      if (refund.status === 'failed') await notifyAdmins(notification);
+      if (refund.returnId && ['processed', 'refunded'].includes(refund.status)) {
+        await notifyOrderOwner(order, {
+          type: 'return.completed',
+          title: 'Return completed',
+          message: `The refund for your return on order ${order.orderNumber} has been processed.`,
+          data: {
+            orderId: order._id.toString(),
+            orderNumber: order.orderNumber,
+            returnId: refund.returnId.toString(),
+            refundId: refund.refundId,
+          },
+          eventKey: `return-completed:${refund.returnId}`,
+        });
+      }
+    }
+  }
   logger.info(
     {
       webhook: 'razorpay',
@@ -818,6 +967,14 @@ export async function releaseExpiredReservations() {
     order.paymentStatus = 'failed';
     order.orderStatus = 'cancelled';
     await order.save();
+    const notification = {
+      type: 'payment.failed',
+      title: 'Payment attempt expired',
+      message: `Payment for order ${order.orderNumber} was not completed in time.`,
+      data: { orderId: order._id.toString(), orderNumber: order.orderNumber },
+      eventKey: `payment-failed:${order._id}`,
+    };
+    await Promise.all([notifyOrderOwner(order, notification), notifyAdmins(notification)]);
   }
   return expiredOrders.length;
 }
@@ -874,5 +1031,19 @@ export async function cancelOrder(user, orderId, reason) {
     by: user.sub,
   });
   await order.save();
+  const notification = {
+    type: 'order.cancelled',
+    title: 'Order cancelled',
+    message: `Order ${order.orderNumber} was cancelled.`,
+    data: {
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      orderStatus: order.orderStatus,
+      paymentStatus: order.paymentStatus,
+      refundStatus: order.refund?.status,
+    },
+    eventKey: `order-cancelled:${order._id}`,
+  };
+  await Promise.all([notifyOrderOwner(order, notification), notifyAdmins(notification)]);
   return order;
 }

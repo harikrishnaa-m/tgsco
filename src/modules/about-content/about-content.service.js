@@ -1,13 +1,17 @@
 import { AppError } from '../../errors/app-error.js';
 import { AboutSection } from '../../models/about-section.model.js';
-import { uploadHomeImages } from '../home-content/home-content.upload.js';
+import {
+  latestImagesByField,
+  replaceImagesByField,
+  uploadHomeImages,
+} from '../home-content/home-content.upload.js';
 
 function serializeSection(section) {
   return {
     id: section._id.toString(),
     section: section.section,
     content: section.content,
-    images: section.images,
+    images: latestImagesByField(section.images),
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
   };
@@ -33,13 +37,16 @@ export async function getAboutSection(sectionName) {
 
 export async function saveAboutSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files, 'about');
+  const currentSection =
+    !isCreate && images.length
+      ? await AboutSection.findOne({ section: sectionName }).select('images').lean()
+      : null;
+  const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
     ? await AboutSection.create({ section: sectionName, content, images })
     : await AboutSection.findOneAndUpdate(
         { section: sectionName },
-        images.length
-          ? { $set: { content }, $push: { images: { $each: images } } }
-          : { $set: { content } },
+        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
         { new: true, runValidators: true },
       );
 

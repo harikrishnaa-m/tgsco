@@ -1,13 +1,17 @@
 import { AppError } from '../../errors/app-error.js';
 import { NewsSection } from '../../models/news-section.model.js';
-import { uploadHomeImages } from '../home-content/home-content.upload.js';
+import {
+  latestImagesByField,
+  replaceImagesByField,
+  uploadHomeImages,
+} from '../home-content/home-content.upload.js';
 
 function serializeSection(section) {
   return {
     id: section._id.toString(),
     section: section.section,
     content: section.content,
-    images: section.images,
+    images: latestImagesByField(section.images),
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
   };
@@ -44,13 +48,16 @@ export async function getNewsItem(sectionName, slug) {
 
 export async function saveNewsSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files, 'news-events');
+  const currentSection =
+    !isCreate && images.length
+      ? await NewsSection.findOne({ section: sectionName }).select('images').lean()
+      : null;
+  const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
     ? await NewsSection.create({ section: sectionName, content, images })
     : await NewsSection.findOneAndUpdate(
         { section: sectionName },
-        images.length
-          ? { $set: { content }, $push: { images: { $each: images } } }
-          : { $set: { content } },
+        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
         { new: true, runValidators: true },
       );
   if (!section) {

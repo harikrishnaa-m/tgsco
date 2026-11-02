@@ -29,6 +29,24 @@ function createImageUpload(maxFiles) {
 export const homeImageUpload = createImageUpload(20);
 export const regionalMapImageUpload = createImageUpload(100);
 
+export function latestImagesByField(images = []) {
+  const latestImages = new Map();
+  for (const image of images) {
+    latestImages.set(image.field, image);
+  }
+
+  return [...latestImages.values()];
+}
+
+export function replaceImagesByField(existingImages = [], uploadedImages = []) {
+  const latestUploads = latestImagesByField(uploadedImages);
+  const replacedFields = new Set(latestUploads.map((image) => image.field));
+  return [
+    ...latestImagesByField(existingImages).filter((image) => !replacedFields.has(image.field)),
+    ...latestUploads,
+  ];
+}
+
 function getSpacesClient() {
   const required = [
     env.DO_SPACES_ENDPOINT,

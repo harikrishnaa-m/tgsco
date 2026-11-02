@@ -324,6 +324,11 @@ used directly by the frontend. Existing objects uploaded before this setting
 was enabled must be re-uploaded or have their permissions changed in the
 DigitalOcean Spaces console.
 
+On `PATCH`, uploaded image records replace existing records with the same
+form-data field name; images for fields not uploaded in that request are kept.
+Responses return only the latest image record for each field, so older duplicate
+records are not exposed.
+
 The `techniques` section requires two images for each item: one `mainImage`
 and one `borderImage`. Use indexed form-data file fields such as
 `items[0].mainImage` and `items[0].borderImage`. The

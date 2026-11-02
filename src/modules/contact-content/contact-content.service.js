@@ -1,13 +1,17 @@
 import { AppError } from '../../errors/app-error.js';
 import { ContactSection } from '../../models/contact-section.model.js';
-import { uploadHomeImages } from '../home-content/home-content.upload.js';
+import {
+  latestImagesByField,
+  replaceImagesByField,
+  uploadHomeImages,
+} from '../home-content/home-content.upload.js';
 
 function serializeSection(section) {
   return {
     id: section._id.toString(),
     section: section.section,
     content: section.content,
-    images: section.images,
+    images: latestImagesByField(section.images),
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
   };
@@ -72,6 +76,11 @@ export async function getContactItem(sectionName, slug) {
 
 export async function saveContactSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files, 'contact');
+  const currentSection =
+    images.length && (!isCreate || sectionName === 'regional-map')
+      ? await ContactSection.findOne({ section: sectionName }).select('images').lean()
+      : null;
+  const updatedImages = replaceImagesByField(currentSection?.images, images);
   const savedContent =
     sectionName === 'regional-map' ? applyUploadedImages(content, images) : content;
   const section =
@@ -82,8 +91,7 @@ export async function saveContactSection(sectionName, content, files, isCreate) 
             { section: sectionName },
             images.length
               ? {
-                  $set: { content: savedContent },
-                  $push: { images: { $each: images } },
+                  $set: { content: savedContent, images: updatedImages },
                   $setOnInsert: { section: sectionName },
                 }
               : { $set: { content: savedContent }, $setOnInsert: { section: sectionName } },
@@ -92,7 +100,7 @@ export async function saveContactSection(sectionName, content, files, isCreate) 
         : await ContactSection.findOneAndUpdate(
             { section: sectionName },
             images.length
-              ? { $set: { content: savedContent }, $push: { images: { $each: images } } }
+              ? { $set: { content: savedContent, images: updatedImages } }
               : { $set: { content: savedContent } },
             { new: true, runValidators: true },
           );

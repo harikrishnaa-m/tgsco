@@ -108,6 +108,7 @@ describe('Homepage section content', () => {
       section: 'chronicles-of-thread',
       content,
       images: [
+        { field: 'leftImage', url: 'https://cdn.example.com/old-left.jpg', key: 'old-left.jpg' },
         { field: 'leftImage', url: 'https://cdn.example.com/left.jpg', key: 'left.jpg' },
         { field: 'rightImage', url: 'https://cdn.example.com/right.jpg', key: 'right.jpg' },
       ],

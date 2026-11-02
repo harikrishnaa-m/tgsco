@@ -1,13 +1,17 @@
 import { AppError } from '../../errors/app-error.js';
 import { SchemeSection } from '../../models/scheme-section.model.js';
-import { uploadHomeImages } from '../home-content/home-content.upload.js';
+import {
+  latestImagesByField,
+  replaceImagesByField,
+  uploadHomeImages,
+} from '../home-content/home-content.upload.js';
 
 function serializeSection(section) {
   return {
     id: section._id.toString(),
     section: section.section,
     content: section.content,
-    images: section.images,
+    images: latestImagesByField(section.images),
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
   };
@@ -49,13 +53,16 @@ export async function getSchemeItem(sectionName, slug) {
 
 export async function saveSchemeSection(sectionName, content, files, isCreate) {
   const images = await uploadHomeImages(sectionName, files, 'schemes');
+  const currentSection =
+    !isCreate && images.length
+      ? await SchemeSection.findOne({ section: sectionName }).select('images').lean()
+      : null;
+  const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
     ? await SchemeSection.create({ section: sectionName, content, images })
     : await SchemeSection.findOneAndUpdate(
         { section: sectionName },
-        images.length
-          ? { $set: { content }, $push: { images: { $each: images } } }
-          : { $set: { content } },
+        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
         { new: true, runValidators: true },
       );
 

@@ -481,6 +481,132 @@
           ]
         },
         {
+          "name": "The Chronicles of Thread",
+          "description": "Homepage legacy section: exact screenshot copy with two uploaded images. The public response maps image URLs by field name.",
+          "item": [
+            {
+              "name": "Public Get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/home-content/chronicles-of-thread",
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "chronicles-of-thread"]
+                },
+                "description": "Publicly fetches the Chronicles of Thread section, including the two uploaded image URLs."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"eyebrow\": \"THE CHRONICLES OF THREAD\",\n  \"title\": \"A Legacy Woven Through Centuries\",\n  \"paragraphs\": [\n    \"Long before it was a state, Telangana was a land of looms. Its weaving tradition traces back to the Kakatiya dynasty, whose patronage turned humble villages into centers of textile excellence. Later, under the Qutb Shahis and the Asaf Jahis, Telangana's weavers absorbed Persian and Deccan influences, blending them with indigenous techniques to create some of India's most distinct weaves.\",\n    \"Every region of Telangana speaks its own textile dialect: the double ikat of Pochampally, the zari-bordered elegance of Gadwal, the fine cotton-silk blend of Narayanpet. These are not just products. They are the living memory of a land shaped by empires, artisans, and time.\"\n  ],\n  \"statistic\": {\n    \"value\": \"56+\",\n    \"label\": \"Years of Weaving Legacy\"\n  },\n  \"cta\": {\n    \"label\": \"EXPLORE THE COLLECTION\",\n    \"url\": \"/collections\"\n  },\n  \"closingQuote\": \"This is not TGSCO's story alone, it is Telangana's story, told one thread at a time.\",\n  \"leftImageAlt\": \"Telangana artisan weaving on a traditional handloom\",\n  \"rightImageAlt\": \"Colorful handwoven Telangana fabric with a zari border\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "leftImage",
+                      "type": "file",
+                      "src": null,
+                      "description": "Choose the artisan-at-the-loom photo shown on the left side of the design."
+                    },
+                    {
+                      "key": "rightImage",
+                      "type": "file",
+                      "src": null,
+                      "description": "Choose the colorful handwoven textile photo shown on the right side of the design."
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/chronicles-of-thread",
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "chronicles-of-thread"]
+                },
+                "description": "Admin-only. Submit the exact section content and attach both leftImage and rightImage files."
+              },
+              "response": [],
+              "description": " Paste the public video URL returned by 08 Video Media into content.videoUrl."
+            },
+            {
+              "name": "Update Section",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "content",
+                      "value": "{\n  \"eyebrow\": \"THE CHRONICLES OF THREAD\",\n  \"title\": \"A Legacy Woven Through Centuries\",\n  \"paragraphs\": [\n    \"Long before it was a state, Telangana was a land of looms. Its weaving tradition traces back to the Kakatiya dynasty, whose patronage turned humble villages into centers of textile excellence. Later, under the Qutb Shahis and the Asaf Jahis, Telangana's weavers absorbed Persian and Deccan influences, blending them with indigenous techniques to create some of India's most distinct weaves.\",\n    \"Every region of Telangana speaks its own textile dialect: the double ikat of Pochampally, the zari-bordered elegance of Gadwal, the fine cotton-silk blend of Narayanpet. These are not just products. They are the living memory of a land shaped by empires, artisans, and time.\"\n  ],\n  \"statistic\": {\n    \"value\": \"56+\",\n    \"label\": \"Years of Weaving Legacy\"\n  },\n  \"cta\": {\n    \"label\": \"EXPLORE THE COLLECTION\",\n    \"url\": \"/collections\"\n  },\n  \"closingQuote\": \"This is not TGSCO's story alone, it is Telangana's story, told one thread at a time.\",\n  \"leftImageAlt\": \"Telangana artisan weaving on a traditional handloom\",\n  \"rightImageAlt\": \"Colorful handwoven Telangana fabric with a zari border\"\n}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "leftImage",
+                      "type": "file",
+                      "src": null,
+                      "description": "Choose the artisan-at-the-loom photo shown on the left side of the design."
+                    },
+                    {
+                      "key": "rightImage",
+                      "type": "file",
+                      "src": null,
+                      "description": "Choose the colorful handwoven textile photo shown on the right side of the design."
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/home-content/chronicles-of-thread",
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "chronicles-of-thread"]
+                },
+                "description": "Admin-only. Submit the exact section content; attach both images to replace them or omit both to keep the current images."
+              },
+              "response": [],
+              "description": " Paste the public video URL returned by 08 Video Media into content.videoUrl."
+            },
+            {
+              "name": "Delete Section",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/home-content/chronicles-of-thread",
+                  "host": ["{{base_url}}"],
+                  "path": ["home-content", "chronicles-of-thread"]
+                },
+                "description": "Admin-only. Deletes the Chronicles of Thread homepage section."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
           "name": "One State, A Thousand Techniques",
           "description": "Manage the One State, A Thousand Techniques homepage section at /home-content/techniques.",
           "item": [

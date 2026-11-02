@@ -52,9 +52,11 @@ export async function saveHomeSection(sectionName, content, files, isCreate) {
     ? await HomeSection.create({ section: sectionName, content, images })
     : await HomeSection.findOneAndUpdate(
         { section: sectionName },
-        images.length
-          ? { $set: { content }, $push: { images: { $each: images } } }
-          : { $set: { content } },
+        images.length && sectionName === 'chronicles-of-thread'
+          ? { $set: { content, images } }
+          : images.length
+            ? { $set: { content }, $push: { images: { $each: images } } }
+            : { $set: { content } },
         { new: true, runValidators: true },
       );
 

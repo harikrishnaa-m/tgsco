@@ -1,5 +1,9 @@
 import { AppError } from '../../errors/app-error.js';
-import { sectionContentSchema, validatePairedSectionImages } from './home-content.validation.js';
+import {
+  chroniclesSectionContentSchema,
+  sectionContentSchema,
+  validatePairedSectionImages,
+} from './home-content.validation.js';
 import {
   createHomeSection,
   deleteHomeSection,
@@ -14,7 +18,7 @@ export async function listSections(req, res) {
   res.status(200).json({ success: true, data });
 }
 
-function parseContent(req) {
+function parseContent(req, section) {
   const rawContent = req.body.content || req.body.data;
   let content = rawContent;
 
@@ -29,7 +33,9 @@ function parseContent(req) {
     }
   }
 
-  return sectionContentSchema.parse(content);
+  const schema =
+    section === 'chronicles-of-thread' ? chroniclesSectionContentSchema : sectionContentSchema;
+  return schema.parse(content);
 }
 
 export function sectionController(section) {
@@ -45,14 +51,14 @@ export function sectionController(section) {
     },
 
     async create(req, res) {
-      const content = parseContent(req);
+      const content = parseContent(req, section);
       validatePairedSectionImages(section, content, req.files, true);
       const data = await createHomeSection(section, content, req.files);
       res.status(201).json({ success: true, data });
     },
 
     async update(req, res) {
-      const content = parseContent(req);
+      const content = parseContent(req, section);
       validatePairedSectionImages(section, content, req.files, false);
       const data = await updateHomeSection(section, content, req.files);
       res.status(200).json({ success: true, data });
@@ -69,6 +75,10 @@ export function sectionController(section) {
 }
 
 export async function createSection(req, res) {
-  const data = await createHomeSection(req.params.section, parseContent(req), req.files);
+  const data = await createHomeSection(
+    req.params.section,
+    parseContent(req, req.params.section),
+    req.files,
+  );
   res.status(201).json({ success: true, data });
 }

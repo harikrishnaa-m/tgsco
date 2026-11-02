@@ -5,10 +5,70 @@ export const sectionContentSchema = z
   .record(z.string(), z.unknown())
   .refine((value) => Object.keys(value).length > 0, 'Please provide section content.');
 
+const requiredText = z.string().trim().min(1);
+
+export const chroniclesSectionContentSchema = z
+  .object({
+    eyebrow: requiredText,
+    title: requiredText,
+    paragraphs: z.array(requiredText).length(2),
+    statistic: z
+      .object({
+        value: requiredText,
+        label: requiredText,
+      })
+      .passthrough(),
+    cta: z
+      .object({
+        label: requiredText,
+        url: requiredText,
+      })
+      .passthrough(),
+    closingQuote: requiredText,
+    leftImageAlt: requiredText,
+    rightImageAlt: requiredText,
+  })
+  .passthrough();
+
 const PAIRED_IMAGE_SECTIONS = new Set(['techniques']);
 const MAIN_IMAGE_SECTIONS = new Set(['featured-collections']);
+const CHRONICLES_IMAGE_FIELDS = new Set(['leftImage', 'rightImage']);
 
 export function validatePairedSectionImages(section, content, files, requireImages) {
+  files ??= [];
+
+  if (section === 'chronicles-of-thread') {
+    if (!requireImages && files.length === 0) {
+      return;
+    }
+
+    const receivedFields = files.map((file) => file.fieldname);
+    const duplicateFields = receivedFields.filter(
+      (field, index) => receivedFields.indexOf(field) !== index,
+    );
+    const invalidFields = receivedFields.filter((field) => !CHRONICLES_IMAGE_FIELDS.has(field));
+    const missingFields = [...CHRONICLES_IMAGE_FIELDS].filter(
+      (field) => !receivedFields.includes(field),
+    );
+
+    if (duplicateFields.length || invalidFields.length || missingFields.length) {
+      throw new AppError(
+        'The Chronicles of Thread section requires exactly one leftImage and one rightImage file.',
+        {
+          statusCode: 400,
+          code: 'SECTION_IMAGES_REQUIRED',
+          details: {
+            missingFields,
+            invalidFields,
+            duplicateFields,
+          },
+        },
+      );
+    }
+
+    return;
+  }
+
   if (
     (!PAIRED_IMAGE_SECTIONS.has(section) && !MAIN_IMAGE_SECTIONS.has(section)) ||
     (!requireImages && files.length === 0)

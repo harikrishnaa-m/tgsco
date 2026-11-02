@@ -292,7 +292,7 @@ under multiple categories such as Weddings, Cotton, and Pochampally.
 ## Homepage content
 
 Each homepage section has its own public and admin endpoints. The supported
-section paths are `hero`, `our-story`, `techniques`, `journey`, `makers`,
+section paths are `hero`, `our-story`, `chronicles-of-thread`, `techniques`, `journey`, `makers`,
 `why-choose-us`, `featured-collections`, `government-initiatives`, `blog`,
 `news-events`, and `footer`.
 
@@ -331,6 +331,38 @@ and one `borderImage`. Use indexed form-data file fields such as
 optional. The JSON `content.items` array and uploaded image fields must use
 matching indexes. The techniques section may also include a separate
 `backgroundImage` file.
+
+The `chronicles-of-thread` section is a separate story feature from `our-story`.
+Its JSON content contains an `eyebrow`, `title`, exactly two `paragraphs`, a
+`statistic` (`value` and `label`), a `cta` (`label` and `url`), a `closingQuote`,
+and `leftImageAlt` / `rightImageAlt`. Attach image files as `leftImage` and
+`rightImage` on create; updates may omit both files to retain the current images,
+or replace both together. The public response returns these URLs in
+`data.images`, with each entry's `field` identifying which side it belongs to.
+For example, the frontend can map the `leftImage` and `rightImage` URLs from
+`data.images` while rendering the matching alt text from `data.content`:
+
+```json
+{
+  "data": {
+    "section": "chronicles-of-thread",
+    "content": {
+      "eyebrow": "THE CHRONICLES OF THREAD",
+      "title": "A Legacy Woven Through Centuries",
+      "paragraphs": ["First paragraph.", "Second paragraph."],
+      "statistic": { "value": "56+", "label": "Years of Weaving Legacy" },
+      "cta": { "label": "EXPLORE THE COLLECTION", "url": "/collections" },
+      "closingQuote": "This is not TGSCO's story alone, it is Telangana's story, told one thread at a time.",
+      "leftImageAlt": "Telangana artisan weaving on a traditional handloom",
+      "rightImageAlt": "Colorful handwoven Telangana fabric with a zari border"
+    },
+    "images": [
+      { "field": "leftImage", "url": "https://cdn.example.com/left.jpg" },
+      { "field": "rightImage", "url": "https://cdn.example.com/right.jpg" }
+    ]
+  }
+}
+```
 
 `GET /home-content` remains available to return all stored sections for page
 bootstrap requests.

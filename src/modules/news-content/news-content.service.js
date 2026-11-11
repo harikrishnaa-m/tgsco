@@ -5,6 +5,7 @@ import {
   replaceImagesByField,
   uploadHomeImages,
 } from '../home-content/home-content.upload.js';
+import { mergePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 function serializeSection(section) {
   return {
@@ -47,17 +48,26 @@ export async function getNewsItem(sectionName, slug) {
 }
 
 export async function saveNewsSection(sectionName, content, files, isCreate) {
+  const currentSection = !isCreate
+    ? await NewsSection.findOne({ section: sectionName }).select('content images').lean()
+    : null;
+  if (!isCreate && !currentSection) {
+    throw new AppError(`The news and events section "${sectionName}" was not found.`, {
+      statusCode: 404,
+      code: 'NEWS_SECTION_NOT_FOUND',
+    });
+  }
+
+  const savedContent = isCreate ? content : mergePortfolioContent(currentSection.content, content);
   const images = await uploadHomeImages(sectionName, files, 'news-events');
-  const currentSection =
-    !isCreate && images.length
-      ? await NewsSection.findOne({ section: sectionName }).select('images').lean()
-      : null;
   const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
-    ? await NewsSection.create({ section: sectionName, content, images })
+    ? await NewsSection.create({ section: sectionName, content: savedContent, images })
     : await NewsSection.findOneAndUpdate(
         { section: sectionName },
-        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
+        images.length
+          ? { $set: { content: savedContent, images: updatedImages } }
+          : { $set: { content: savedContent } },
         { new: true, runValidators: true },
       );
   if (!section) {

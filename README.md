@@ -305,9 +305,8 @@ For every section, the following endpoints are available:
 | `PATCH`  | `/home-content/<section>` | Admin  |
 | `DELETE` | `/home-content/<section>` | Admin  |
 
-Create or update a section with `multipart/form-data`. Send the JSON section
-data in a `content` field and attach one or more image files using any field
-names:
+Create a section with `multipart/form-data`. Send the JSON section data in a
+`content` field and attach one or more image files using any field names:
 
 ```text
 content: {"title":"Preserving Heritage","buttonText":"Shop Now"}
@@ -324,10 +323,20 @@ used directly by the frontend. Existing objects uploaded before this setting
 was enabled must be re-uploaded or have their permissions changed in the
 DigitalOcean Spaces console.
 
+`PATCH` accepts either a raw JSON section object (or a `content`/`data` wrapper)
+or `multipart/form-data` with JSON in a `content` or `data` field. Only supplied
+fields are updated; omitted fields remain unchanged, including omitted nested
+object fields. Arrays supplied in a patch replace that array.
+
 On `PATCH`, uploaded image records replace existing records with the same
 form-data field name; images for fields not uploaded in that request are kept.
+Images may be replaced individually without resending the other image files.
 Responses return only the latest image record for each field, so older duplicate
 records are not exposed.
+
+The same partial-update and image-preservation behavior applies to sections
+under `/about-content`, `/heritage-content`, `/news-content`, `/scheme-content`,
+and `/contact-content`.
 
 The `techniques` section requires two images for each item: one `mainImage`
 and one `borderImage`. Use indexed form-data file fields such as
@@ -341,8 +350,8 @@ The `chronicles-of-thread` section is a separate story feature from `our-story`.
 Its JSON content contains an `eyebrow`, `title`, exactly two `paragraphs`, a
 `statistic` (`value` and `label`), a `cta` (`label` and `url`), a `closingQuote`,
 and `leftImageAlt` / `rightImageAlt`. Attach image files as `leftImage` and
-`rightImage` on create; updates may omit both files to retain the current images,
-or replace both together. The public response returns these URLs in
+`rightImage` on create. Updates may omit either or both files to retain the
+current images, or replace either image independently. The public response returns these URLs in
 `data.images`, with each entry's `field` identifying which side it belongs to.
 For example, the frontend can map the `leftImage` and `rightImage` URLs from
 `data.images` while rendering the matching alt text from `data.content`:
@@ -604,10 +613,11 @@ About page sections use the same public-read and admin-write lifecycle under
 /about-content/purpose
 ```
 
-Each section supports `GET`, `POST`, `PATCH`, and `DELETE`. Create and update
-requests use `multipart/form-data`, with section JSON in `content` and image
-files in their corresponding form-data fields. The complete prefilled payloads
-are available in the `03 About Content` workflow in the Postman collection.
+Each section supports `GET`, `POST`, `PATCH`, and `DELETE`. Create requests use
+`multipart/form-data`, with section JSON in `content` and image files in their
+corresponding form-data fields. PATCH accepts raw JSON or multipart form data
+and preserves omitted fields and images. The complete prefilled payloads are
+available in the `03 About Content` workflow in the Postman collection.
 
 Login returns a JWT access token valid for 24 hours and a rotating refresh
 token valid for 30 days. Refresh tokens are stored as SHA-256 hashes and are

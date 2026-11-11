@@ -5,6 +5,8 @@ import {
   replaceImagesByField,
   uploadHomeImages,
 } from './home-content.upload.js';
+import { validatePairedSectionImages } from './home-content.validation.js';
+import { mergePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 function serializeSection(section) {
   return {
@@ -51,17 +53,28 @@ export async function getHomeItem(sectionName, slug) {
 }
 
 export async function saveHomeSection(sectionName, content, files, isCreate) {
+  const currentSection = !isCreate
+    ? await HomeSection.findOne({ section: sectionName }).select('content images').lean()
+    : null;
+  if (!isCreate && !currentSection) {
+    throw new AppError(`The homepage section "${sectionName}" was not found.`, {
+      statusCode: 404,
+      code: 'HOME_SECTION_NOT_FOUND',
+    });
+  }
+
+  const savedContent = isCreate ? content : mergePortfolioContent(currentSection.content, content);
+  if (!isCreate) validatePairedSectionImages(sectionName, savedContent, files, false);
+
   const images = await uploadHomeImages(sectionName, files);
-  const currentSection =
-    !isCreate && images.length
-      ? await HomeSection.findOne({ section: sectionName }).select('images').lean()
-      : null;
   const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
-    ? await HomeSection.create({ section: sectionName, content, images })
+    ? await HomeSection.create({ section: sectionName, content: savedContent, images })
     : await HomeSection.findOneAndUpdate(
         { section: sectionName },
-        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
+        images.length
+          ? { $set: { content: savedContent, images: updatedImages } }
+          : { $set: { content: savedContent } },
         { new: true, runValidators: true },
       );
 

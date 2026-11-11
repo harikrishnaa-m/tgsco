@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { AppError } from '../../errors/app-error.js';
-import { sectionContentSchema } from '../home-content/home-content.validation.js';
+import {
+  sectionContentPatchSchema,
+  sectionContentSchema,
+} from '../home-content/home-content.validation.js';
 
 const regionalMapLocationSchema = z.object({
   id: z.string().trim().min(1),
@@ -29,11 +32,16 @@ const regionalMapContentSchema = z.object({
   regions: z.array(regionalMapRegionSchema).min(1),
 });
 
-export function parseContactSectionContent(section, content) {
-  const parsed =
+export function parseContactSectionContent(section, content, partial = false) {
+  const schema =
     section === 'regional-map'
-      ? regionalMapContentSchema.safeParse(content)
-      : sectionContentSchema.safeParse(content);
+      ? partial
+        ? regionalMapContentSchema.partial()
+        : regionalMapContentSchema
+      : partial
+        ? sectionContentPatchSchema
+        : sectionContentSchema;
+  const parsed = schema.safeParse(content);
 
   if (!parsed.success) {
     throw new AppError('The contact section content is invalid.', {

@@ -4,8 +4,26 @@ import {
   latestImagesByField,
   replaceImagesByField,
 } from '../src/modules/home-content/home-content.upload.js';
+import { validatePairedSectionImages } from '../src/modules/home-content/home-content.validation.js';
 
 describe('content image record updates', () => {
+  it('allows replacing one image field in a partial section update', () => {
+    expect(() =>
+      validatePairedSectionImages(
+        'techniques',
+        { items: [{ name: 'Ikat', mainImage: 'old-main.jpg', borderImage: 'old-border.jpg' }] },
+        [{ fieldname: 'items[0].mainImage' }],
+        false,
+      ),
+    ).not.toThrow();
+  });
+
+  it('allows replacing one Chronicles image in a partial section update', () => {
+    expect(() =>
+      validatePairedSectionImages('chronicles-of-thread', {}, [{ fieldname: 'leftImage' }], false),
+    ).not.toThrow();
+  });
+
   it('keeps only the latest record per field when serializing', () => {
     const images = latestImagesByField([
       { field: 'cards[0].image', url: 'old-card-0.jpg' },

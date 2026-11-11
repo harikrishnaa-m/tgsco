@@ -1,6 +1,14 @@
 import { z } from 'zod';
 
 const objectIdSchema = z.string().regex(/^[a-f\d]{24}$/i, 'Please provide valid category IDs.');
+const slugSchema = z.preprocess(
+  (value) => (value === '' ? undefined : value),
+  z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .optional(),
+);
 const productImageSchema = z.object({
   url: z.string().trim().min(1),
   alt: z.string().trim().optional(),
@@ -14,10 +22,7 @@ const bulkPriceSchema = z.object({
 
 export const categorySchema = z.object({
   name: z.string().trim().min(1),
-  slug: z
-    .string()
-    .trim()
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  slug: slugSchema,
   type: z
     .string()
     .trim()
@@ -37,10 +42,7 @@ export const categoryQuerySchema = z.object({
 
 export const groupSchema = z.object({
   name: z.string().trim().min(1),
-  slug: z
-    .string()
-    .trim()
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  slug: slugSchema,
   description: z.string().trim().optional(),
   image: z.string().trim().optional(),
   active: z.boolean().optional(),
@@ -50,10 +52,7 @@ export const groupSchema = z.object({
 export const productSchema = z
   .object({
     name: z.string().trim().min(1),
-    slug: z
-      .string()
-      .trim()
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    slug: slugSchema,
     sku: z.string().trim().min(1),
     categoryIds: z.array(objectIdSchema).min(1).optional(),
     categorySlug: z.string().trim().min(1).optional(),

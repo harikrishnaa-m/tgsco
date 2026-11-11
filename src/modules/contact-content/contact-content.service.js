@@ -5,6 +5,8 @@ import {
   replaceImagesByField,
   uploadHomeImages,
 } from '../home-content/home-content.upload.js';
+import { mergePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
+import { parseContactSectionContent } from './contact-content.validation.js';
 
 function serializeSection(section) {
   return {
@@ -21,7 +23,10 @@ function setNestedValue(target, path, value) {
   const parts = path.replace(/\[(\d+)\]/g, '.$1').split('.');
   let current = target;
 
-  for (const part of parts.slice(0, -1)) {
+  for (const [index, part] of parts.slice(0, -1).entries()) {
+    if (current[part] === undefined || current[part] === null) {
+      current[part] = /^\d+$/.test(parts[index + 1]) ? [] : {};
+    }
     current = current[part];
   }
 
@@ -75,33 +80,43 @@ export async function getContactItem(sectionName, slug) {
 }
 
 export async function saveContactSection(sectionName, content, files, isCreate) {
-  const images = await uploadHomeImages(sectionName, files, 'contact');
   const currentSection =
-    images.length && (!isCreate || sectionName === 'regional-map')
-      ? await ContactSection.findOne({ section: sectionName }).select('images').lean()
+    !isCreate || sectionName === 'regional-map'
+      ? await ContactSection.findOne({ section: sectionName }).select('content images').lean()
       : null;
+  if (!isCreate && sectionName !== 'regional-map' && !currentSection) {
+    throw new AppError(`The contact section "${sectionName}" was not found.`, {
+      statusCode: 404,
+      code: 'CONTACT_SECTION_NOT_FOUND',
+    });
+  }
+
+  const mergedContent =
+    !isCreate && currentSection ? mergePortfolioContent(currentSection.content, content) : content;
+  const images = await uploadHomeImages(sectionName, files, 'contact');
   const updatedImages = replaceImagesByField(currentSection?.images, images);
   const savedContent =
-    sectionName === 'regional-map' ? applyUploadedImages(content, images) : content;
+    sectionName === 'regional-map' ? applyUploadedImages(mergedContent, images) : mergedContent;
+  const validatedContent = parseContactSectionContent(sectionName, savedContent);
   const section =
     isCreate && sectionName !== 'regional-map'
-      ? await ContactSection.create({ section: sectionName, content: savedContent, images })
+      ? await ContactSection.create({ section: sectionName, content: validatedContent, images })
       : sectionName === 'regional-map'
         ? await ContactSection.findOneAndUpdate(
             { section: sectionName },
             images.length
               ? {
-                  $set: { content: savedContent, images: updatedImages },
+                  $set: { content: validatedContent, images: updatedImages },
                   $setOnInsert: { section: sectionName },
                 }
-              : { $set: { content: savedContent }, $setOnInsert: { section: sectionName } },
+              : { $set: { content: validatedContent }, $setOnInsert: { section: sectionName } },
             { new: true, upsert: true, runValidators: true },
           )
         : await ContactSection.findOneAndUpdate(
             { section: sectionName },
             images.length
-              ? { $set: { content: savedContent, images: updatedImages } }
-              : { $set: { content: savedContent } },
+              ? { $set: { content: validatedContent, images: updatedImages } }
+              : { $set: { content: validatedContent } },
             { new: true, runValidators: true },
           );
 

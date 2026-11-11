@@ -6,6 +6,33 @@ import { CatalogGroup } from '../../models/catalog-group.model.js';
 import { CatalogProduct } from '../../models/catalog-product.model.js';
 import { uploadHomeImages } from '../home-content/home-content.upload.js';
 
+function slugify(value) {
+  return (
+    value
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'item'
+  );
+}
+
+async function resolveSlug(Model, content, id, existing) {
+  if (content.slug) return content.slug;
+
+  const current = existing || (id ? await Model.findById(id).select('name slug').lean() : null);
+  if (current?.name === content.name) return current.slug;
+
+  const baseSlug = slugify(content.name);
+  let slug = baseSlug;
+  let suffix = 2;
+  while (await Model.exists({ slug, ...(id ? { _id: { $ne: id } } : {}) })) {
+    slug = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+  return slug;
+}
+
 function parseContent(req) {
   const raw = req.body.content || req.body.data;
   if (!raw) {
@@ -139,6 +166,7 @@ export async function saveCategory(content, files = [], id) {
   const images = await uploadHomeImages('categories', files, 'catalog');
   const image = images.find((item) => item.field === 'image');
   const { groupId, ...categoryContent } = content;
+  categoryContent.slug = await resolveSlug(CatalogCategory, categoryContent, id);
   if (groupId) {
     const group = await CatalogGroup.findOne({ _id: groupId, active: true }).lean();
     if (!group) {
@@ -184,7 +212,11 @@ export async function listAdminGroups() {
 export async function saveGroup(content, files = [], id) {
   const images = await uploadHomeImages('catalog-groups', files, 'catalog');
   const image = images.find((item) => item.field === 'image');
-  const savedContent = image ? { ...content, image: image.url } : content;
+  const savedContent = {
+    ...content,
+    slug: await resolveSlug(CatalogGroup, content, id),
+    ...(image ? { image: image.url } : {}),
+  };
   return id
     ? CatalogGroup.findByIdAndUpdate(id, savedContent, { new: true, runValidators: true }).lean()
     : CatalogGroup.create(savedContent);
@@ -365,6 +397,7 @@ export async function saveProduct(content, files, id) {
   const images = await uploadHomeImages('products', files || [], 'catalog');
   const savedContent = applyImages(content, images);
   const existingProduct = id ? await CatalogProduct.findById(id).lean() : null;
+  savedContent.slug = await resolveSlug(CatalogProduct, savedContent, id, existingProduct);
   let categories;
   if (savedContent.categoryIds?.length) {
     categories = await CatalogCategory.find({

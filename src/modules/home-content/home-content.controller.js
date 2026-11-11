@@ -1,6 +1,7 @@
-import { AppError } from '../../errors/app-error.js';
 import {
+  chroniclesSectionPatchSchema,
   chroniclesSectionContentSchema,
+  sectionContentPatchSchema,
   sectionContentSchema,
   validatePairedSectionImages,
 } from './home-content.validation.js';
@@ -12,29 +13,23 @@ import {
   listHomeSections,
   updateHomeSection,
 } from './home-content.service.js';
+import { parsePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 export async function listSections(req, res) {
   const data = await listHomeSections();
   res.status(200).json({ success: true, data });
 }
 
-function parseContent(req, section) {
-  const rawContent = req.body.content || req.body.data;
-  let content = rawContent;
-
-  if (typeof rawContent === 'string') {
-    try {
-      content = JSON.parse(rawContent);
-    } catch {
-      throw new AppError('The content field must contain valid JSON.', {
-        statusCode: 400,
-        code: 'INVALID_CONTENT_JSON',
-      });
-    }
-  }
-
+function parseContent(req, section, partial = false) {
+  const content = parsePortfolioContent(req);
   const schema =
-    section === 'chronicles-of-thread' ? chroniclesSectionContentSchema : sectionContentSchema;
+    section === 'chronicles-of-thread'
+      ? partial
+        ? chroniclesSectionPatchSchema
+        : chroniclesSectionContentSchema
+      : partial
+        ? sectionContentPatchSchema
+        : sectionContentSchema;
   return schema.parse(content);
 }
 
@@ -58,8 +53,7 @@ export function sectionController(section) {
     },
 
     async update(req, res) {
-      const content = parseContent(req, section);
-      validatePairedSectionImages(section, content, req.files, false);
+      const content = parseContent(req, section, true);
       const data = await updateHomeSection(section, content, req.files);
       res.status(200).json({ success: true, data });
     },

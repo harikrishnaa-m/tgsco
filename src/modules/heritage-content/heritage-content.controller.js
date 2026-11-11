@@ -1,5 +1,8 @@
-import { AppError } from '../../errors/app-error.js';
-import { sectionContentSchema } from '../home-content/home-content.validation.js';
+import {
+  sectionContentPatchSchema,
+  sectionContentSchema,
+} from '../home-content/home-content.validation.js';
+import { parsePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 import {
   deleteHeritageSection,
   getHeritageSection,
@@ -11,20 +14,10 @@ export async function listSections(req, res) {
   res.status(200).json({ success: true, data: await listHeritageSections() });
 }
 
-function parseContent(req) {
-  const rawContent = req.body.content || req.body.data;
-  let content = rawContent;
-  if (typeof rawContent === 'string') {
-    try {
-      content = JSON.parse(rawContent);
-    } catch {
-      throw new AppError('The content field must contain valid JSON.', {
-        statusCode: 400,
-        code: 'INVALID_CONTENT_JSON',
-      });
-    }
-  }
-  return sectionContentSchema.parse(content);
+function parseContent(req, partial = false) {
+  return (partial ? sectionContentPatchSchema : sectionContentSchema).parse(
+    parsePortfolioContent(req),
+  );
 }
 
 export function sectionController(section) {
@@ -41,7 +34,7 @@ export function sectionController(section) {
     async update(req, res) {
       res.status(200).json({
         success: true,
-        data: await saveHeritageSection(section, parseContent(req), req.files, false),
+        data: await saveHeritageSection(section, parseContent(req, true), req.files, false),
       });
     },
     async remove(req, res) {

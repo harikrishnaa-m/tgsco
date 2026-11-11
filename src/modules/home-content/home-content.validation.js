@@ -4,30 +4,42 @@ import { AppError } from '../../errors/app-error.js';
 export const sectionContentSchema = z
   .record(z.string(), z.unknown())
   .refine((value) => Object.keys(value).length > 0, 'Please provide section content.');
+export const sectionContentPatchSchema = z.record(z.string(), z.unknown());
 
 const requiredText = z.string().trim().min(1);
+
+const chroniclesStatisticSchema = z
+  .object({
+    value: requiredText,
+    label: requiredText,
+  })
+  .passthrough();
+const chroniclesCtaSchema = z
+  .object({
+    label: requiredText,
+    url: requiredText,
+  })
+  .passthrough();
 
 export const chroniclesSectionContentSchema = z
   .object({
     eyebrow: requiredText,
     title: requiredText,
     paragraphs: z.array(requiredText).length(2),
-    statistic: z
-      .object({
-        value: requiredText,
-        label: requiredText,
-      })
-      .passthrough(),
-    cta: z
-      .object({
-        label: requiredText,
-        url: requiredText,
-      })
-      .passthrough(),
+    statistic: chroniclesStatisticSchema,
+    cta: chroniclesCtaSchema,
     closingQuote: requiredText,
     leftImageAlt: requiredText,
     rightImageAlt: requiredText,
   })
+  .passthrough();
+
+export const chroniclesSectionPatchSchema = chroniclesSectionContentSchema
+  .extend({
+    statistic: chroniclesStatisticSchema.partial().optional(),
+    cta: chroniclesCtaSchema.partial().optional(),
+  })
+  .partial()
   .passthrough();
 
 const PAIRED_IMAGE_SECTIONS = new Set(['techniques']);
@@ -47,9 +59,9 @@ export function validatePairedSectionImages(section, content, files, requireImag
       (field, index) => receivedFields.indexOf(field) !== index,
     );
     const invalidFields = receivedFields.filter((field) => !CHRONICLES_IMAGE_FIELDS.has(field));
-    const missingFields = [...CHRONICLES_IMAGE_FIELDS].filter(
-      (field) => !receivedFields.includes(field),
-    );
+    const missingFields = requireImages
+      ? [...CHRONICLES_IMAGE_FIELDS].filter((field) => !receivedFields.includes(field))
+      : [];
 
     if (duplicateFields.length || invalidFields.length || missingFields.length) {
       throw new AppError(
@@ -97,7 +109,9 @@ export function validatePairedSectionImages(section, content, files, requireImag
     (field, index) => receivedFields.indexOf(field) !== index,
   );
   const invalidFields = receivedFields.filter((field) => !allowedFields.has(field));
-  const missingFields = [...expectedFields].filter((field) => !receivedFields.includes(field));
+  const missingFields = requireImages
+    ? [...expectedFields].filter((field) => !receivedFields.includes(field))
+    : [];
 
   if (duplicateFields.length || invalidFields.length || missingFields.length) {
     throw new AppError(

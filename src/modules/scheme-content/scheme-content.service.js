@@ -5,6 +5,7 @@ import {
   replaceImagesByField,
   uploadHomeImages,
 } from '../home-content/home-content.upload.js';
+import { mergePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 function serializeSection(section) {
   return {
@@ -52,17 +53,26 @@ export async function getSchemeItem(sectionName, slug) {
 }
 
 export async function saveSchemeSection(sectionName, content, files, isCreate) {
+  const currentSection = !isCreate
+    ? await SchemeSection.findOne({ section: sectionName }).select('content images').lean()
+    : null;
+  if (!isCreate && !currentSection) {
+    throw new AppError(`The scheme section "${sectionName}" was not found.`, {
+      statusCode: 404,
+      code: 'SCHEME_SECTION_NOT_FOUND',
+    });
+  }
+
+  const savedContent = isCreate ? content : mergePortfolioContent(currentSection.content, content);
   const images = await uploadHomeImages(sectionName, files, 'schemes');
-  const currentSection =
-    !isCreate && images.length
-      ? await SchemeSection.findOne({ section: sectionName }).select('images').lean()
-      : null;
   const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
-    ? await SchemeSection.create({ section: sectionName, content, images })
+    ? await SchemeSection.create({ section: sectionName, content: savedContent, images })
     : await SchemeSection.findOneAndUpdate(
         { section: sectionName },
-        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
+        images.length
+          ? { $set: { content: savedContent, images: updatedImages } }
+          : { $set: { content: savedContent } },
         { new: true, runValidators: true },
       );
 

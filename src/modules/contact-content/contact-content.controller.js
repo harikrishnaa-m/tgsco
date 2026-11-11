@@ -1,4 +1,3 @@
-import { AppError } from '../../errors/app-error.js';
 import { parseContactSectionContent } from './contact-content.validation.js';
 import {
   deleteContactSection,
@@ -7,27 +6,14 @@ import {
   listContactSections,
   saveContactSection,
 } from './contact-content.service.js';
+import { parsePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 export async function listSections(req, res) {
   res.status(200).json({ success: true, data: await listContactSections() });
 }
 
 function parseContent(req) {
-  const rawContent = req.body.content || req.body.data;
-  let content = rawContent;
-
-  if (typeof rawContent === 'string') {
-    try {
-      content = JSON.parse(rawContent);
-    } catch {
-      throw new AppError('The content field must contain valid JSON.', {
-        statusCode: 400,
-        code: 'INVALID_CONTENT_JSON',
-      });
-    }
-  }
-
-  return content;
+  return parsePortfolioContent(req);
 }
 
 export function sectionController(section) {
@@ -57,7 +43,7 @@ export function sectionController(section) {
         success: true,
         data: await saveContactSection(
           section,
-          parseContactSectionContent(section, parseContent(req)),
+          parseContactSectionContent(section, parseContent(req), true),
           req.files,
           false,
         ),

@@ -5,6 +5,7 @@ import {
   replaceImagesByField,
   uploadHomeImages,
 } from '../home-content/home-content.upload.js';
+import { mergePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 function serializeSection(section) {
   return {
@@ -36,17 +37,26 @@ export async function getAboutSection(sectionName) {
 }
 
 export async function saveAboutSection(sectionName, content, files, isCreate) {
+  const currentSection = !isCreate
+    ? await AboutSection.findOne({ section: sectionName }).select('content images').lean()
+    : null;
+  if (!isCreate && !currentSection) {
+    throw new AppError(`The about section "${sectionName}" was not found.`, {
+      statusCode: 404,
+      code: 'ABOUT_SECTION_NOT_FOUND',
+    });
+  }
+
+  const savedContent = isCreate ? content : mergePortfolioContent(currentSection.content, content);
   const images = await uploadHomeImages(sectionName, files, 'about');
-  const currentSection =
-    !isCreate && images.length
-      ? await AboutSection.findOne({ section: sectionName }).select('images').lean()
-      : null;
   const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
-    ? await AboutSection.create({ section: sectionName, content, images })
+    ? await AboutSection.create({ section: sectionName, content: savedContent, images })
     : await AboutSection.findOneAndUpdate(
         { section: sectionName },
-        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
+        images.length
+          ? { $set: { content: savedContent, images: updatedImages } }
+          : { $set: { content: savedContent } },
         { new: true, runValidators: true },
       );
 

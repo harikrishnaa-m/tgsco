@@ -5,6 +5,7 @@ import {
   replaceImagesByField,
   uploadHomeImages,
 } from '../home-content/home-content.upload.js';
+import { mergePortfolioContent } from '../portfolio-content/portfolio-content.utils.js';
 
 function serializeSection(section) {
   return {
@@ -34,17 +35,26 @@ export async function getHeritageSection(sectionName) {
 }
 
 export async function saveHeritageSection(sectionName, content, files, isCreate) {
+  const currentSection = !isCreate
+    ? await HeritageSection.findOne({ section: sectionName }).select('content images').lean()
+    : null;
+  if (!isCreate && !currentSection) {
+    throw new AppError(`The heritage section "${sectionName}" was not found.`, {
+      statusCode: 404,
+      code: 'HERITAGE_SECTION_NOT_FOUND',
+    });
+  }
+
+  const savedContent = isCreate ? content : mergePortfolioContent(currentSection.content, content);
   const images = await uploadHomeImages(sectionName, files, 'heritage');
-  const currentSection =
-    !isCreate && images.length
-      ? await HeritageSection.findOne({ section: sectionName }).select('images').lean()
-      : null;
   const updatedImages = replaceImagesByField(currentSection?.images, images);
   const section = isCreate
-    ? await HeritageSection.create({ section: sectionName, content, images })
+    ? await HeritageSection.create({ section: sectionName, content: savedContent, images })
     : await HeritageSection.findOneAndUpdate(
         { section: sectionName },
-        images.length ? { $set: { content, images: updatedImages } } : { $set: { content } },
+        images.length
+          ? { $set: { content: savedContent, images: updatedImages } }
+          : { $set: { content: savedContent } },
         { new: true, runValidators: true },
       );
 

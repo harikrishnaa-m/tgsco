@@ -3,6 +3,7 @@ import { requireAdmin } from '../auth/auth.middleware.js';
 import { homeImageUpload } from '../home-content/home-content.upload.js';
 import {
   createCategory,
+  createBulkProducts,
   createGroup,
   createProduct,
   deleteCategory,
@@ -45,6 +46,7 @@ router.get('/admin/products/:id', requireAdmin, getAdminProductById);
 router.post('/admin/categories', requireAdmin, homeImageUpload.any(), createCategory);
 router.patch('/admin/categories/:id', requireAdmin, homeImageUpload.any(), updateCategory);
 router.delete('/admin/categories/:id', requireAdmin, deleteCategory);
+router.post('/admin/products/bulk', requireAdmin, homeImageUpload.any(), createBulkProducts);
 router.post('/admin/products', requireAdmin, homeImageUpload.any(), createProduct);
 router.patch('/admin/products/:id', requireAdmin, homeImageUpload.any(), updateProduct);
 router.delete('/admin/products/:id', requireAdmin, deleteProduct);

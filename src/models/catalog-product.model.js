@@ -22,10 +22,12 @@ const catalogProductSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     sku: { type: String, required: true, unique: true, trim: true },
+    productGroup: { type: String, trim: true },
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'CatalogCategory', required: true },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CatalogCategory' }],
     categorySlug: { type: String, required: true, lowercase: true, trim: true },
     type: { type: String, lowercase: true, trim: true },
+    color: { type: String, trim: true },
     categorySlugs: { type: [String], default: [] },
     types: { type: [String], lowercase: true, trim: true, default: [] },
     shortDescription: { type: String, trim: true },
@@ -54,6 +56,8 @@ const catalogProductSchema = new mongoose.Schema(
 );
 
 catalogProductSchema.index({ active: 1, type: 1, categorySlug: 1 });
+catalogProductSchema.index({ active: 1, color: 1 });
+catalogProductSchema.index({ productGroup: 1, 'attributes.size': 1 });
 catalogProductSchema.index({ name: 'text', description: 'text', sku: 'text' });
 
 export const CatalogProduct =

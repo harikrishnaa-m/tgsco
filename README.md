@@ -111,6 +111,50 @@ Catalogue endpoints are available under `/api/v1/catalog`:
 | `POST/PATCH/DELETE` | `/catalog/admin/categories` and `/catalog/admin/categories/<id>` | Admin                                  |
 | `GET`               | `/catalog/admin/products` and `/catalog/admin/products/<id>`     | Admin                                  |
 | `POST/PATCH/DELETE` | `/catalog/admin/products` and `/catalog/admin/products/<id>`     | Admin                                  |
+| `POST`              | `/catalog/admin/products/bulk`                                   | Admin; create one product per size     |
+
+Product SKUs are generated from the product name when omitted; explicit SKUs
+remain supported and are normalized to readable uppercase hyphen-separated
+text. SKU uniqueness is checked without regard to case, and duplicate custom
+SKUs are rejected. Products with sizes remain separate inventory items. The
+bulk endpoint accepts the normal shared product fields plus a `sizes` array;
+shared fields provide defaults, and each size may override product creation
+fields except `color` and `productGroup`. SKU and barcode are specified per
+size; the product group is generated once and kept common.
+The endpoint generates one `productGroup` code and assigns it to every created
+product, while writing each size to `attributes.size`. Shared images and
+descriptions are copied to each product unless overridden for a specific size.
+`color` is a top-level product field and remains common across all sizes in a
+bulk-created product group. The public color filter includes this field and
+continues to support legacy `attributes.colour` values.
+
+Product detail responses include `associatedProducts` with sibling product IDs
+and sizes when the product has a `productGroup`. Products without a family have
+an empty `associatedProducts` array.
+
+For example, `POST /catalog/admin/products/bulk` can use the regular shared
+product fields with a size list:
+
+```json
+{
+  "name": "Pochampally Shirt",
+  "categoryIds": ["66a000000000000000000001"],
+  "price": 1475,
+  "stockQuantity": 3,
+  "attributes": { "colour": "Emerald Green" },
+  "sizes": [
+    { "size": "M", "stockQuantity": 4 },
+    { "size": "L", "price": 1575, "stockQuantity": 2 }
+  ]
+}
+```
+
+Each created size is its own product with a unique generated SKU and slug.
+Supported single-product input fields may be supplied in a size entry to
+override shared values, including descriptions, categories, attributes, images,
+pricing, stock, pricing tiers, and policy text. `color` remains common to the
+family. `size` is stored in `attributes.size`; `productGroup` is generated once
+for the family.
 
 The public groups response contains database-managed top-level groups. Each
 category can reference a group through `groupId`, and the public category

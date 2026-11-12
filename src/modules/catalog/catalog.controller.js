@@ -1,6 +1,7 @@
 import {
   categoryQuerySchema,
   categorySchema,
+  bulkProductSchema,
   groupSchema,
   productQuerySchema,
   productFilterQuerySchema,
@@ -25,6 +26,7 @@ import {
   saveCategory,
   saveGroup,
   saveProduct,
+  saveBulkProducts,
 } from './catalog.service.js';
 
 export async function getCategories(req, res) {
@@ -126,6 +128,13 @@ export async function createProduct(req, res) {
   res.status(201).json({
     success: true,
     data: await saveProduct(productSchema.parse(parseCatalogContent(req)), req.files, undefined),
+  });
+}
+
+export async function createBulkProducts(req, res) {
+  res.status(201).json({
+    success: true,
+    data: await saveBulkProducts(bulkProductSchema.parse(parseCatalogContent(req)), req.files),
   });
 }
 

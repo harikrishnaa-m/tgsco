@@ -14,7 +14,7 @@ let mongoServer;
 let adminToken;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
+  mongoServer = await MongoMemoryServer.create({ instance: { launchTimeout: 30000 } });
   await mongoose.connect(mongoServer.getUri());
   await ensureDefaultAdmin();
 
@@ -33,10 +33,138 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await disconnectDatabase();
-  await mongoServer.stop();
+  if (mongoServer) await mongoServer.stop();
 });
 
 describe('catalogue slug generation', () => {
+  it('generates SKUs for single products and creates linked size products in bulk', async () => {
+    const categoryResponse = await request(app)
+      .post('/api/v1/catalog/admin/categories')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: 'Handloom Shirts', type: 'apparel' });
+    const singleProductResponse = await request(app)
+      .post('/api/v1/catalog/admin/products')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'Single Size Shirt',
+        categoryIds: [categoryResponse.body.data._id],
+        color: 'Navy Blue',
+        price: 1200,
+        stockQuantity: 2,
+      });
+    const customSkuResponse = await request(app)
+      .post('/api/v1/catalog/admin/products')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'Custom SKU Shirt',
+        sku: 'Custom SKU / Shirt',
+        categoryIds: [categoryResponse.body.data._id],
+        price: 1200,
+        stockQuantity: 2,
+      });
+
+    expect(categoryResponse.status).toBe(201);
+    expect(singleProductResponse.status).toBe(201);
+    expect(singleProductResponse.body.data.sku).toMatch(/^SINGLE-SIZE-SHIRT(?:-\d+)?$/);
+    expect(customSkuResponse.status).toBe(201);
+    expect(customSkuResponse.body.data.sku).toBe('CUSTOM-SKU-SHIRT');
+
+    const bulkResponse = await request(app)
+      .post('/api/v1/catalog/admin/products/bulk')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'Pochampally Shirt',
+        categoryIds: [categoryResponse.body.data._id],
+        color: 'Emerald Green',
+        shortDescription: 'Classic tailored fit.',
+        price: 1475,
+        stockQuantity: 3,
+        attributes: { fabric: 'Cotton' },
+        mainImage: { url: 'https://cdn.example.com/pochampally-shirt.jpg' },
+        galleryImages: [{ url: 'https://cdn.example.com/shirt-detail.jpg' }],
+        sizes: [
+          { size: 'M', sku: 'Custom Pochampally M', stockQuantity: 4 },
+          {
+            size: 'L',
+            price: 1575,
+            stockQuantity: 2,
+            shortDescription: 'Large tailored fit.',
+            currency: 'USD',
+            color: 'Blue',
+            attributes: { weave: 'Pochampally Ikat' },
+            mainImage: { url: 'https://cdn.example.com/pochampally-shirt-large.jpg' },
+            galleryImages: [{ url: 'https://cdn.example.com/shirt-large-detail.jpg' }],
+          },
+        ],
+      });
+
+    expect(bulkResponse.status).toBe(201);
+    expect(bulkResponse.body.data.items).toHaveLength(2);
+    const [medium, large] = bulkResponse.body.data.items;
+    expect(bulkResponse.body.data.productGroup).toBeTruthy();
+    expect(medium.productGroup).toBe(bulkResponse.body.data.productGroup);
+    expect(large.productGroup).toBe(bulkResponse.body.data.productGroup);
+    expect(medium.color).toBe('Emerald Green');
+    expect(large.color).toBe('Emerald Green');
+    expect(medium.attributes).toMatchObject({ fabric: 'Cotton', size: 'M' });
+    expect(large.attributes).toMatchObject({
+      fabric: 'Cotton',
+      weave: 'Pochampally Ikat',
+      size: 'L',
+    });
+    expect(medium.shortDescription).toBe('Classic tailored fit.');
+    expect(large.shortDescription).toBe('Large tailored fit.');
+    expect(large.currency).toBe('USD');
+    expect(medium.mainImage.url).toBe('https://cdn.example.com/pochampally-shirt.jpg');
+    expect(large.mainImage.url).toBe('https://cdn.example.com/pochampally-shirt-large.jpg');
+    expect(medium.galleryImages[0].url).toBe('https://cdn.example.com/shirt-detail.jpg');
+    expect(large.galleryImages[0].url).toBe('https://cdn.example.com/shirt-large-detail.jpg');
+    expect(medium.price).toBe(1475);
+    expect(large.price).toBe(1575);
+    expect(medium.sku).toBe('CUSTOM-POCHAMPALLY-M');
+    expect(large.sku).toMatch(/^POCHAMPALLY-SHIRT-L(?:-\d+)?$/);
+    expect(medium.sku).not.toBe(large.sku);
+    expect(medium.slug).not.toBe(large.slug);
+
+    const colorFilterResponse = await request(app)
+      .get('/api/v1/catalog/products')
+      .query({ color: 'Emerald Green' });
+    expect(colorFilterResponse.status).toBe(200);
+    expect(colorFilterResponse.body.data.items.map((item) => item.color)).toEqual([
+      'Emerald Green',
+      'Emerald Green',
+    ]);
+
+    const colorOptionsResponse = await request(app).get('/api/v1/catalog/products/filters');
+    expect(colorOptionsResponse.status).toBe(200);
+    expect(colorOptionsResponse.body.data.color).toContain('Emerald Green');
+
+    const duplicateSkuResponse = await request(app)
+      .post('/api/v1/catalog/admin/products')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'Duplicate SKU Shirt',
+        sku: 'pochampally-shirt-l',
+        categoryIds: [categoryResponse.body.data._id],
+        price: 100,
+        stockQuantity: 1,
+      });
+    expect(duplicateSkuResponse.status).toBe(409);
+    expect(duplicateSkuResponse.body.error.code).toBe('DUPLICATE_SKU');
+
+    const detailResponse = await request(app).get(`/api/v1/catalog/products/${medium._id}`);
+    expect(detailResponse.status).toBe(200);
+    expect(detailResponse.body.data.associatedProducts).toEqual([{ id: large._id, size: 'L' }]);
+
+    const adminDetailResponse = await request(app)
+      .get(`/api/v1/catalog/admin/products/${large._id}`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(adminDetailResponse.status).toBe(200);
+    expect(adminDetailResponse.body.data.associatedProducts).toEqual([
+      { id: medium._id, size: 'M' },
+    ]);
+  });
+
   it('generates unique slugs for groups, categories, and products', async () => {
     const groupResponse = await request(app)
       .post('/api/v1/catalog/admin/groups')

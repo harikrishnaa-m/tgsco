@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { randomUUID } from 'node:crypto';
 
 import { AppError } from '../../errors/app-error.js';
 import { CatalogCategory } from '../../models/catalog-category.model.js';
@@ -33,11 +34,58 @@ async function resolveSlug(Model, content, id, existing) {
   return slug;
 }
 
+async function resolveUniqueProductValue(field, baseValue, reservedValues = new Set()) {
+  const base = baseValue || 'item';
+  let value = base;
+  let suffix = 2;
+  const isInUse = async (candidate) => {
+    const filter =
+      field === 'sku'
+        ? { sku: { $regex: `^${candidate}$`, $options: 'i' } }
+        : { [field]: candidate };
+    return CatalogProduct.exists(filter);
+  };
+  while (reservedValues.has(value) || (await isInUse(value))) {
+    value = `${base}-${suffix}`;
+    suffix += 1;
+  }
+  reservedValues.add(value);
+  return value;
+}
+
+async function resolveSku(content, id, existing) {
+  if (content.sku) {
+    const sku = slugify(content.sku).toUpperCase();
+    const duplicate = await CatalogProduct.exists({
+      sku: { $regex: `^${sku}$`, $options: 'i' },
+      ...(id ? { _id: { $ne: id } } : {}),
+    });
+    if (duplicate) {
+      throw new AppError(`The SKU "${sku}" is already in use.`, {
+        statusCode: 409,
+        code: 'DUPLICATE_SKU',
+      });
+    }
+    return sku;
+  }
+  if (existing?.sku) return existing.sku;
+  const size = content.attributes?.size;
+  const baseSku = slugify(`${content.name}${size ? `-${size}` : ''}`).toUpperCase();
+  return resolveUniqueProductValue('sku', baseSku);
+}
+
 function parseContent(req) {
   const raw = req.body.content || req.body.data;
   if (!raw) {
     const content = { ...req.body };
-    const jsonFields = ['categoryIds', 'categorySlugs', 'types', 'attributes', 'bulkPricing'];
+    const jsonFields = [
+      'categoryIds',
+      'categorySlugs',
+      'types',
+      'attributes',
+      'bulkPricing',
+      'sizes',
+    ];
     try {
       for (const field of jsonFields) {
         if (typeof content[field] === 'string') content[field] = JSON.parse(content[field]);
@@ -89,18 +137,35 @@ function setNestedValue(target, path, value) {
 function applyImages(content, images) {
   const result = structuredClone(content);
   let galleryIndex = 0;
+  const sizeGalleryIndexes = new Map();
   for (const image of images) {
     if (image.field === 'mainImage') {
       setNestedValue(result, 'mainImage.url', image.url);
     } else if (image.field === 'galleryImages') {
       setNestedValue(result, `galleryImages[${galleryIndex}].url`, image.url);
       galleryIndex += 1;
+    } else if (/^sizes\[\d+\]\.mainImage(?:\.url)?$/.test(image.field)) {
+      setNestedValue(result, `${image.field.replace(/\.url$/, '')}.url`, image.url);
+    } else if (/^sizes\[\d+\]\.galleryImages$/.test(image.field)) {
+      const sizeIndex = Number(image.field.match(/^sizes\[(\d+)\]/)[1]);
+      const galleryIndexForSize = sizeGalleryIndexes.get(sizeIndex) || 0;
+      setNestedValue(
+        result,
+        `sizes[${sizeIndex}].galleryImages[${galleryIndexForSize}].url`,
+        image.url,
+      );
+      sizeGalleryIndexes.set(sizeIndex, galleryIndexForSize + 1);
+    } else if (/^sizes\[\d+\]\.galleryImages\[\d+\]\.url$/.test(image.field)) {
+      setNestedValue(result, image.field, image.url);
     } else if (
       (image.field === 'mainImage.url' || image.field.startsWith('galleryImages[')) &&
       image.field.endsWith('.url')
     ) {
       setNestedValue(result, image.field, image.url);
-    } else if (image.field.startsWith('images[') && image.field.endsWith('].url')) {
+    } else if (
+      (image.field.startsWith('images[') || /^sizes\[\d+\]\.images\[/.test(image.field)) &&
+      image.field.endsWith('].url')
+    ) {
       setNestedValue(result, image.field, image.url);
     }
   }
@@ -274,7 +339,11 @@ export async function listProducts(query) {
     if (query.maxPrice !== undefined) filter.price.$lte = query.maxPrice;
   }
   if (query.handloomType) filter['attributes.handloomType'] = { $in: query.handloomType };
-  if (query.color) filter['attributes.colour'] = { $in: query.color };
+  if (query.color) {
+    taxonomyFilters.push({
+      $or: [{ color: { $in: query.color } }, { 'attributes.colour': { $in: query.color } }],
+    });
+  }
   if (query.weaveCraft) {
     taxonomyFilters.push({
       $or: [
@@ -330,28 +399,31 @@ export async function getProductFilterOptions(query) {
   }
   if (taxonomyFilters.length) filter.$and = taxonomyFilters;
 
-  const [handloomType, weave, fabric, color, priceBounds] = await Promise.all([
-    CatalogProduct.distinct('attributes.handloomType', filter),
-    CatalogProduct.distinct('attributes.weave', filter),
-    CatalogProduct.distinct('attributes.fabric', filter),
-    CatalogProduct.distinct('attributes.colour', filter),
-    CatalogProduct.aggregate([
-      { $match: filter },
-      {
-        $group: {
-          _id: null,
-          min: { $min: '$price' },
-          max: { $max: '$price' },
+  const [handloomType, weave, fabric, legacyColors, productColors, priceBounds] = await Promise.all(
+    [
+      CatalogProduct.distinct('attributes.handloomType', filter),
+      CatalogProduct.distinct('attributes.weave', filter),
+      CatalogProduct.distinct('attributes.fabric', filter),
+      CatalogProduct.distinct('attributes.colour', filter),
+      CatalogProduct.distinct('color', filter),
+      CatalogProduct.aggregate([
+        { $match: filter },
+        {
+          $group: {
+            _id: null,
+            min: { $min: '$price' },
+            max: { $max: '$price' },
+          },
         },
-      },
-    ]),
-  ]);
+      ]),
+    ],
+  );
 
   const price = priceBounds[0] || { min: null, max: null };
   return {
     handloomType: handloomType.filter(Boolean).sort(),
     weaveCraft: [...new Set([...weave, ...fabric].filter(Boolean))].sort(),
-    color: color.filter(Boolean).sort(),
+    color: [...new Set([...legacyColors, ...productColors].filter(Boolean))].sort(),
     price: { min: price.min, max: price.max },
   };
 }
@@ -376,7 +448,23 @@ export async function getPublicProduct(identifier) {
       statusCode: 404,
       code: 'PRODUCT_NOT_FOUND',
     });
-  return product;
+  const associatedProducts = product.productGroup
+    ? await CatalogProduct.find({
+        productGroup: product.productGroup,
+        active: true,
+        _id: { $ne: product._id },
+      })
+        .select('_id attributes.size')
+        .sort({ 'attributes.size': 1 })
+        .lean()
+    : [];
+  return {
+    ...product,
+    associatedProducts: associatedProducts.map((item) => ({
+      id: item._id,
+      size: item.attributes?.size ?? null,
+    })),
+  };
 }
 
 export async function getAdminProduct(id) {
@@ -386,26 +474,37 @@ export async function getAdminProduct(id) {
       statusCode: 404,
       code: 'PRODUCT_NOT_FOUND',
     });
-  return product;
+  const associatedProducts = product.productGroup
+    ? await CatalogProduct.find({
+        productGroup: product.productGroup,
+        _id: { $ne: product._id },
+      })
+        .select('_id attributes.size')
+        .sort({ 'attributes.size': 1 })
+        .lean()
+    : [];
+  return {
+    ...product,
+    associatedProducts: associatedProducts.map((item) => ({
+      id: item._id,
+      size: item.attributes?.size ?? null,
+    })),
+  };
 }
 
 export async function listAdminProducts() {
   return CatalogProduct.find().populate('categories').sort({ createdAt: -1 }).lean();
 }
 
-export async function saveProduct(content, files, id) {
-  const images = await uploadHomeImages('products', files || [], 'catalog');
-  const savedContent = applyImages(content, images);
-  const existingProduct = id ? await CatalogProduct.findById(id).lean() : null;
-  savedContent.slug = await resolveSlug(CatalogProduct, savedContent, id, existingProduct);
+async function resolveProductCategories(content) {
   let categories;
-  if (savedContent.categoryIds?.length) {
+  if (content.categoryIds?.length) {
     categories = await CatalogCategory.find({
-      _id: { $in: savedContent.categoryIds },
+      _id: { $in: content.categoryIds },
       active: true,
     }).lean();
   } else {
-    const categorySlugs = savedContent.categorySlugs || [savedContent.categorySlug];
+    const categorySlugs = content.categorySlugs || [content.categorySlug];
     categories = await CatalogCategory.find({
       slug: { $in: categorySlugs },
       active: true,
@@ -413,17 +512,22 @@ export async function saveProduct(content, files, id) {
   }
   if (
     !categories.length ||
-    (savedContent.categoryIds && categories.length !== savedContent.categoryIds.length)
+    (content.categoryIds && categories.length !== content.categoryIds.length)
   ) {
     throw new AppError('One or more product categories were not found.', {
       statusCode: 400,
       code: 'CATEGORY_NOT_FOUND',
     });
   }
+
+  return categories;
+}
+
+function applyResolvedCategories(content, categories) {
   const categorySlugs = categories.map((category) => category.slug);
-  const types = savedContent.types || [...new Set(categories.map((category) => category.type))];
-  const data = {
-    ...savedContent,
+  const types = content.types || [...new Set(categories.map((category) => category.type))];
+  return {
+    ...content,
     category: categories.find((category) => category.slug === categorySlugs[0])._id,
     categories: categories.map((category) => category._id),
     categorySlug: categorySlugs[0],
@@ -431,6 +535,15 @@ export async function saveProduct(content, files, id) {
     type: types[0],
     types,
   };
+}
+
+export async function saveProduct(content, files, id) {
+  const images = await uploadHomeImages('products', files || [], 'catalog');
+  const savedContent = applyImages(content, images);
+  const existingProduct = id ? await CatalogProduct.findById(id).lean() : null;
+  savedContent.slug = await resolveSlug(CatalogProduct, savedContent, id, existingProduct);
+  savedContent.sku = await resolveSku(savedContent, id, existingProduct);
+  const data = applyResolvedCategories(savedContent, await resolveProductCategories(savedContent));
   if (existingProduct && !images.some((image) => image.field === 'mainImage')) {
     data.mainImage = existingProduct.mainImage;
   }
@@ -443,6 +556,75 @@ export async function saveProduct(content, files, id) {
   return id
     ? CatalogProduct.findByIdAndUpdate(id, data, { new: true, runValidators: true }).lean()
     : CatalogProduct.create(data);
+}
+
+export async function saveBulkProducts(content, files = []) {
+  const images = await uploadHomeImages('products', files, 'catalog');
+  const mappedContent = applyImages(content, images);
+  const { sizes, ...sharedFields } = mappedContent;
+  const productGroup = randomUUID();
+  const reservedSkus = new Set();
+  const reservedSlugs = new Set();
+  const products = [];
+
+  for (const sizeOption of sizes) {
+    const { size, ...overrides } = sizeOption;
+    const productContent = {
+      ...sharedFields,
+      ...overrides,
+      name: overrides.name ?? sharedFields.name,
+      sku: undefined,
+      productGroup,
+      attributes: { ...sharedFields.attributes, ...overrides.attributes, size },
+      barcode: overrides.barcode ?? (sizes.length === 1 ? sharedFields.barcode : undefined),
+    };
+    const sku = overrides.sku
+      ? slugify(overrides.sku).toUpperCase()
+      : await resolveUniqueProductValue(
+          'sku',
+          slugify(`${productContent.name}-${size}`).toUpperCase(),
+          reservedSkus,
+        );
+    if (sizeOption.sku) {
+      const duplicate = await CatalogProduct.exists({
+        sku: { $regex: `^${sku}$`, $options: 'i' },
+      });
+      if (reservedSkus.has(sku) || duplicate) {
+        throw new AppError(`The SKU "${sku}" is already in use.`, {
+          statusCode: 409,
+          code: 'DUPLICATE_SKU',
+        });
+      }
+      reservedSkus.add(sku);
+    }
+
+    const slugBase =
+      overrides.slug || slugify(`${productContent.slug || productContent.name}-${size}`);
+    const slug = await resolveUniqueProductValue('slug', slugBase, reservedSlugs);
+    productContent.sku = sku;
+    productContent.slug = slug;
+    const productData = applyResolvedCategories(
+      productContent,
+      await resolveProductCategories(productContent),
+    );
+    delete productData.sizes;
+    delete productData.size;
+    products.push(productData);
+  }
+
+  try {
+    const items = await CatalogProduct.insertMany(products, { ordered: true });
+    return { productGroup, items };
+  } catch (error) {
+    await CatalogProduct.deleteMany({ productGroup });
+    if (error?.code === 11000) {
+      throw new AppError('A product SKU, slug, or barcode is already in use.', {
+        statusCode: 409,
+        code: 'DUPLICATE_PRODUCT_IDENTIFIER',
+      });
+    }
+    throw error;
+  }
 }
 
 export async function removeProduct(id) {
